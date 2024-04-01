@@ -19,6 +19,6 @@ The TDD module was developed to test the function that could be used to validate
 
 ### Calculating points - Ademi
 
-The main focus of this TDD module is to calculate points. If user placed 'Hero' card, the points for this card will be doubled. I used some fake cards to check
+The main focus of this TDD module is to calculate points. I used some fake cards to test and make sure that the scoring works right, especially when someone plays a 'Hero' card. These tests help check that the correct scores are given and that the 'Hero' cards really do give players an advantage, just like they're supposed to in the game.
 
 ### () - Christine
