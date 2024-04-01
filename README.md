@@ -17,6 +17,8 @@ This TDD module is designed to generate a balanced deck that has exactly 1 rando
 
 The TDD module was developed to test the function that could be used to validate a defense card when it is played in response to some attack by an opponent. I used some of the cards from Christy's card "database" array to check their values and types against other cards that could be played in a round. Test ensures that only defense cards can be used to defend, only attack cards can be used to attack, and playing a defense card cannot result in negative attack points.
 
-### () - Ademi
+### Calculating points - Ademi
+
+The main focus of this TDD module is to calculate points. If user placed 'Hero' card, the points for this card will be doubled. I used some fake cards to check
 
 ### () - Christine
