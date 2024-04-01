@@ -78,5 +78,3 @@ test("defending with attack card, no defense points awarded", () => {
 test("defense power is higher than attack power, attack happens but with 0 effect", () => {
   expect(defendAttack(cards[2], cards[0])).toBe(0);
 });
-
-//
