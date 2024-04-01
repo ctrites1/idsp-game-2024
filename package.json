@@ -1,0 +1,14 @@
+{
+  "name": "idsp-game-2024",
+  "version": "1.0.0",
+  "description": "- SQL database either MySQL or Postgres\r - Node express server with Typescript\r - front end code written in Typescript and bundled with parcel\r - tailwind CSS",
+  "main": "calculateScore.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
