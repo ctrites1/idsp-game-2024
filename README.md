@@ -1,11 +1,11 @@
-# idsp-game-2024
+# IDSP-game-2024
 
 ## Tentative Tech Stack
 
 - SQL database either MySQL or Postgres
 - Node express server with Typescript
-- front end code written in Typescript and bundled with parcel
-- tailwind CSS
+- Front-end written in Javascript, bundled with Parcel
+- Tailwind CSS
 
 ## TDD Modules
 
@@ -21,4 +21,7 @@ The TDD module was developed to test the function that could be used to validate
 
 The main focus of this TDD module is to calculate points. I used some fake cards to test and make sure that the scoring works right, especially when someone plays a 'Hero' card. These tests help check that the correct scores are given and that the 'Hero' cards really do give players an advantage, just like they're supposed to in the game.
 
-### () - Christine
+### Calculating Card Combat Outcome - Christine
+
+This TDD module determined the winner of a *combat* between two cards. There are 3 possible outcomes to a combat: a card is declared a winner, 
+a draw or a tie. For a draw, neither card is 'killed'. For a tie, both cards are 'killed'. Cards were created in a fake database and tested to see if the correct outcomes were reached. Cards have a *health* and *power* stat each, and if the power of a card was equal to or greater than the health of the other card, then that card would 'kill' or defeat the second card. Typescript was used to ensure parameters and results were correctly typed. 
