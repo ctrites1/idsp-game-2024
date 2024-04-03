@@ -2,17 +2,17 @@ html {
   background-color: slategrey;
 }
 
-body {
+/* body {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
+} */
 
-.game-container {
+/* .game-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
+} */
 
 /* #test-canvas {
   background-color: teal;
