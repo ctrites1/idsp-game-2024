@@ -1,4 +1,4 @@
-# IDSP-game-2024
+# ACG | IDSP-game-2024
 
 ## Tentative Tech Stack
 
@@ -25,3 +25,18 @@ The main focus of this TDD module is to calculate points. I used some fake cards
 
 This TDD module determined the winner of a _combat_ between two cards. There are 3 possible outcomes to a combat: a card is declared a winner,
 a draw or a tie. For a draw, neither card is 'killed'. For a tie, both cards are 'killed'. Cards were created in a fake database and tested to see if the correct outcomes were reached. Cards have a _health_ and _power_ stat each, and if the power of a card was equal to or greater than the health of the other card, then that card would 'kill' or defeat the second card. Typescript was used to ensure parameters and results were correctly typed.
+
+## Game Guide ver. 0.01
+
+- 10 cards per deck
+- 5 cards per hand
+- No deck choosing
+- 1 Lane
+- 1 Trench
+- Trench holds max 3 cards
+- 1 card per turn
+- Player chooses colour (i.e. Red, Blue), 1 colour always goes first
+- Blue always goes first
+- No elements
+- No support, weapon cards
+- It's basically war.
