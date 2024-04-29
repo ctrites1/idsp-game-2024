@@ -2,10 +2,10 @@
 
 ## Tentative Tech Stack
 
-- SQL database either MySQL or Postgres
+- mySQL database
 - Node express server with Typescript
-- Front-end written in Javascript, bundled with Parcel
-- Tailwind CSS
+- Front-end written in Javascript, maybe TSX
+- CSS
 
 ## TDD Modules
 
@@ -23,5 +23,5 @@ The main focus of this TDD module is to calculate points. I used some fake cards
 
 ### Calculating Card Combat Outcome - Christine
 
-This TDD module determined the winner of a *combat* between two cards. There are 3 possible outcomes to a combat: a card is declared a winner, 
-a draw or a tie. For a draw, neither card is 'killed'. For a tie, both cards are 'killed'. Cards were created in a fake database and tested to see if the correct outcomes were reached. Cards have a *health* and *power* stat each, and if the power of a card was equal to or greater than the health of the other card, then that card would 'kill' or defeat the second card. Typescript was used to ensure parameters and results were correctly typed. 
+This TDD module determined the winner of a _combat_ between two cards. There are 3 possible outcomes to a combat: a card is declared a winner,
+a draw or a tie. For a draw, neither card is 'killed'. For a tie, both cards are 'killed'. Cards were created in a fake database and tested to see if the correct outcomes were reached. Cards have a _health_ and _power_ stat each, and if the power of a card was equal to or greater than the health of the other card, then that card would 'kill' or defeat the second card. Typescript was used to ensure parameters and results were correctly typed.
