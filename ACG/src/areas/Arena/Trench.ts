@@ -9,3 +9,11 @@ export function addCardToTrench(element: HTMLDivElement) {
     }
   });
 }
+
+export function clearTrench() {
+  const trench = document.querySelector("#playerTrench")!;
+  const cardHolders = trench.querySelectorAll(".cardHolder");
+  Array.from(cardHolders).map((holder) => {
+    holder.innerHTML = "";
+  });
+}
