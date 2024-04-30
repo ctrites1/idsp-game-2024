@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACG Arena</title>
+</head>
+
+<body>
+    <!-- 
+        Header
+            Button: Home
+            Button: How to Play
+            Turn Indicator
+
+        Board
+            Player 1 Label
+            Player 2 Label
+            Lane
+                Opponent Trench
+                Hill
+                Player Trench
+
+        Footer
+            Player Hand
+            Player Deck
+            Button: End turn
+     -->
+    <header>
+        <button type="button" class="home-button">
+            Home
+        </button>
+        <button type="button" class="howTo-button">
+            How to Play
+        </button>
+        <div class="turn-indicator">
+        </div>
+    </header>
+
+    <div class="lane">
+        <div class="trench" id="oppTrench">
+            <div class="cardHolder"></div>
+            <div class="cardHolder"></div>
+            <div class="cardHolder"></div>
+        </div>
+
+        <div class="hill">
+
+        </div>
+
+        <div class="trench" id="playerTrench">
+            <div class="cardHolder"></div>
+            <div class="cardHolder"></div>
+            <div class="cardHolder"></div>
+        </div>
+    </div>
+
+    <footer></footer>
+
+</body>
+
+</html>
