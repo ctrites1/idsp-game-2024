@@ -10,8 +10,9 @@ async function createServer() {
     appType: "custom",
   });
   app.use(vite.middlewares);
-  app.use("*", async (req: Request, res: Response) => {
-    res.sendFile("dist/src/areas/Arena/arena.html", {root: "."});
+
+  app.get("/", async (req: Request, res: Response) => {
+    res.sendFile("src/areas/Arena/arena.html", {root: "."});
   });
 
   app.listen(port, () => {
