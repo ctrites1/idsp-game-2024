@@ -1,4 +1,5 @@
 import express, {Request, Response} from "express";
+import {cards, Card} from "./database";
 
 async function createServer() {
   const app = express();
@@ -7,6 +8,14 @@ async function createServer() {
   // test route to make sure api calls working
   app.get("/api/hello", async (req: Request, res: Response) => {
     res.json({hello: "world"});
+  });
+
+  app.get("/api/playerhand", async (req: Request, res: Response) => {
+    const element = "Fire";
+    const hand = cards.map((card) => {
+      return card.element === element;
+    });
+    res.json(hand);
   });
 
   app.listen(port, () => {
