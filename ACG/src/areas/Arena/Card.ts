@@ -45,3 +45,13 @@ export function addCardToHand(data: any) {
 		viewSingleCard(card);
 	});
 }
+
+export function createCard(data: any) {
+	const card = document.createElement("div");
+	card.classList.add("card");
+	// card.style.backgroundImage = `url(${data.image})`;
+	// card.style.backgroundSize = "cover";
+	// card.style.backgroundPosition = "center";
+
+	return card;
+}
