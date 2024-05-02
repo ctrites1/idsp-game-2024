@@ -1,18 +1,11 @@
-interface Card {
-  id: number;
-  name: string;
-  description: string;
-  power: number;
-  element: string;
-  type: string;
-}
+import {Card} from "../../database.ts";
 
-class Footer {
+export class Footer {
   private playerHandContainer: HTMLElement;
   private endTurnButton: HTMLElement;
   private surrenderButton: HTMLElement;
   private logButton: HTMLElement;
-  private isPlayerTurn: boolean = true; // This indicates if it is the player's turn
+  // private isPlayerTurn: boolean = true; 
   private cards: Card[];
 
   constructor(cards: Card[]) {
@@ -28,13 +21,13 @@ class Footer {
     this.cards = cards;
     this.setupEventListeners();
     this.renderCards();
-    this.updateTurnIndicator();
+    // this.updateTurnIndicator();
   }
 
   private setupEventListeners(): void {
     this.endTurnButton.addEventListener("click", () => {
       console.log("End Turn clicked");
-      this.toggleTurn(); 
+      // this.toggleTurn(); 
     });
     this.surrenderButton.addEventListener("click", () => {
       console.log("Surrender clicked");
@@ -60,26 +53,26 @@ class Footer {
     });
   }
 
-  private updateTurnIndicator(): void {
-    const turnIndicator = document.querySelector(".turn-indicator");
-    if (turnIndicator) {
-      turnIndicator.textContent = this.isPlayerTurn ? "Player's Turn" : "Opponent's Turn";
-    }
-  }
+  // private updateTurnIndicator(): void {
+  //   const turnIndicator = document.querySelector(".turn-indicator");
+  //   if (turnIndicator) {
+  //     turnIndicator.textContent = this.isPlayerTurn ? "Player's Turn" : "Opponent's Turn";
+  //   }
+  // }
 
-  private toggleTurn(): void {
-    this.isPlayerTurn = !this.isPlayerTurn; 
-    this.updateTurnIndicator();
-  }
+  // private toggleTurn(): void {
+  //   this.isPlayerTurn = !this.isPlayerTurn; 
+  //   this.updateTurnIndicator();
+  // }
 }
 
-function getRandomCards(cards: Card[], count: number): Card[] {
-  const shuffled = cards.sort(() => 0.5 - Math.random());
-  return shuffled.slice(0, count);
-}
+// function getRandomCards(cards: Card[], count: number): Card[] {
+//   const shuffled = cards.sort(() => 0.5 - Math.random());
+//   return shuffled.slice(0, count);
+// }
 
 
-document.addEventListener('DOMContentLoaded', () => {
-  const randomCards = getRandomCards(cardDatabase, 5);
-  new Footer(randomCards);
-});
+// document.addEventListener('DOMContentLoaded', () => {
+//   const randomCards = getRandomCards(cards, 5);
+//   new Footer(randomCards);
+// });
