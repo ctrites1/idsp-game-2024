@@ -4,29 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>ACG Arena</title>
 </head>
 
 <body>
-    <!-- 
-        Header
-            Button: Home
-            Button: How to Play
-            Turn Indicator
-
-        Board
-            Player 1 Label
-            Player 2 Label
-            Lane
-                Opponent Trench
-                Hill
-                Player Trench
-
-        Footer
-            Player Hand
-            Player Deck
-            Button: End turn
-     -->
     <header>
         <button type="button" class="home-button">
             Home
@@ -37,42 +19,51 @@
         <div class="turn-indicator">
         </div>
     </header>
+    <div class="arena">
 
-    <div class="lane">
-        <div class="trench" id="oppTrench">
-            <div class="cardHolder"></div>
-            <div class="cardHolder"></div>
-            <div class="cardHolder"></div>
+        <div class="lane">
+            <div class="trench" id="oppTrench">
+                <div class="cardHolder"></div>
+                <div class="cardHolder"></div>
+                <div class="cardHolder"></div>
+            </div>
+
+            <div class="hill">
+                <div id="oppHill"></div>
+                <div id="playerHill"></div>
+            </div>
+
+            <div class="trench" id="playerTrench">
+                <div class="cardHolder">
+                    <div class="card">
+                        <div class="card-inside">
+                            <div class="card-front">Front</div>
+                            <div class="card-back">Back</div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="cardHolder"></div>
+                <div class="cardHolder"></div>
+            </div>
         </div>
 
-        <div class="hill">
-            <div id="oppHill"></div>
-            <div id="playerHill"></div>
+        <div class="singleCardView">
+            <span class="cardViewFooter">
+                <button class="close">Close</button>
+                <button class="playCard">Play</button>
+            </span>
         </div>
 
-        <div class="trench" id="playerTrench">
-            <div class="cardHolder"></div>
-            <div class="cardHolder"></div>
-            <div class="cardHolder"></div>
-        </div>
-    </div>
-
-    <div class="singleCardView">
-        <span class="cardViewFooter">
-            <button class="close">Close</button>
-            <button class="playCard">Play</button>
-        </span>
-    </div>
-
-    <footer id="playerFooter">
-        <div class="playerHand" id="playerHandContainer"></div>
-        <div class="playerDeck"></div>
-        <div class="action-buttons">
-            <button class="endTurn-button" type="button">End Turn</button>
-            <button class="surrender-button" type="button">Surrender</button>
-            <button class="log-button" type="button">Log</button>
-        </div>
-    </footer>
+        <footer id="playerFooter">
+            <div class="playerHand" id="playerHandContainer"></div>
+            <div class="playerDeck"></div>
+            <div class="action-buttons">
+                <button class="endTurn-button" type="button">End Turn</button>
+                <button class="surrender-button" type="button">Surrender</button>
+                <button class="log-button" type="button">Log</button>
+            </div>
+        </footer>
 
 
 </body>
