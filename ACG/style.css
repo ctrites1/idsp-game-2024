@@ -112,17 +112,24 @@ header {
 	justify-content: center;
 	align-content: center;
 	font-size: xx-large;
-	font-family: cursive;
+	font-family: "Papyrus", fantasy;
 }
 
 .card-front {
 	background-color: goldenrod;
+}
+
+.card-front > ul {
+	padding-left: 0;
+}
+
+.card-front > ul > li {
+	list-style-type: none;
 	color: black;
+	font-size: small;
 }
 
 .card-back {
-	background-color: aliceblue;
-	color: black;
 	transform: rotateY(180deg);
 }
 
@@ -178,4 +185,3 @@ button:focus-visible {
 	bottom: 14px;
 	left: calc(50% - 8px);
 }
-

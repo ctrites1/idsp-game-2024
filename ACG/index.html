@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>ACG Arena</title>
-    <link rel="stylesheet" href="style.css">
+    <script defer src="./src/main.ts" type="module"></script>
+    <link rel="stylesheet" href="footerStyle.css">
 </head>
 
 <body>
@@ -60,7 +61,13 @@
         </div>
 
         <footer id="playerFooter">
-            <div class="playerHand" id="playerHandContainer"></div>
+            <div class="playerHand" id="playerHandContainer">
+                <div class="cardHolder"></div>
+                <div class="cardHolder"></div>
+                <div class="cardHolder"></div>
+                <div class="cardHolder"></div>
+                <div class="cardHolder"></div>
+            </div>
             <div class="playerDeck"></div>
             <div class="action-buttons">
                 <button class="endTurn-button" type="button">End Turn</button>
