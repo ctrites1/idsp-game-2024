@@ -26,8 +26,11 @@ interface Card {
   
     // TODO: Logic for actual usages still needs to be implemented
     private setupEventListeners(): void {
+      // this should trigger end of turn for the opponent player to play their turn, updates turn counter
       this.endTurnButton.addEventListener('click', () => console.log('End Turn clicked'));
+      // this should trigger surrender to end the game completely, goes into winning condition (victory or defeat)
       this.surrenderButton.addEventListener('click', () => console.log('Surrender clicked'));
+      // this should show the most updated game log with time stamp, a return button should also be available
       this.logButton.addEventListener('click', () => console.log('Log clicked'));
     }
   
