@@ -37,11 +37,43 @@ export function viewSingleCard(card: HTMLElement) {
 	});
 }
 
-export function addCardToHand(data: any) {
-	//TODO: change data type, determine where the card data is coming from
-	const card = document.createElement("div");
+export async function getCardData() {
+	const response = await fetch("/api/playerhand");
+	const data = await response.json();
+	createPlayerHand(data);
+}
+
+export function createCard(data: any) {
+	const card: HTMLDivElement = document.createElement("div");
+	card.classList.add("card");
+
+	const cardInside: HTMLDivElement = document.createElement("div");
+	cardInside.classList.add("card-inside");
+
+	const cardFront: HTMLDivElement = document.createElement("div");
+	cardFront.innerText = `Name: ${data.name}, ${data.description}`;
+	cardFront.classList.add("card-front");
+
+	const cardBack: HTMLDivElement = document.createElement("div");
+	cardBack.classList.add("card-back");
+
+	cardInside.appendChild(cardFront);
+	card.appendChild(cardInside);
 
 	card.addEventListener("click", () => {
 		viewSingleCard(card);
+	});
+
+	return card;
+}
+
+export function createPlayerHand(data: any) {
+	const hand: HTMLDivElement = document.querySelector(".playerHand")!;
+	data.map((cardData: any) => {
+		const cardHolder: HTMLDivElement = document.createElement("div");
+		cardHolder.classList.add("cardHolder");
+		const card = createCard(cardData);
+		cardHolder.appendChild(card);
+		hand.appendChild(cardHolder);
 	});
 }
