@@ -15,11 +15,6 @@ export function removeCardFromHand(card: HTMLElement) {
 	hand.removeChild(card);
 }
 
-/*  TODO: add event listener to cards -> if card in hand is clicked,
-    calls moveCardToTrench function on it, clears card from hand.
-    add the event listeners when creating the cards?
-*/
-
 export function viewSingleCard(card: HTMLElement) {
 	const poppedCard: HTMLDivElement = document.querySelector(".singleCardView")!;
 	poppedCard?.appendChild(card);
