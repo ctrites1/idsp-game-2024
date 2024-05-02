@@ -72,13 +72,19 @@ header {
 	grid-column-start: 1;
 	grid-column-end: 3;
 	justify-content: space-evenly;
+	z-index: 2;
 	/* width: 100vw;
 	height: 40vw; */
+}
+
+.trench .cardHolder:hover {
+	transform: scale(2);
 }
 
 .cardHolder {
 	width: 50px;
 	height: 75px;
+	transition: transform .2s;
 }
 
 .card {
@@ -96,10 +102,6 @@ header {
 	
 	transition: transform 0.5s;
 	transform-style: preserve-3d;
-}
-
-.card:hover .card-inside {
-	transform: rotateY(180deg);
 }
 
 .card-front,
