@@ -54,7 +54,7 @@ header {
 .hill {
 	position: relative;
   	text-align: center;
-	height: 500px;
+	height: 200px;
 	width: 100%;
 }
 
@@ -62,7 +62,7 @@ header {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 500px;
+	height: 200px;
 	width: 100%;
 }
 
@@ -77,8 +77,8 @@ header {
 }
 
 .cardHolder {
-	width: 100px;
-	height: 150px;
+	width: 50px;
+	height: 75px;
 }
 
 .card {
@@ -93,6 +93,7 @@ header {
 	width: 100%;
 	height: 100%;
 	text-align: center;
+	
 	transition: transform 0.5s;
 	transform-style: preserve-3d;
 }
@@ -159,7 +160,7 @@ button:focus-visible {
 .scoreDisplay {
 	display: flex;
 	color: var(--scoreColor);
-	font-size: 50px;
+	font-size: 30px;
 	font-weight: bold;
 	text-shadow: 3px 0px 7px var(--shadow), 
 	  -3px 0px 7px var(--shadow), 
@@ -168,13 +169,13 @@ button:focus-visible {
 
 #oppHill {
 	position: absolute;
-	top: 53px;
-	left: calc(50% - 12px);
+	top: 14px;
+	left: calc(50% - 8px);
 }
 
 #playerHill {
 	position: absolute;
-	bottom: 53px;
-	left: calc(50% - 12px);
+	bottom: 14px;
+	left: calc(50% - 8px);
 }
 
