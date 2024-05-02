@@ -71,3 +71,11 @@ export function createCard(data: any) {
 
 	return card;
 }
+
+export function createPlayerHand(data: any) {
+	const hand: HTMLDivElement = document.querySelector(".playerHand")!;
+	data.map((cardData: any) => {
+		const card = createCard(cardData);
+		hand.appendChild(card);
+	});
+}
