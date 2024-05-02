@@ -12,7 +12,7 @@ async function createServer() {
 
   app.get("/api/playerhand", async (req: Request, res: Response) => {
     const element = "Fire";
-    const hand = cards.map((card) => {
+    const hand = cards.filter((card) => {
       return card.element === element;
     });
     res.json(hand);
