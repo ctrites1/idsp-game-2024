@@ -12,7 +12,17 @@ async function createServer() {
   app.use(vite.middlewares);
 
   app.get("/", async (req: Request, res: Response) => {
+    // Change this to home page/login later
     res.sendFile("src/areas/Arena/arena.html", {root: "."});
+  });
+
+  app.get("/play", async (req: Request, res: Response) => {
+    res.sendFile("src/areas/Arena/arena.html", {root: "."});
+  });
+
+  app.get("/instructions", async (req: Request, res: Response) => {
+    // Change this to how to page later
+    res.send("How to play");
   });
 
   app.listen(port, () => {
