@@ -55,6 +55,9 @@ export function createCard(data: any) {
 	cardFront.classList.add("card-front");
 
 	const cardBack: HTMLDivElement = document.createElement("div");
+	cardBack.style.backgroundImage = `url(/assets/Fire/Fire_Back_1.svg)`;
+	cardBack.style.backgroundSize = "cover";
+	cardBack.style.backgroundPosition = "center";
 	cardBack.classList.add("card-back");
 
 	cardInside.appendChild(cardFront);
