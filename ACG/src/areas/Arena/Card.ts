@@ -37,15 +37,6 @@ export function viewSingleCard(card: HTMLElement) {
 	});
 }
 
-export function addCardToHand(data: any) {
-	//TODO: change data type, determine where the card data is coming from
-	const card = document.createElement("div");
-
-	card.addEventListener("click", () => {
-		viewSingleCard(card);
-	});
-}
-
 export async function getCardData() {
 	const response = await fetch("/api/playerhand");
 	const data = await response.json();
@@ -61,6 +52,7 @@ export function createCard(data: any) {
 	cardInside.classList.add("card-inside");
 
 	const cardFront: HTMLDivElement = document.createElement("div");
+	cardFront.innerText = `Name: ${data.name}, ${data.description}`;
 	cardFront.classList.add("card-front");
 
 	const cardBack: HTMLDivElement = document.createElement("div");
@@ -68,6 +60,10 @@ export function createCard(data: any) {
 
 	cardInside.appendChild(cardFront);
 	card.appendChild(cardInside);
+
+	card.addEventListener("click", () => {
+		viewSingleCard(card);
+	});
 
 	return card;
 }
