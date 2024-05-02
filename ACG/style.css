@@ -41,13 +41,23 @@ header {
 }
 
 .lane {
+	display: flex;
 	width: 100vw;
 	height: auto;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 .hill {
-	width: 100vh;
-	height: 40vh;
+	height: 500px;
+}
+
+.hill img {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 500px;
 }
 
 .trench {
@@ -56,6 +66,8 @@ header {
 	grid-column-start: 1;
 	grid-column-end: 3;
 	justify-content: space-evenly;
+	/* width: 100vw;
+	height: 40vw; */
 }
 
 .cardHolder {
@@ -137,3 +149,16 @@ button:focus,
 button:focus-visible {
 	outline: 4px auto -webkit-focus-ring-color;
 }
+
+#oppHill {
+	position: absolute;
+	top: 8px;
+	left: 50%;
+}
+
+#playerHill {
+	position: absolute;
+	bottom: 8px;
+	left: 50%;
+}
+
