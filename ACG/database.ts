@@ -21,7 +21,7 @@ export const cards: Card[] = [
     name: "Ice Guardian",
     description: "A protective spirit of the icy realms.",
     power: 7,
-    element: "Ice",
+    element: "Fire",
     type: "Unit",
   },
   {

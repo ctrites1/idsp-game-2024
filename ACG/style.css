@@ -12,6 +12,8 @@
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	--scoreColor: rgba(17, 68, 105, 0.87);
+	--shadow: rgb(226, 217, 197);
 }
 
 html,
@@ -41,13 +43,27 @@ header {
 }
 
 .lane {
+	display: flex;
 	width: 100vw;
 	height: auto;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 .hill {
-	width: 100vh;
-	height: 40vh;
+	position: relative;
+  	text-align: center;
+	height: 500px;
+	width: 100%;
+}
+
+.hill img {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 500px;
+	width: 100%;
 }
 
 .trench {
@@ -56,6 +72,8 @@ header {
 	grid-column-start: 1;
 	grid-column-end: 3;
 	justify-content: space-evenly;
+	/* width: 100vw;
+	height: 40vw; */
 }
 
 .cardHolder {
@@ -93,17 +111,24 @@ header {
 	justify-content: center;
 	align-content: center;
 	font-size: xx-large;
-	font-family: cursive;
+	font-family: "Papyrus", fantasy;
 }
 
 .card-front {
 	background-color: goldenrod;
+}
+
+.card-front > ul {
+	padding-left: 0;
+}
+
+.card-front > ul > li {
+	list-style-type: none;
 	color: black;
+	font-size: small;
 }
 
 .card-back {
-	background-color: aliceblue;
-	color: black;
 	transform: rotateY(180deg);
 }
 
@@ -136,4 +161,26 @@ button:hover {
 button:focus,
 button:focus-visible {
 	outline: 4px auto -webkit-focus-ring-color;
+}
+
+.scoreDisplay {
+	display: flex;
+	color: var(--scoreColor);
+	font-size: 50px;
+	font-weight: bold;
+	text-shadow: 3px 0px 7px var(--shadow), 
+	  -3px 0px 7px var(--shadow), 
+	  0px 4px 7px var(--shadow);
+}
+
+#oppHill {
+	position: absolute;
+	top: 53px;
+	left: calc(50% - 12px);
+}
+
+#playerHill {
+	position: absolute;
+	bottom: 53px;
+	left: calc(50% - 12px);
 }

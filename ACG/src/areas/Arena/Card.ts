@@ -37,11 +37,55 @@ export function viewSingleCard(card: HTMLElement) {
 	});
 }
 
-export function addCardToHand(data: any) {
-	//TODO: change data type, determine where the card data is coming from
-	const card = document.createElement("div");
+export async function getCardData() {
+	const response = await fetch("/api/playerhand");
+	const data = await response.json();
+	createPlayerHand(data);
+}
+
+export function createCard(data: any) {
+	const card: HTMLDivElement = document.createElement("div");
+	card.classList.add("card");
+
+	const cardInside: HTMLDivElement = document.createElement("div");
+	cardInside.classList.add("card-inside");
+
+	const cardFront: HTMLDivElement = document.createElement("div");
+	cardFront.classList.add("card-front");
+
+	const cardFrontText: HTMLUListElement = document.createElement("ul");
+	const cardName = document.createElement("li");
+	cardName.textContent = data.name;
+	const cardDescription = document.createElement("li");
+	cardDescription.textContent = data.description;
+
+	cardFrontText.appendChild(cardName);
+	cardFrontText.appendChild(cardDescription);
+	cardFront.appendChild(cardFrontText);
+
+	const cardBack: HTMLDivElement = document.createElement("div");
+	// cardBack.style.backgroundImage = `url("/assets/Fire/Fire_Back_1.svg")`;
+	// cardBack.style.backgroundSize = "cover";
+	// cardBack.style.backgroundPosition = "center";
+	cardBack.classList.add("card-back");
+
+	cardInside.appendChild(cardFront);
+	card.appendChild(cardInside);
 
 	card.addEventListener("click", () => {
 		viewSingleCard(card);
+	});
+
+	return card;
+}
+
+export function createPlayerHand(data: any) {
+	const hand: HTMLDivElement = document.querySelector(".playerHand")!;
+	data.map((cardData: any) => {
+		const cardHolder: HTMLDivElement = document.createElement("div");
+		cardHolder.classList.add("cardHolder");
+		const card = createCard(cardData);
+		cardHolder.appendChild(card);
+		hand.appendChild(cardHolder);
 	});
 }
