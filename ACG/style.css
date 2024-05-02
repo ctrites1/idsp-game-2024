@@ -12,6 +12,8 @@
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	--scoreColor: rgba(17, 68, 105, 0.87);
+	--shadow: rgb(226, 217, 197);
 }
 
 html,
@@ -50,7 +52,10 @@ header {
 }
 
 .hill {
+	position: relative;
+  	text-align: center;
 	height: 500px;
+	width: 100%;
 }
 
 .hill img {
@@ -58,6 +63,7 @@ header {
 	justify-content: center;
 	align-items: center;
 	height: 500px;
+	width: 100%;
 }
 
 .trench {
@@ -150,15 +156,25 @@ button:focus-visible {
 	outline: 4px auto -webkit-focus-ring-color;
 }
 
+.scoreDisplay {
+	display: flex;
+	color: var(--scoreColor);
+	font-size: 50px;
+	font-weight: bold;
+	text-shadow: 3px 0px 7px var(--shadow), 
+	  -3px 0px 7px var(--shadow), 
+	  0px 4px 7px var(--shadow);
+}
+
 #oppHill {
 	position: absolute;
-	top: 8px;
-	left: 50%;
+	top: 53px;
+	left: calc(50% - 12px);
 }
 
 #playerHill {
 	position: absolute;
-	bottom: 8px;
-	left: 50%;
+	bottom: 53px;
+	left: calc(50% - 12px);
 }
 
