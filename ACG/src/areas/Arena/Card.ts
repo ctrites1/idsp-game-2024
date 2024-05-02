@@ -54,6 +54,8 @@ export function createCard(data: any) {
 	const cardFront: HTMLDivElement = document.createElement("div");
 	cardFront.innerText = `Name: ${data.name}, ${data.description}`;
 	cardFront.classList.add("card-front");
+	const cardFront: HTMLDivElement = document.createElement("div");
+	cardFront.classList.add("card-front");
 
 	const cardBack: HTMLDivElement = document.createElement("div");
 	cardBack.classList.add("card-back");
