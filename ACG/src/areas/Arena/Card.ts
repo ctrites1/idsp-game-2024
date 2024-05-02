@@ -45,3 +45,29 @@ export function addCardToHand(data: any) {
 		viewSingleCard(card);
 	});
 }
+
+export async function getCardData() {
+	const response = await fetch("/api/playerhand");
+	const data = await response.json();
+	console.log("Received: ", data);
+	return data;
+}
+
+export function createCard(data: any) {
+	const card: HTMLDivElement = document.createElement("div");
+	card.classList.add("card");
+
+	const cardInside: HTMLDivElement = document.createElement("div");
+	cardInside.classList.add("card-inside");
+
+	const cardFront: HTMLDivElement = document.createElement("div");
+	cardFront.classList.add("card-front");
+
+	const cardBack: HTMLDivElement = document.createElement("div");
+	cardBack.classList.add("card-back");
+
+	cardInside.appendChild(cardFront);
+	card.appendChild(cardInside);
+
+	return card;
+}
