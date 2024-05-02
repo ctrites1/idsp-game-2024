@@ -12,40 +12,38 @@ class Footer {
   private endTurnButton: HTMLElement;
   private surrenderButton: HTMLElement;
   private logButton: HTMLElement;
-  private isPlayerTurn: boolean = true;
+  private isPlayerTurn: boolean = true; // This indicates if it is the player's turn
   private cards: Card[];
 
   constructor(cards: Card[]) {
-    this.playerHandContainer = document.getElementById(
-      "playerHandContainer"
-    ) as HTMLElement;
-    this.endTurnButton = document.querySelector(
-      ".endTurn-button"
-    ) as HTMLElement;
-    this.surrenderButton = document.querySelector(
-      ".surrender-button"
-    ) as HTMLElement;
+    this.playerHandContainer = document.getElementById("playerHandContainer") as HTMLElement;
+    this.endTurnButton = document.querySelector(".endTurn-button") as HTMLElement;
+    this.surrenderButton = document.querySelector(".surrender-button") as HTMLElement;
     this.logButton = document.querySelector(".log-button") as HTMLElement;
+
+    if (!this.playerHandContainer || !this.endTurnButton || !this.surrenderButton || !this.logButton) {
+      throw new Error("One or more UI elements are missing.");
+    }
+
     this.cards = cards;
     this.setupEventListeners();
-    
     this.renderCards();
     this.updateTurnIndicator();
-    this.toggleTurn();
   }
 
-  // TODO: Logic for actual usages still needs to be implemented
   private setupEventListeners(): void {
-    // this should trigger end of turn for the opponent player to play their turn, updates turn counter
-    this.endTurnButton.addEventListener("click", () =>
-      console.log("End Turn clicked")
-    );
-    // this should trigger surrender to end the game completely, goes into winning condition (victory or defeat)
-    this.surrenderButton.addEventListener("click", () =>
-      console.log("Surrender clicked")
-    );
-    // this should show the most updated game log with time stamp, a return button should also be available
-    this.logButton.addEventListener("click", () => console.log("Log clicked"));
+    this.endTurnButton.addEventListener("click", () => {
+      console.log("End Turn clicked");
+      this.toggleTurn(); 
+    });
+    this.surrenderButton.addEventListener("click", () => {
+      console.log("Surrender clicked");
+      // TODO: Additional logic for surrender to be implemented here
+    });
+    this.logButton.addEventListener("click", () => {
+      console.log("Log clicked");
+      // TODO: Logic to handle log viewing to be added here
+    });
   }
 
   private renderCards(): void {
@@ -53,24 +51,35 @@ class Footer {
     this.cards.forEach((card) => {
       const cardElement = document.createElement("div");
       cardElement.className = "card";
-
-      // TODO: Temperary card elements until we have database setup
       cardElement.innerHTML = `
-          <div class="card-name">${card.name} (${card.power} Power)</div>
-          <div class="card-details">${card.element} - ${card.type}</div>
-          <div class="card-description">${card.description}</div>
-        `;
+        <div class="card-name">${card.name} (${card.power} Power)</div>
+        <div class="card-details">${card.element} - ${card.type}</div>
+        <div class="card-description">${card.description}</div>
+      `;
       this.playerHandContainer.appendChild(cardElement);
     });
   }
 
   private updateTurnIndicator(): void {
-    this.isPlayersTurn = !this.isPlayerTurn;
-    this.updateTurnIndicator;
+    const turnIndicator = document.querySelector(".turn-indicator");
+    if (turnIndicator) {
+      turnIndicator.textContent = this.isPlayerTurn ? "Player's Turn" : "Opponent's Turn";
+    }
   }
 
-  private toggleTurn(): void {} 
+  private toggleTurn(): void {
+    this.isPlayerTurn = !this.isPlayerTurn; 
+    this.updateTurnIndicator();
+  }
 }
 
-// TODO: Logic to choose cards randomly from deck
-// TODO: Logic to click each card and show a single card view (in the Card.ts file)
+function getRandomCards(cards: Card[], count: number): Card[] {
+  const shuffled = cards.sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const randomCards = getRandomCards(cardDatabase, 5);
+  new Footer(randomCards);
+});
