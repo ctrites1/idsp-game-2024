@@ -46,16 +46,6 @@ export function addCardToHand(data: any) {
 	});
 }
 
-export function createCard(data: any) {
-	const card = document.createElement("div");
-	card.classList.add("card");
-	// card.style.backgroundImage = `url(${data.image})`;
-	// card.style.backgroundSize = "cover";
-	// card.style.backgroundPosition = "center";
-
-	return card;
-}
-
 export async function getCardData() {
 	const response = await fetch("/api/playerhand");
 	const data = await response.json();
