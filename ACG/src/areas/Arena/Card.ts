@@ -40,8 +40,7 @@ export function viewSingleCard(card: HTMLElement) {
 export async function getCardData() {
 	const response = await fetch("/api/playerhand");
 	const data = await response.json();
-	console.log("Received: ", data);
-	return data;
+	createPlayerHand(data);
 }
 
 export function createCard(data: any) {
@@ -71,7 +70,10 @@ export function createCard(data: any) {
 export function createPlayerHand(data: any) {
 	const hand: HTMLDivElement = document.querySelector(".playerHand")!;
 	data.map((cardData: any) => {
+		const cardHolder: HTMLDivElement = document.createElement("div");
+		cardHolder.classList.add("cardHolder");
 		const card = createCard(cardData);
-		hand.appendChild(card);
+		cardHolder.appendChild(card);
+		hand.appendChild(cardHolder);
 	});
 }
