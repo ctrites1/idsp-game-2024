@@ -51,10 +51,22 @@ export function createCard(data: any) {
 	cardInside.classList.add("card-inside");
 
 	const cardFront: HTMLDivElement = document.createElement("div");
-	cardFront.innerText = `Name: ${data.name}, ${data.description}`;
 	cardFront.classList.add("card-front");
 
+	const cardFrontText: HTMLUListElement = document.createElement("ul");
+	const cardName = document.createElement("li");
+	cardName.textContent = data.name;
+	const cardDescription = document.createElement("li");
+	cardDescription.textContent = data.description;
+
+	cardFrontText.appendChild(cardName);
+	cardFrontText.appendChild(cardDescription);
+	cardFront.appendChild(cardFrontText);
+
 	const cardBack: HTMLDivElement = document.createElement("div");
+	// cardBack.style.backgroundImage = `url("/assets/Fire/Fire_Back_1.svg")`;
+	// cardBack.style.backgroundSize = "cover";
+	// cardBack.style.backgroundPosition = "center";
 	cardBack.classList.add("card-back");
 
 	cardInside.appendChild(cardFront);
