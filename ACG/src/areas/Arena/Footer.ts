@@ -1,11 +1,11 @@
-import {Card} from "../../database.ts";
+import {Card} from "../../../database";
 
 export class Footer {
   private playerHandContainer: HTMLElement;
   private endTurnButton: HTMLElement;
   private surrenderButton: HTMLElement;
   private logButton: HTMLElement;
-  // private isPlayerTurn: boolean = true; 
+  // private isPlayerTurn: boolean = true;
   private cards: Card[];
 
   constructor(cards: Card[]) {
@@ -27,11 +27,12 @@ export class Footer {
   private setupEventListeners(): void {
     this.endTurnButton.addEventListener("click", () => {
       console.log("End Turn clicked");
-      // this.toggleTurn(); 
+      // this.toggleTurn();
     });
     this.surrenderButton.addEventListener("click", () => {
       console.log("Surrender clicked");
-      // TODO: Additional logic for surrender to be implemented here
+      location.reload();
+      // TODO: Logic to handle log viewing to be added here
     });
     this.logButton.addEventListener("click", () => {
       console.log("Log clicked");
@@ -61,7 +62,7 @@ export class Footer {
   // }
 
   // private toggleTurn(): void {
-  //   this.isPlayerTurn = !this.isPlayerTurn; 
+  //   this.isPlayerTurn = !this.isPlayerTurn;
   //   this.updateTurnIndicator();
   // }
 }
@@ -70,7 +71,6 @@ export class Footer {
 //   const shuffled = cards.sort(() => 0.5 - Math.random());
 //   return shuffled.slice(0, count);
 // }
-
 
 // document.addEventListener('DOMContentLoaded', () => {
 //   const randomCards = getRandomCards(cards, 5);

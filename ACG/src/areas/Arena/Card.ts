@@ -1,5 +1,3 @@
-import {addCardToTrench} from "./Trench";
-
 export function moveCardToTrench(card: HTMLElement) {
   const trench = document.querySelector("#playerTrench")!;
   const cardHolders = trench.querySelectorAll(".cardHolder");
