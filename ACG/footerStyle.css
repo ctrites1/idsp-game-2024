@@ -1,9 +1,12 @@
 footer {
   display: flex;
   flex-direction: row;
-  height: 300px;
+  height: 20rem;
   width: 100%;
   background-color: #1a1a1ac4; 
+  justify-items: center;
+  align-items: center;
+  justify-content: center;
 }
 .playerHand {
   display: flex;
@@ -12,7 +15,7 @@ footer {
 }
 
 #playerHandContainer .cardHolder {
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   margin: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -24,4 +27,15 @@ footer {
 #playerHandContainer.cardHolder.img {
   height: 200px;
   width: 150px;
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+}
+.action-buttons button {
+  margin-bottom: 10px;
 }
