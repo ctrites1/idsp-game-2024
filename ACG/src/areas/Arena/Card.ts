@@ -1,3 +1,5 @@
+import { addCardToTrench } from "./Trench";
+
 export function moveCardToTrench(card: HTMLElement) {
 	const trench = document.querySelector("#playerTrench")!;
 	const cardHolders = trench.querySelectorAll(".cardHolder");
@@ -15,19 +17,17 @@ export function removeCardFromHand(card: HTMLElement) {
 	hand.removeChild(card);
 }
 
-/*  TODO: add event listener to cards -> if card in hand is clicked,
-    calls moveCardToTrench function on it, clears card from hand.
-    add the event listeners when creating the cards?
-*/
-
 export function viewSingleCard(card: HTMLElement) {
+	const bigCard = card.cloneNode(true) as HTMLDivElement;
+
 	const poppedCard: HTMLDivElement = document.querySelector(".singleCardView")!;
-	poppedCard?.appendChild(card);
-	poppedCard.style.display = "block";
+	poppedCard?.appendChild(bigCard);
+	poppedCard.style.display = "flex";
 
 	const closeBtn: HTMLButtonElement = poppedCard.querySelector(".close")!;
 	closeBtn.addEventListener("click", () => {
 		poppedCard.style.display = "none";
+		poppedCard.removeChild(bigCard);
 	});
 
 	const playBtn: HTMLButtonElement = poppedCard.querySelector(".playCard")!;
