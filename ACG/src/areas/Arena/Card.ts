@@ -52,12 +52,15 @@ export function createCard(data: any) {
 
 	const cardFront: HTMLDivElement = document.createElement("div");
 	cardFront.classList.add("card-front");
+	cardFront.style.backgroundImage = "url('/assets/Water/EmptyCardFront.svg')";
 
 	const cardFrontText: HTMLUListElement = document.createElement("ul");
 	const cardName = document.createElement("li");
 	cardName.textContent = data.name;
 	const cardDescription = document.createElement("li");
 	cardDescription.textContent = data.description;
+	
+		
 
 	cardFrontText.appendChild(cardName);
 	cardFrontText.appendChild(cardDescription);
