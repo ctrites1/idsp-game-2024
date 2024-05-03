@@ -59,8 +59,6 @@ export function createCard(data: any) {
 	cardName.textContent = data.name;
 	const cardDescription = document.createElement("li");
 	cardDescription.textContent = data.description;
-	
-		
 
 	cardFrontText.appendChild(cardName);
 	cardFrontText.appendChild(cardDescription);
