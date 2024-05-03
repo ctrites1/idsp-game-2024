@@ -159,6 +159,19 @@ background: radial-gradient(circle, rgba(133,93,37,1) 0%, rgba(73,50,18,1) 24%, 
   padding: 15px;
 }
 
+.trench > .cardHolder > .card > .card-inside > .card-front > ul {
+  margin: 0;
+  height: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.trench > .cardHolder > .card > .card-inside > .card-front > ul > li {
+  font-size: 0.3rem;
+  padding: 0.2rem 0rem;
+}
+
 .card-back {
   transform: rotateY(180deg);
 }
