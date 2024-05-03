@@ -16,13 +16,16 @@ export function removeCardFromHand(card: HTMLElement) {
 }
 
 export function viewSingleCard(card: HTMLElement) {
+	const bigCard = card.cloneNode(true) as HTMLDivElement;
+
 	const poppedCard: HTMLDivElement = document.querySelector(".singleCardView")!;
-	poppedCard?.appendChild(card);
-	poppedCard.style.display = "block";
+	poppedCard?.appendChild(bigCard);
+	poppedCard.style.display = "flex";
 
 	const closeBtn: HTMLButtonElement = poppedCard.querySelector(".close")!;
 	closeBtn.addEventListener("click", () => {
 		poppedCard.style.display = "none";
+		poppedCard.removeChild(bigCard);
 	});
 
 	const playBtn: HTMLButtonElement = poppedCard.querySelector(".playCard")!;
