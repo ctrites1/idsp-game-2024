@@ -1,5 +1,5 @@
-import { getCardData } from "./areas/Arena/Card";
+import {getCardData} from "./areas/Arena/Card";
 
 document.addEventListener("DOMContentLoaded", () => {
-	getCardData();
+  getCardData();
 });
