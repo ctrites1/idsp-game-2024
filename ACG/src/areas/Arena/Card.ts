@@ -1,35 +1,52 @@
 import { updateTurnCounter } from "./Lane";
 
 export function moveCardToTrench(card: HTMLElement) {
-	const trench = document.querySelector("#playerTrench")!;
-	const cardHolders = trench.querySelectorAll(".cardHolder");
-	Array.from(cardHolders).map((holder) => {
-		if (holder.hasChildNodes()) {
-			return;
-		} else {
-			holder.appendChild(card);
-		}
-	});
+  const trench = document.querySelector("#playerTrench")!;
+  const cardHolders = trench.querySelectorAll(".cardHolder");
+  const emptyHolder = Array.from(cardHolders).find(
+    (holder) => !holder.hasChildNodes()
+  );
+
+  if (emptyHolder) {
+    const currentCardHolder = card.closest(".cardHolder");
+    emptyHolder.appendChild(card);
+    emptyHolder.prepend();
+
+    if (currentCardHolder && !trench.contains(currentCardHolder)) {
+      currentCardHolder.parentNode?.removeChild(currentCardHolder);
+    }
+  }
+
 }
 
 export function removeCardFromHand(card: HTMLElement) {
-	const hand = document.querySelector(".playerHand")!;
-	hand.removeChild(card);
+	const holder = card.closest("cardHolder");
+	holder?.removeChild(card);
 }
 
-/*  TODO: add event listener to cards -> if card in hand is clicked,
-    calls moveCardToTrench function on it, clears card from hand.
-    add the event listeners when creating the cards?
-*/
-
 export function viewSingleCard(card: HTMLElement) {
-	const poppedCard: HTMLDivElement = document.querySelector(".singleCardView")!;
-	poppedCard?.appendChild(card);
-	poppedCard.style.display = "block";
+	const bigCard = card.cloneNode(true) as HTMLDivElement;
 
+	const poppedCard: HTMLDivElement = document.querySelector(".singleCardView")!;
+	poppedCard?.appendChild(bigCard);
+	poppedCard.style.display = "flex";
+
+	const playBtn: HTMLButtonElement = poppedCard.querySelector(".playCard")!;
 	const closeBtn: HTMLButtonElement = poppedCard.querySelector(".close")!;
+
+	const playCardHandler = () => {
+		removeCardFromHand(card);
+		moveCardToTrench(card);
+		poppedCard.style.display = "none";
+		poppedCard.removeChild(bigCard);
+	};
+
+	playBtn.addEventListener("click", playCardHandler);
+
 	closeBtn.addEventListener("click", () => {
 		poppedCard.style.display = "none";
+		poppedCard.removeChild(bigCard);
+		playBtn.removeEventListener("click", playCardHandler);
 	});
 
 	const playBtn: HTMLButtonElement = poppedCard.querySelector(".playCard")!;
@@ -47,6 +64,7 @@ export async function getCardData() {
 }
 
 export function createCard(data: any) {
+
 	const card: HTMLDivElement = document.createElement("div");
 	card.classList.add("card");
 
@@ -57,6 +75,7 @@ export function createCard(data: any) {
 
 	const cardFront: HTMLDivElement = document.createElement("div");
 	cardFront.classList.add("card-front");
+	cardFront.style.backgroundImage = "url('/assets/Water/EmptyCardFront.svg')";
 
 	const cardFrontText: HTMLUListElement = document.createElement("ul");
 	const cardName = document.createElement("li");
