@@ -14,7 +14,7 @@ export function updateTurnCounter(): void {
 }
 
 function displayTurnCounter(): void {
-    const turnDisplay = document.getElementById('turnCounter');
+    const turnDisplay = document.querySelector('.turn-indicator');
     if (turnDisplay) {
         turnDisplay.textContent = `Turn ${gameState.currentTurn}/${gameState.maxTurns}`;
     } else {
