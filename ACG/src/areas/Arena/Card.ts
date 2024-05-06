@@ -1,13 +1,31 @@
+// export function moveCardToTrench(card: HTMLElement) {
+//   const trench = document.querySelector("#playerTrench")!;
+//   const cardHolders = trench.querySelectorAll(".cardHolder");
+//   Array.from(cardHolders).map((holder) => {
+//     if (holder.hasChildNodes()) {
+//       return;
+//     } else {
+//       holder.appendChild(card);
+//     }
+//   });
+// }
+
 export function moveCardToTrench(card: HTMLElement) {
   const trench = document.querySelector("#playerTrench")!;
   const cardHolders = trench.querySelectorAll(".cardHolder");
-  Array.from(cardHolders).map((holder) => {
-    if (holder.hasChildNodes()) {
-      return;
-    } else {
-      holder.appendChild(card);
+  const emptyHolder = Array.from(cardHolders).find(
+    (holder) => !holder.hasChildNodes()
+  );
+
+  if (emptyHolder) {
+    const currentCardHolder = card.closest(".cardHolder");
+    emptyHolder.appendChild(card);
+    emptyHolder.prepend();
+    // Check if the currentCardHolder is not part of the trench, then remove it
+    if (currentCardHolder && !trench.contains(currentCardHolder)) {
+      currentCardHolder.parentNode?.removeChild(currentCardHolder);
     }
-  });
+  }
 }
 
 export function removeCardFromHand(card: HTMLElement) {
@@ -46,6 +64,7 @@ export async function getCardData() {
 export function createCard(data: any) {
   const card: HTMLDivElement = document.createElement("div");
   card.classList.add("card");
+  card.draggable = true;
 
   const cardInside: HTMLDivElement = document.createElement("div");
   cardInside.classList.add("card-inside");
