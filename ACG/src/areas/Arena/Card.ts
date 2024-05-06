@@ -47,6 +47,8 @@ export function createCard(data: any) {
 	const card: HTMLDivElement = document.createElement("div");
 	card.classList.add("card");
 
+	card.setAttribute('data-score', data.power);
+
 	const cardInside: HTMLDivElement = document.createElement("div");
 	cardInside.classList.add("card-inside");
 
