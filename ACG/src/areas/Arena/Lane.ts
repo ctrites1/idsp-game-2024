@@ -1,22 +1,22 @@
-interface GameState {
+interface turnState {
     currentTurn: number;
     maxTurns: number;
 }
 
-const gameState: GameState = {
-    currentTurn: 0,
-    maxTurns: 3,
+const turnState: turnState = {
+    currentTurn: 1,
+    maxTurns: 10,
 };
 
 export function updateTurnCounter(): void {
-    gameState.currentTurn += 1;
-    displayTurnCounter(); 
+    turnState.maxTurns += 1;
+    displayTurnCounter();
 }
 
 function displayTurnCounter(): void {
     const turnDisplay = document.querySelector('.turn-indicator');
     if (turnDisplay) {
-        turnDisplay.textContent = `Turn ${gameState.currentTurn}/${gameState.maxTurns}`;
+        turnDisplay.textContent = `Round ${turnState.currentTurn}/${turnState.maxTurns}`;
     } else {
         console.error('element not found');
     }

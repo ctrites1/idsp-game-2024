@@ -1,4 +1,4 @@
-import { updateTurnCounter } from "./Lane";
+import { updateHillScores } from "./Hill";
 
 export function moveCardToTrench(card: HTMLElement) {
   const trench = document.querySelector("#playerTrench")!;
@@ -31,7 +31,7 @@ export function viewSingleCard(card: HTMLElement) {
 	poppedCard?.appendChild(bigCard);
 	poppedCard.style.display = "flex";
 
-	const playBtn: HTMLButtonElement = poppedCard.querySelector(".playCard")!;
+	const playbutton: HTMLButtonElement = poppedCard.querySelector(".playCard")!;
 	const closeBtn: HTMLButtonElement = poppedCard.querySelector(".close")!;
 
 	const playCardHandler = () => {
@@ -39,9 +39,10 @@ export function viewSingleCard(card: HTMLElement) {
 		moveCardToTrench(card);
 		poppedCard.style.display = "none";
 		poppedCard.removeChild(bigCard);
+		updateHillScores();
 	};
 
-	playBtn.addEventListener("click", playCardHandler);
+	playbutton.addEventListener("click", playCardHandler);
 
 	closeBtn.addEventListener("click", () => {
 		poppedCard.style.display = "none";
@@ -53,7 +54,6 @@ export function viewSingleCard(card: HTMLElement) {
 	playBtn.addEventListener("click", () => {
 		removeCardFromHand(card);
 		moveCardToTrench(card);
-		updateTurnCounter();
 	});
 }
 

@@ -1,5 +1,7 @@
 import { clearHillScores, updateHillScores } from "./Hill";
 
+let trenchCardsCounter: number = 0;
+
 export function addCardToTrench(element: HTMLDivElement) {
   const trench = document.querySelector("#playerTrench")!;
   const cardHolders = trench.querySelectorAll(".cardHolder");
@@ -8,6 +10,7 @@ export function addCardToTrench(element: HTMLDivElement) {
       return;
     } else {
       holder.appendChild(element);
+      trenchCardsCounter =+ 1;
     }
   });
 
