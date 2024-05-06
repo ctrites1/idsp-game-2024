@@ -1,15 +1,3 @@
-// export function moveCardToTrench(card: HTMLElement) {
-//   const trench = document.querySelector("#playerTrench")!;
-//   const cardHolders = trench.querySelectorAll(".cardHolder");
-//   Array.from(cardHolders).map((holder) => {
-//     if (holder.hasChildNodes()) {
-//       return;
-//     } else {
-//       holder.appendChild(card);
-//     }
-//   });
-// }
-
 export function moveCardToTrench(card: HTMLElement) {
   const trench = document.querySelector("#playerTrench")!;
   const cardHolders = trench.querySelectorAll(".cardHolder");
@@ -21,7 +9,7 @@ export function moveCardToTrench(card: HTMLElement) {
     const currentCardHolder = card.closest(".cardHolder");
     emptyHolder.appendChild(card);
     emptyHolder.prepend();
-    // Check if the currentCardHolder is not part of the trench, then remove it
+
     if (currentCardHolder && !trench.contains(currentCardHolder)) {
       currentCardHolder.parentNode?.removeChild(currentCardHolder);
     }
@@ -37,22 +25,29 @@ export function viewSingleCard(card: HTMLElement) {
   const bigCard = card.cloneNode(true) as HTMLDivElement;
 
   const poppedCard: HTMLDivElement = document.querySelector(".singleCardView")!;
-  poppedCard?.appendChild(bigCard);
+  poppedCard.appendChild(bigCard);
   poppedCard.style.display = "flex";
 
   const closeBtn: HTMLButtonElement = poppedCard.querySelector(".close")!;
   closeBtn.addEventListener("click", () => {
-    poppedCard.style.display = "none";
-    poppedCard.removeChild(bigCard);
+      poppedCard.style.display = "none";
+      poppedCard.removeChild(bigCard);
   });
 
+  const isCardInTrench = Boolean(card.closest("#playerTrench"));
+
   const playBtn: HTMLButtonElement = poppedCard.querySelector(".playCard")!;
-  playBtn.addEventListener("click", () => {
-    removeCardFromHand(card);
-    moveCardToTrench(card);
-    poppedCard.style.display = "none";
-    poppedCard.removeChild(bigCard);
-  });
+  if (isCardInTrench) {
+      playBtn.style.display = "none";
+  } else {
+      playBtn.style.display = "block";
+      playBtn.addEventListener("click", () => {
+          removeCardFromHand(card);
+          moveCardToTrench(card);
+          poppedCard.style.display = "none";
+          poppedCard.removeChild(bigCard);
+      });
+  }
 }
 
 export async function getCardData() {
@@ -64,7 +59,7 @@ export async function getCardData() {
 export function createCard(data: any) {
   const card: HTMLDivElement = document.createElement("div");
   card.classList.add("card");
-  card.draggable = true;
+  // card.draggable = true;
 
   const cardInside: HTMLDivElement = document.createElement("div");
   cardInside.classList.add("card-inside");
