@@ -1,14 +1,14 @@
 export function updateHillScores(): void {
-    //const oppHill = document.getElementById("oppHill");
+    const oppHill = document.getElementById("oppHill");
     const playerHill = document.getElementById("playerHill");
 
     //!oppHill ||
-    if (!playerHill) {
+    if (!oppHill || !playerHill) {
         console.error("Hill elements not found");
         return;
     }
 
-    //calculateAndDisplayScore(document.getElementById("oppTrench"), oppHill);
+    calculateAndDisplayScore(document.getElementById("oppTrench"), oppHill);
     calculateAndDisplayScore(document.getElementById("playerTrench"), playerHill);
 }
 
@@ -24,7 +24,6 @@ function calculateAndDisplayScore(trench: HTMLElement | null, scoreDisplay: HTML
     cardHolders.forEach(cardHolder => {
         const card = cardHolder.querySelector('.card');
         const score = parseInt(card?.getAttribute('data-score') || '0', 10);
-        console.log(score, "your score")
         totalScore += score;
     });
 
