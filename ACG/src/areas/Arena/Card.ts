@@ -1,13 +1,20 @@
 export function moveCardToTrench(card: HTMLElement) {
-	const trench = document.querySelector("#playerTrench")!;
-	const cardHolders = trench.querySelectorAll(".cardHolder");
-	Array.from(cardHolders).map((holder) => {
-		if (holder.hasChildNodes()) {
-			return;
-		} else {
-			holder.appendChild(card);
-		}
-	});
+  const trench = document.querySelector("#playerTrench")!;
+  const cardHolders = trench.querySelectorAll(".cardHolder");
+  const emptyHolder = Array.from(cardHolders).find(
+    (holder) => !holder.hasChildNodes()
+  );
+
+  if (emptyHolder) {
+    const currentCardHolder = card.closest(".cardHolder");
+    emptyHolder.appendChild(card);
+    emptyHolder.prepend();
+
+    if (currentCardHolder && !trench.contains(currentCardHolder)) {
+      currentCardHolder.parentNode?.removeChild(currentCardHolder);
+    }
+  }
+
 }
 
 export function removeCardFromHand(card: HTMLElement) {
@@ -39,6 +46,7 @@ export function viewSingleCard(card: HTMLElement) {
 		poppedCard.removeChild(bigCard);
 		playBtn.removeEventListener("click", playCardHandler);
 	});
+
 }
 
 export async function getCardData() {
@@ -48,6 +56,7 @@ export async function getCardData() {
 }
 
 export function createCard(data: any) {
+
 	const card: HTMLDivElement = document.createElement("div");
 	card.classList.add("card");
 
