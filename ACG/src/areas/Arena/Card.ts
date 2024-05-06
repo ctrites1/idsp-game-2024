@@ -69,10 +69,13 @@ export function createCard(data: any) {
 
 	const cardFrontText: HTMLUListElement = document.createElement("ul");
 	const cardName = document.createElement("li");
-	cardName.textContent = data.name;
+	cardName.textContent = data.name;	
+  const cardPower = document.createElement("li");
+	cardPower.textContent = data.power;
 	const cardDescription = document.createElement("li");
 	cardDescription.textContent = data.description;
 
+	cardFrontText.appendChild(cardPower);
 	cardFrontText.appendChild(cardName);
 	cardFrontText.appendChild(cardDescription);
 	cardFront.appendChild(cardFrontText);
