@@ -1,3 +1,5 @@
+import { updateTurnCounter } from "./Lane";
+
 export function moveCardToTrench(card: HTMLElement) {
 	const trench = document.querySelector("#playerTrench")!;
 	const cardHolders = trench.querySelectorAll(".cardHolder");
@@ -34,6 +36,7 @@ export function viewSingleCard(card: HTMLElement) {
 	playBtn.addEventListener("click", () => {
 		removeCardFromHand(card);
 		moveCardToTrench(card);
+		updateTurnCounter();
 	});
 }
 
