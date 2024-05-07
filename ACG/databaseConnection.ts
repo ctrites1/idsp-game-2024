@@ -6,6 +6,7 @@ const dbConfigDev = {
   password: "%6zbG!Wcp@TMBPh",
   database: "freedb_acg-db",
   multipleStatements: false,
+  namedPlaceholders: true,
 };
 
 export const database = mysql.createPool(dbConfigDev);
