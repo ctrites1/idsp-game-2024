@@ -1,5 +1,6 @@
 import express, {Request, Response} from "express";
 import {cards, Card} from "./database";
+import {getDeck} from "./databaseAccess";
 
 async function createServer() {
   const app = express();
@@ -11,10 +12,7 @@ async function createServer() {
   });
 
   app.get("/api/playerhand", async (req: Request, res: Response) => {
-    const element = "Fire";
-    const hand = cards.filter((card) => {
-      return card.element === element;
-    });
+    const hand = await getDeck(1);
     res.json(hand);
   });
 
