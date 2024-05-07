@@ -7,7 +7,7 @@ async function getDeck() {
     `;
 }
 
-async function createPlayer(data: any) {
+export async function createPlayer(data: any) {
 	const saltRounds = 10;
 	bcrypt.genSalt(saltRounds, function (err, salt) {
 		bcrypt.hash(data.password, salt, function (err, hash) {
@@ -15,21 +15,22 @@ async function createPlayer(data: any) {
         INSERT INTO player (username, email, password_hash)
         VALUES ('${data.username}', '${data.email}', '${hash}')
       `;
-
 			database
 				.query(createPlayerQuery)
 				.then(() => {
 					console.log("Player created successfully!");
+					return { message: "Player created successfully!" };
 				})
 				.catch((error) => {
 					console.error("Error creating player:", error);
 
 					if (error.code === "ER_DUP_ENTRY") {
-						//TODO: display errors to client
 						if (error.sqlMessage.includes("username")) {
 							console.log("Username already in use.");
+							return { error: "Username already in use" };
 						} else if (error.sqlMessage.includes("email")) {
 							console.log("Email already in use.");
+							return { error: "Email already in use" };
 						}
 					} else {
 						console.log("An unexpected error occurred.");
@@ -39,23 +40,23 @@ async function createPlayer(data: any) {
 	});
 }
 
-const demoPlayer1 = {
-	username: "potat",
-	password: "strongPassword1",
-	email: "catrites@gmail.com",
-};
-
-const demoPlayer2 = {
-	username: "keeles",
-	password: "strongPassword2",
-	email: "kyleeeles@gmail.com",
-};
-
 /* -------------------------- Seeding Demo Players -------------------------- */
+// const demoPlayer1 = {
+// 	username: "potat",
+// 	password: "strongPassword1",
+// 	email: "catrites@gmail.com",
+// };
+
+// const demoPlayer2 = {
+// 	username: "keeles",
+// 	password: "strongPassword2",
+// 	email: "kyleeeles@gmail.com",
+// };
+
 // await createPlayer(demoPlayer1);
 // await createPlayer(demoPlayer2);
 
-async function removePlayerById(playerId: number) {
+export async function removePlayerById(playerId: number) {
 	const removePlayerQuery = `
     DELETE FROM player WHERE player_id = ${playerId};
   `;
