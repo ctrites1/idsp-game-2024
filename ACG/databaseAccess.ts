@@ -1,27 +1,20 @@
 import { database } from "./databaseConnection";
 import bcrypt from "bcrypt";
 
-export async function getDeck(deckID: number) {
-	const deckChoice = deckID;
-	let getDeck = `
+export async function getHand(deckID: number) {
+	try {
+		const deckChoice = deckID;
+		let getDeck = `
     SELECT card.name, power FROM card
     WHERE card.element_id = :deckChoice AND card.unit_type_id IS NOT NULL
     LIMIT 7;
     `;
-	try {
 		const results = await database.query(getDeck, { deckChoice });
 		return results[0];
 	} catch (err) {
 		console.log("Error getting deck");
 		return null;
 	}
-
-    const results = await database.query(getDeck, {deckChoice});
-    return results[0];
-  } catch (err) {
-    console.log("Error getting deck");
-    return null;
-  }
 }
 
 export async function logMove(
@@ -51,14 +44,10 @@ export async function logMove(
 	}
 }
 
-export async function startGame() {
+export async function startGame(player_1_id: number, player_2_id: number) {
 	try {
 		let startTransaction = `START TRANSACTION;`;
 		const transaction = await database.query(startTransaction);
-export async function startGame(player_1_id: number, player_2_id: number) {
-  try {
-    let startTransaction = `START TRANSACTION;`;
-    const transaction = await database.query(startTransaction);
 
 		let startMatch = "INSERT INTO `match` (is_completed) VALUES (0);";
 		const matchStarted = await database.query(startMatch);
@@ -85,24 +74,33 @@ export async function startGame(player_1_id: number, player_2_id: number) {
 	}
 }
 
-export async function checkForExistingGame(player_1_id: number, player_2_id: number) {
-  let checkForPlayer1Matches =
-    "SELECT match_id, player_1_id, player_2_id, is_completed FROM `match` WHERE player_1_id = :player_1_id OR player_2_id = :player_1_id;";
+export async function checkForExistingGame(
+	player_1_id: number,
+	player_2_id: number
+) {
+	let checkForPlayer1Matches =
+		"SELECT match_id, player_1_id, player_2_id, is_completed FROM `match` WHERE player_1_id = :player_1_id OR player_2_id = :player_1_id;";
 
-  const player1Games = await database.query(checkForPlayer1Matches, {player_1_id});
-  const gameAlreadyExists = player1Games[0][0].filter((game) => {
-    if ((game.player_1_id !== player_2_id || game.player_2_id !== player_2_id) && !game.is_completed) {
-      return game;
-    }
-  });
+	const player1Games = await database.query(checkForPlayer1Matches, {
+		player_1_id,
+	});
+	const gameAlreadyExists = player1Games[0][0].filter((game) => {
+		if (
+			(game.player_1_id !== player_2_id || game.player_2_id !== player_2_id) &&
+			!game.is_completed
+		) {
+			return game;
+		}
+	});
 
-  if (gameAlreadyExists.length > 0) {
-    let existing_game_id = gameAlreadyExists[0].game_id;
-    let getCurrentRound = "SELECT MAX(round_id) FROM `round` WHERE game_id = :existing_game_id";
-    let round = await database.query(getCurrentRound, {existing_game_id});
-    return {gameExists: true, round_id: round[0][0].round_id};
-  }
-  return {gameExists: false, round_id: null};
+	if (gameAlreadyExists.length > 0) {
+		let existing_game_id = gameAlreadyExists[0].game_id;
+		let getCurrentRound =
+			"SELECT MAX(round_id) FROM `round` WHERE game_id = :existing_game_id";
+		let round = await database.query(getCurrentRound, { existing_game_id });
+		return { gameExists: true, round_id: round[0][0].round_id };
+	}
+	return { gameExists: false, round_id: null };
 }
 
 export async function createPlayer(data: any) {
