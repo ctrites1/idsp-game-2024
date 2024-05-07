@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1344 435">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#radial-gradient);
+        stroke: #7a784e;
+        stroke-miterlimit: 10;
+        stroke-width: 4px;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke-width: 0px;
+      }
+
+      .cls-3 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <rect class="cls-2" width="1344" height="435"/>
+    </clipPath>
+    <radialGradient id="radial-gradient" cx="684.36" cy="338.61" fx="684.36" fy="338.61" r="525.81" gradientUnits="userSpaceOnUse">
+      <stop offset=".11" stop-color="#5a6c95"/>
+      <stop offset="1" stop-color="#121421"/>
+    </radialGradient>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g class="cls-3">
+      <path class="cls-1" d="M43.47,52h1260.07c9.09,0,16.47,7.38,16.47,16.47v404.53H27V68.47c0-9.09,7.38-16.47,16.47-16.47Z"/>
+    </g>
+  </g>
+</svg>
