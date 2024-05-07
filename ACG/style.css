@@ -222,6 +222,8 @@ header {
 
 .cardViewFooter > button {
   height: 3em;
+  background-color: #1a1a1a;
+  border-radius: 5px;
 }
 
 header button {
