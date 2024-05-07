@@ -2,7 +2,6 @@ export function updateHillScores(): void {
     const oppHill = document.getElementById("oppHill");
     const playerHill = document.getElementById("playerHill");
 
-    //!oppHill ||
     if (!oppHill || !playerHill) {
         console.error("Hill elements not found");
         return;
