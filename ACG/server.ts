@@ -1,6 +1,6 @@
 import express, {Request, Response} from "express";
 import {cards, Card} from "./database";
-import {getDeck} from "./databaseAccess";
+import {getHand, startGame, checkForExistingGame} from "./databaseAccess";
 
 async function createServer() {
   const app = express();
@@ -12,8 +12,22 @@ async function createServer() {
   });
 
   app.get("/api/playerhand", async (req: Request, res: Response) => {
-    const hand = await getDeck(1);
+    const hand = await getHand(1);
     res.json(hand);
+  });
+
+  app.post("/api/startgame", async (req: Request, res: Response) => {
+    const players = {
+      player1: req.body.player_1_id,
+      player2: req.body.player_2_id,
+    };
+    const currentGame = await checkForExistingGame(players.player1, players.player2);
+    if (currentGame.gameExists) {
+      res.json({gameStarted: false, round_id: currentGame.round_id});
+      return;
+    }
+    const newRoundID = await startGame(3, 4);
+    res.json({gameStarted: true, round_id: newRoundID});
   });
 
   app.listen(port, () => {
