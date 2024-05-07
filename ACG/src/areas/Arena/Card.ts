@@ -113,14 +113,3 @@ export function createPlayerHand(data: any) {
 		hand.appendChild(cardHolder);
 	});
 }
-
-// export function createOppHand(data: any) {
-// 	const hand: HTMLDivElement = document.querySelector(".oppHand")!;
-// 	data.map((cardData: any) => {
-// 		const cardHolder: HTMLDivElement = document.createElement("div");
-// 		cardHolder.classList.add("cardHolder");
-// 		const card = createCard(cardData);
-// 		cardHolder.appendChild(card);
-// 		hand.appendChild(cardHolder);
-// 	});
-// }
