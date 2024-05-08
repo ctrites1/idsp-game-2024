@@ -14,7 +14,7 @@ RUN npm install --no-audit
 COPY ACG ./
 
 # Expose the application port (adjust according to your Vite config)
-EXPOSE 5173
+EXPOSE 3000
 
 # Start the application using Vite preview
 CMD ["npm", "run", "preview"]
