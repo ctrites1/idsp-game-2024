@@ -1,8 +1,7 @@
 services:
   - type: web
-    name: ACG Arena
+    name: ACG
     env: node
     buildCommand: npm install
-    startCommand: npm run preview
+    startCommand: npm run serve
     plan: starter
-    dockerContext: ACG

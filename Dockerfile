@@ -13,11 +13,15 @@ RUN npm install --no-audit
 # Copy all application files to the working directory
 COPY ACG ./
 
-# Expose the application port (adjust according to your Vite config)
+# Build the Vite app
+RUN npm run build
+
+# Expose the application port for the server
 EXPOSE 3000
 
-# Start the application using Vite preview
-CMD ["npm", "run", "preview"]
+# Start the server
+CMD ["npm", "run", "serve"]
+
 
 
 
