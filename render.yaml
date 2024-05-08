@@ -1,8 +1,8 @@
-# render.yaml
 services:
   - type: web
     name: ACG Arena
     env: node
     buildCommand: npm install
-    startCommand: npm run dev
+    startCommand: npm run preview
     plan: starter
+    dockerContext: ACG
