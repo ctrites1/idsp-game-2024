@@ -16,11 +16,13 @@ COPY ACG ./
 # Build the Vite app
 RUN npm run build
 
-# Expose the application port for the server
+# Expose the port for the server
 EXPOSE 3000
 
 # Start the server
 CMD ["npm", "run", "serve"]
+
+
 
 
 
