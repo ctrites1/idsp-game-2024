@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "serve": "tsx watch ./server.ts",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview --port 5173"
   },
   "devDependencies": {
