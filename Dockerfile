@@ -7,19 +7,19 @@ WORKDIR /usr/src/app
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+# Install dependencies with verbose logging
+RUN npm install --legacy-peer-deps --no-audit --verbose
 
 # Copy all application files to the working directory
 COPY . .
 
-# Build the TypeScript project if necessary (uncomment if using a build process)
+# Build the TypeScript project (uncomment if using a build process)
 # RUN npm run build
 
-# Expose the application port
+# Expose the application port (adjust according to your Vite config)
 EXPOSE 5173
 
-# Start the application (change to "start" if using `npm run build`)
-CMD ["npm", "run", "dev"]
+# Start the application using Vite preview
+CMD ["npm", "run", "preview"]
 
 
