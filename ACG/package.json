@@ -7,7 +7,7 @@
     "dev": "vite",
     "serve": "tsx watch ./server.ts",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview --port 5173"
   },
   "devDependencies": {
     "typescript": "^5.2.2",

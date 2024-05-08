@@ -13,13 +13,14 @@ RUN npm install
 # Copy all application files to the working directory
 COPY . .
 
-# Build the TypeScript project if necessary (uncomment if using a build process)
+# Build the TypeScript project (uncomment if using a build process)
 # RUN npm run build
 
-# Expose the application port
+# Expose the application port (adjust according to your Vite config)
 EXPOSE 5173
 
-# Start the application (change to "start" if using `npm run build`)
-CMD ["npm", "run", "dev"]
+# Start the application using Vite preview
+CMD ["npm", "run", "preview"]
+
 
 
