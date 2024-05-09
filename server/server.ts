@@ -1,8 +1,8 @@
 import express, { Request, Response } from "express";
-import { cards, Card } from "./database";
 import path from "path";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
+import { cards, Card } from "./database";
 
 async function createServer() {
 	const app = express();
@@ -20,7 +20,7 @@ async function createServer() {
 
 	app.get("/api/playerhand", async (req: Request, res: Response) => {
 		const element = "Water";
-		const hand = cards.filter((card) => {
+		const hand = cards.filter((card: Card) => {
 			return card.element === element;
 		});
 		res.json(hand);

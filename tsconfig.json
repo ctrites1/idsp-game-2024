@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"outDir": "./dist",
+		"outDir": "dist",
 		"esModuleInterop": true,
 		// Enable latest features
 		"lib": ["ESNext", "DOM"],
@@ -8,11 +8,11 @@
 		"module": "ESNext",
 		"moduleDetection": "force",
 		"jsx": "react-jsx",
-		"allowJs": true, // Bundler mode
-		"moduleResolution": "bundler",
-		"allowImportingTsExtensions": true,
+		"allowJs": true,
+		"moduleResolution": "Bundler",
+		"allowImportingTsExtensions": false,
 		"verbatimModuleSyntax": false,
-		"noEmit": true,
+		"noEmit": false,
 
 		// Best practices
 		"strict": true,
