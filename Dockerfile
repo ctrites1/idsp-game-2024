@@ -5,7 +5,7 @@ FROM node:18
 WORKDIR /usr/src/app/ACG
 
 # Copy package.json and package-lock.json to the working directory
-COPY package.json package-lock.json ./
+COPY ACG/package.json ACG/package-lock.json ./
 
 # Install dependencies
 RUN npm install --no-audit
