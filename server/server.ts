@@ -1,10 +1,15 @@
 import express, { Request, Response } from "express";
-import { cards, Card } from "../client/database";
+import { cards, Card } from "./database";
 import path from "path";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
 
 async function createServer() {
 	const app = express();
 	const port = 3000;
+
+	const __filename = fileURLToPath(import.meta.url);
+	const __dirname = dirname(__filename);
 
 	app.use(express.static(path.join(__dirname, "../client/dist"))); // Serve files from dist folder
 
