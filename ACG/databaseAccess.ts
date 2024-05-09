@@ -29,31 +29,32 @@ export async function createInitialHand(deckID: number, playerId: number, roundI
       card_6_id: hand[5],
       card_7_id: hand[6],
     };
-    const handCreated = await database.query(logHand, handParams);
-    return hand;
+    await database.query(logHand, handParams);
+    return {success: true, hand};
   } catch (err) {
-    console.log("Error getting deck");
-    return null;
+    console.log(`Error getting deck: ${err}`);
+    return {success: false, hand: null};
   }
 }
 
 export async function getCurrentHand(playerId: number, roundId: number) {
+  //? Send back info about whether it is player or opponent turn
   try {
     let getHand = `
         SELECT * FROM hand 
-        WHERE player_id = :playerId AND round_id = roundId;
+        WHERE player_id = :playerId AND round_id = :roundId;
         `;
     let handParams = {
       playerId,
       roundId,
     };
-    const hand = await database.query(getHand)[0];
+    const hand = await database.query(getHand, handParams)[0];
     if (hand.length === 0) {
       throw new Error("No hand exists for this player in the current round");
     }
     return {success: true, hand};
   } catch (err) {
-    console.log(`Error: ${err}`);
+    console.log(`Error getting current hand: ${err}`);
     return {success: false, hand: null};
   }
 }
@@ -81,7 +82,7 @@ async function createUpdatedHand(playerId: number, previousRoundId: number, newR
     const newHand = initialHand.filter((card) => !cardsPlayed.includes(card));
     return {success: true, hand: newHand};
   } catch (err) {
-    console.log(`Error: ${err}`);
+    console.log(`Error Updating Hand: ${err}`);
     return {success: false, hand: null};
   }
 }
@@ -100,39 +101,44 @@ export async function logMove(round_id: number, card_id: number, trench_position
     (:round_id, :card_id, :trench_position, :player_id);
   `;
   try {
-    const results = database.query(logMove, params);
-    return true;
+    await database.query(logMove, params);
+    return {success: true};
   } catch (err) {
     console.log("ERROR: Move not logged");
-    return false;
+    return {success: false};
   }
 }
 
 export async function startGame(player_1_id: number, player_2_id: number) {
   try {
     let startTransaction = `START TRANSACTION;`;
-    const transaction = await database.query(startTransaction);
+    await database.query(startTransaction);
 
-    let startMatch = "INSERT INTO `match` (is_completed) VALUES (0);";
-    const matchStarted = await database.query(startMatch);
+    let startMatch =
+      "INSERT INTO `match` (is_completed, player_1_id, player_2_id) VALUES (0, :player_1_id, :player_2_id);";
+    let startParams = {
+      player_1_id,
+      player_2_id,
+    };
+    await database.query(startMatch, startParams);
 
     const getMatchId = "SELECT MAX(match_id) AS 'created_match' FROM `match`;";
     let match = await database.query(getMatchId);
     const match_id = match[0][0].created_match;
 
     let startRound = "INSERT INTO round (match_id) VALUES (:match_id);";
-    const roundStarted = await database.query(startRound, {match_id});
+    await database.query(startRound, {match_id});
 
     let getRound = "SELECT MAX(round_id) AS 'created_round' FROM `round`;";
     const round = await database.query(getRound);
     const round_id = round[0][0].created_round;
 
     let commitChanges = `COMMIT;`;
-    const commit = await database.query(commitChanges);
+    await database.query(commitChanges);
     return round_id;
   } catch (err) {
     let rollback = `ROLLBACK;`;
-    const rollbackChanges = await database.query(rollback);
+    await database.query(rollback);
     console.log("ERROR: Game not started");
     return null;
   }
@@ -160,19 +166,43 @@ export async function checkForExistingGame(player_1_id: number, player_2_id: num
   return {gameExists: false, round_id: null};
 }
 
+export async function getRoundState(playerId: number, oppId: number, roundId: number) {
+  try {
+    let getPlayersMoves = `
+  SELECT card_id, trench_position FROM move WHERE player_id = :playerId AND round_id = :roundId;
+  `;
+    let getOppMoves = `
+  SELECT card_id, trench_position FROM move WHERE player_id = :oppId AND round_id = :roundId;
+  `;
+
+    const playersMoves = database.query(getPlayersMoves, {playerId, roundId})[0];
+    const oppMoves = database.query(getOppMoves, {oppId, roundId})[0];
+
+    return {success: true, data: {playersMoves, oppMoves}};
+  } catch (err) {
+    console.log(`Error getting round state: ${err}`);
+    return {success: false, data: err};
+  }
+}
+
 export async function createPlayer(data: any) {
   const saltRounds = 10;
   bcrypt.genSalt(saltRounds, function (err, salt) {
     bcrypt.hash(data.password, salt, function (err, hash) {
       const createPlayerQuery = `
         INSERT INTO player (username, email, password_hash)
-        VALUES ('${data.username}', '${data.email}', '${hash}')
+        VALUES (:username, :email, :password)
       `;
+      const createPlayerParams = {
+        username: data.username,
+        email: data.email,
+        password: hash,
+      };
       database
-        .query(createPlayerQuery)
+        .query(createPlayerQuery, createPlayerParams)
         .then(() => {
           console.log("Player created successfully!");
-          return {message: "Player created successfully!"};
+          return {success: true, message: "Player created successfully!"};
         })
         .catch((error) => {
           console.error("Error creating player:", error);
@@ -180,13 +210,14 @@ export async function createPlayer(data: any) {
           if (error.code === "ER_DUP_ENTRY") {
             if (error.sqlMessage.includes("username")) {
               console.log("Username already in use.");
-              return {error: "Username already in use"};
+              return {success: false, message: "Username already in use"};
             } else if (error.sqlMessage.includes("email")) {
               console.log("Email already in use.");
-              return {error: "Email already in use"};
+              return {success: false, message: "Email already in use"};
             }
           } else {
             console.log("An unexpected error occurred.");
+            return {success: false, message: "An unexpected error occurred."};
           }
         });
     });

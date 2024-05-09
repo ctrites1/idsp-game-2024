@@ -1,6 +1,13 @@
 import express, {Request, Response} from "express";
 import {cards, Card} from "./database";
-import {createInitialHand, startGame, checkForExistingGame} from "./databaseAccess";
+import {
+  createInitialHand,
+  startGame,
+  checkForExistingGame,
+  getRoundState,
+  logMove,
+  getCurrentHand,
+} from "./databaseAccess";
 
 async function createServer() {
   const app = express();
@@ -17,7 +24,12 @@ async function createServer() {
       round: req.body.round_id,
       choice: req.body.player_deck_choice,
     };
-    const hand = await createInitialHand(params.choice, params.round, params.player);
+    const hand = await getCurrentHand(params.player, params.round);
+    if (!hand.success) {
+      const newHand = await createInitialHand(params.choice, params.round, params.player);
+      res.json(newHand);
+      return;
+    }
     res.json(hand);
   });
 
@@ -31,8 +43,41 @@ async function createServer() {
       res.json({gameStarted: false, round_id: currentGame.round_id});
       return;
     }
-    const newRoundID = await startGame(3, 4);
+    const newRoundID = await startGame(players.player1, players.player2);
     res.json({gameStarted: true, round_id: newRoundID});
+  });
+
+  app.post("/api/currentgame", async (req: Request, res: Response) => {
+    const players = {
+      player: req.body.player_1_id,
+      opponent: req.body.player_2_id,
+    };
+    const currentGame = await checkForExistingGame(players.player, players.opponent);
+    if (!currentGame.gameExists) {
+      res.json({gameExists: false});
+      return;
+    }
+    const roundState = await getRoundState(players.player, players.opponent, currentGame.round_id);
+    if (!roundState?.success) {
+      res.json({gameState: false, data: roundState.data});
+      return;
+    }
+    res.json({gameState: true, data: roundState.data});
+  });
+
+  app.post("api/logmove", async (req: Request, res: Response) => {
+    const move = {
+      roundId: req.body.roundId,
+      cardId: req.body.cardId,
+      trenchPos: req.body.trenchPos,
+      playerId: req.body.playerId,
+    };
+    const moveLogged = await logMove(move.roundId, move.cardId, move.trenchPos, move.playerId);
+    if (!moveLogged.success) {
+      res.json({success: false, data: "Error logging move"});
+      return;
+    }
+    res.json({success: true, data: "Move logged"});
   });
 
   app.listen(port, () => {
