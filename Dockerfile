@@ -14,7 +14,7 @@ RUN npm install --no-audit
 COPY . .
 
 # Build the Vite app
-RUN npm run build
+# RUN npm run build
 
 # Expose the port for the server
 EXPOSE 3000
