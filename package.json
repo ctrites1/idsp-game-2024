@@ -5,8 +5,7 @@
   "scripts": {
     "start": "node server/server.ts",
     "dev": "nodemon server/server.ts",
-    "dev-bun": "bun --watch server/server.ts",
-    "build": "vite build"
+    "dev-bun": "bun --watch server/server.ts"
   },
   "devDependencies": {
     "@types/bun": "latest",
