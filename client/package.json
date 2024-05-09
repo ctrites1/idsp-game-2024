@@ -5,13 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "serve": "tsx watch ./server.ts",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "serve": "vite preview --port 5173"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.2",
-    "bcrypt": "^5.1.1",
+    "@types/node": "^20.12.11",
     "typescript": "^5.2.2",
     "vite": "^5.2.0"
   },
@@ -19,7 +17,6 @@
     "@types/express": "^4.17.21",
     "bun": "^1.1.6",
     "express": "^4.19.2",
-    "mysql2": "^3.9.7",
     "tsx": "^4.7.3"
   }
 }
