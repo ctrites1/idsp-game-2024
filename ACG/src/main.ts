@@ -1,4 +1,4 @@
-import {getCardData} from "./areas/Arena/Card";
+import {getCardData} from "./areas/Arena/cardArena";
 
 document.addEventListener("DOMContentLoaded", () => {
   getCardData();
