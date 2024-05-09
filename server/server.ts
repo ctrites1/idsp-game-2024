@@ -6,7 +6,7 @@ async function createServer() {
 	const app = express();
 	const port = 3000;
 
-	app.use(express.static(path.join(__dirname, "../client/dist")));
+	app.use(express.static(path.join(__dirname, "../client/dist"))); // Serve files from dist folder
 
 	// test route to make sure api calls working
 	app.get("/api/hello", async (req: Request, res: Response) => {
