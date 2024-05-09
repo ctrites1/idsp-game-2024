@@ -2,7 +2,7 @@
 FROM node:18
 
 # Set the working directory to the ACG directory
-WORKDIR /usr/src/app
+WORKDIR /usr/src/app/ACG
 
 # Copy package.json and package-lock.json to the working directory
 COPY ACG/package.json ACG/package-lock.json ./
