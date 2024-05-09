@@ -20,7 +20,7 @@ COPY . .
 EXPOSE 3000
 
 # Start the server
-CMD ["npm", "run", "build"]
+CMD ["npm", "run", "serve"]
 
 
 
