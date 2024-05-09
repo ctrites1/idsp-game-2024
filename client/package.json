@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "serve": "tsx watch ./server.ts",
-    "build": "vite build",
-    "preview": "vite preview --port 5173"
+    "build": "tsc && vite build",
+    "serve": "vite preview --port 5173"
   },
   "devDependencies": {
+    "@types/node": "^20.12.11",
     "typescript": "^5.2.2",
     "vite": "^5.2.0"
   },

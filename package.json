@@ -1,0 +1,20 @@
+{
+  "name": "idsp-game-2024",
+  "module": "server/server.ts",
+  "type": "module",
+  "scripts": {
+    "start": "node server/server.ts",
+    "dev": "nodemon server/server.ts",
+    "dev-bun": "bun --watch server/server.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.12.11",
+    "express": "^4.19.2",
+    "nodemon": "^3.1.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

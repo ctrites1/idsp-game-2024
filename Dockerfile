@@ -2,7 +2,7 @@
 FROM node:18
 
 # Set the working directory to the ACG directory
-WORKDIR /usr/src/app/ACG
+WORKDIR /usr/src/app
 
 # Copy package.json and package-lock.json to the working directory
 COPY ACG/package.json ACG/package-lock.json ./
@@ -11,7 +11,7 @@ COPY ACG/package.json ACG/package-lock.json ./
 RUN npm install --no-audit
 
 # Copy all application files to the working directory
-COPY ACG ./
+COPY . .
 
 # Build the Vite app
 RUN npm run build
