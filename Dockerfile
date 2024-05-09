@@ -2,10 +2,10 @@
 FROM node:18
 
 # Set the working directory to the ACG directory
-WORKDIR /usr/src/app/ACG
+WORKDIR /usr/src/app/client
 
 # Copy package.json and package-lock.json to the working directory
-COPY ACG/package.json ACG/package-lock.json ./
+COPY client/package.json client/package-lock.json ./
 
 # Install dependencies
 RUN npm install --no-audit
