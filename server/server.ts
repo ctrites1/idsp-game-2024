@@ -7,16 +7,22 @@ import {
   getRoundState,
   logMove,
   getCurrentHand,
+  test,
 } from "../server/databaseAccess";
 
 async function createServer() {
   const app = express();
   const port = 3000;
 
+  //TODO - check for turns,
+
   // test route to make sure api calls working
   app.get("/api/hello", async (req: Request, res: Response) => {
     res.json({hello: "world"});
   });
+
+  const data = await test();
+  console.log(data);
 
   app.post("/api/playerhand", async (req: Request, res: Response) => {
     const params = {

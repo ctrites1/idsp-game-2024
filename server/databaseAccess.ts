@@ -225,6 +225,14 @@ export async function createPlayer(data: any) {
   });
 }
 
+export async function test() {
+  let sqlQuery = `
+  SHOW VARIABLES LIKE 'version';
+`;
+  const test = await database.query(sqlQuery);
+  return test;
+}
+
 /* -------------------------- Seeding Demo Players -------------------------- */
 // const demoPlayer1 = {
 // 	username: "potat",
