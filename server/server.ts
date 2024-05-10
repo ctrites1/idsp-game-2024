@@ -20,10 +20,9 @@ async function createServer() {
 
 	app.get("/api/playerhand", async (req: Request, res: Response) => {
 		const element = "Water";
-		const hand = cards.filter((card) => {
-			return card.element === element;
-		});
-		res.json(hand);
+		const filteredCards = cards.filter(card => card.element === element);
+		const randomHand = pickRandomCards(filteredCards, 7);
+		res.json(randomHand);
 	});
 
 	app.get("*", (req, res) => {
@@ -34,5 +33,13 @@ async function createServer() {
 		console.log(`Server running on http://localhost:${port}`);
 	});
 }
+
+function pickRandomCards(cards: Card[], count: number): Card[] {
+	for (let i = cards.length - 1; i > 0; i--) {
+	  const j = Math.floor(Math.random() * (i + 1));
+	  [cards[i], cards[j]] = [cards[j], cards[i]];
+	}
+	return cards.slice(0, count);
+  }
 
 createServer();
