@@ -188,8 +188,8 @@ export async function getRoundState(playerId: number, oppId: number, roundId: nu
 
 export async function createPlayer(data: any) {
   const saltRounds = 10;
-  bcrypt.genSalt(saltRounds, function (err, salt) {
-    bcrypt.hash(data.password, salt, function (err, hash) {
+  bcrypt.genSalt(saltRounds, function (err: any, salt: any) {
+    bcrypt.hash(data.password, salt, function (err: any, hash: any) {
       const createPlayerQuery = `
         INSERT INTO player (username, email, password_hash)
         VALUES (:username, :email, :password)

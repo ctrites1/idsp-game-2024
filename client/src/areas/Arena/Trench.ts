@@ -12,14 +12,14 @@ export function addCardToTrench(cards: any, playerId: number) {
 	// cards.forEach((card) => {
 
 	// })
-	Array.from(cardHolders).map((holder) => {
-		if (holder.hasChildNodes()) {
-			return;
-		} else {
-			holder.appendChild(element);
-			trenchCardsCounter += 1;
-		}
-	});
+	// Array.from(cardHolders).map((holder) => {
+	// 	if (holder.hasChildNodes()) {
+	// 		return;
+	// 	} else {
+	// 		holder.appendChild(element);
+	// 		trenchCardsCounter += 1;
+	// 	}
+	// });
 
 	updateHillScores();
 }

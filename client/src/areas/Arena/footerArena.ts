@@ -1,4 +1,4 @@
-import {Card} from "../../../database";
+//import {Card} from "../../../database";
 
 export class Footer {
   private playerHandContainer: HTMLElement;

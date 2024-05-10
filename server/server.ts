@@ -40,6 +40,7 @@ async function createServer() {
       round: req.body.round_id,
       choice: req.body.player_deck_choice,
     };
+	
     console.log(params);
     const hand = await getCurrentHand(params.player, params.round);
     if (!hand.success) {
