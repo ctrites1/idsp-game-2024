@@ -1,12 +1,10 @@
-import { Card } from "../../../../server/database";
-import { updateHillScores } from "./Hill";
+import {Card} from "../../../../server/database";
+import {updateHillScores} from "./Hill";
 
 export function moveCardToTrench(card: HTMLElement) {
   const trench = document.querySelector("#playerTrench")!;
   const cardHolders = trench.querySelectorAll(".cardHolder");
-  const emptyHolder = Array.from(cardHolders).find(
-    (holder) => !holder.hasChildNodes()
-  );
+  const emptyHolder = Array.from(cardHolders).find((holder) => !holder.hasChildNodes());
 
   if (emptyHolder) {
     const currentCardHolder = card.closest(".cardHolder");
@@ -108,11 +106,7 @@ export function dragstartHandler(event: Event) {
     event.dataTransfer.effectAllowed = "move";
 
     // Logging the start of dragging.
-    console.log(
-      `Dragging started for element with ID: ${
-        (event.target as HTMLElement).id
-      }`
-    );
+    console.log(`Dragging started for element with ID: ${(event.target as HTMLElement).id}`);
   } else {
     console.error("Failed to handle drag event due to missing dataTransfer");
   }
