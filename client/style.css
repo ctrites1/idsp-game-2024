@@ -45,7 +45,6 @@ header {
 }
 
 .round-indicator {
-	flex-grow: 1;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -53,6 +52,58 @@ header {
 	font-size: 1.2rem;
 	font-size: 2rem;
 	font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+	background-image: url("/assets/update/Round_indicator.svg");
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 30vh;
+	height: 8vh;
+	margin-top: 0.5rem;
+	margin-left: 7.8rem;
+}
+
+header button {
+	margin-top: 0.5rem;
+	width: 4rem;
+	height: 4rem;
+	border-radius: 50%;
+}
+
+header .home-button {
+	background-image: url("/assets/Icons/home-btn.svg");
+}
+
+header .howTo-button {
+	background-image: url("/assets/Icons/howto-btn.svg");
+}
+
+header .oppInfo {
+	background-image: url("./public/assets/update/Opponent_Tag.svg");
+	background-repeat: no-repeat;
+	height: 8rem;
+	width: 17rem;
+	margin-top: 0.5rem;
+	margin-right: 0.5rem;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+}
+
+header .oppInfo .oppName {
+	font-size: large;
+	font-family: fantasy;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: -1.4rem;
+	margin-right: 0.5rem;
+}
+
+header #oppDisplayPic {
+	display: flex;
+	width: 90px;
+	height: 90px;
+	margin: 6px 6px 0px 6px;
+	border-radius: 50%;
 }
 
 .arena {
@@ -97,6 +148,8 @@ header {
 	justify-content: space-evenly;
 	z-index: 2;
 	margin: 2rem 0rem;
+	/* background-color: #1a1a1a89;
+	border-radius: 10px; */
 }
 
 .trench .cardHolder {
@@ -107,6 +160,7 @@ header {
 
 .trench .cardHolder:hover {
 	transform: scale(2);
+	z-index: 2;
 }
 
 .cardHolder {
@@ -224,9 +278,6 @@ header {
 	border-radius: 5px;
 }
 
-header button {
-	height: 3em;
-}
 button {
 	background-size: cover;
 	border: none;
