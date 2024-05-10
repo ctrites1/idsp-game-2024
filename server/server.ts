@@ -11,9 +11,9 @@ import {
   logMove,
   getCurrentHand,
   test,
+  validateUser,
 } from "../server/databaseAccess";
 import bodyParser from "body-parser";
-import exp from "constants";
 import cookieSession from "cookie-session";
 
 async function createServer() {
@@ -36,23 +36,35 @@ async function createServer() {
 
   // test route to make sure api calls working
   app.get("/api/hello", async (req: Request, res: Response) => {
+    const playerId = req.session?.playerId;
+    console.log(playerId);
     res.json({hello: "world"});
   });
 
-  app.post("/login", async (req: Request, res: Response) => {
+  app.post("/api/login", async (req: Request, res: Response) => {
     const {username, password} = req.body;
+    const valid = await validateUser(username, password);
+    if (!valid.success) {
+      res.json({success: false, playerId: null});
+      return;
+    }
+    req.session = {playerId: valid.playerId};
+    res.json({success: true, playerId: valid.playerId});
   });
 
   const data = await test();
   console.log(data);
 
   app.post("/api/playerhand", async (req: Request, res: Response) => {
+    if (!req.session?.playerId) {
+      res.json({success: false, data: "Session Error - could not authenticate player"});
+      return;
+    }
     const params = {
-      player: req.body.player_id,
+      player: req.session.playerId,
       round: req.body.round_id,
       choice: req.body.player_deck_choice,
     };
-    console.log(params);
     const hand = await getCurrentHand(params.player, params.round);
     if (!hand.success) {
       const newHand = await createInitialHand(params.choice, params.round, params.player);
@@ -63,8 +75,12 @@ async function createServer() {
   });
 
   app.post("/api/startgame", async (req: Request, res: Response) => {
+    if (!req.session?.playerId) {
+      res.json({gameStarted: false, message: "Session Error - could not authenticate player"});
+      return;
+    }
     const players = {
-      player1: req.body.player_1_id,
+      player1: req.session.playerId,
       player2: req.body.player_2_id,
     };
     const currentGame = await checkForExistingGame(players.player1, players.player2);
@@ -77,8 +93,12 @@ async function createServer() {
   });
 
   app.post("/api/currentgame", async (req: Request, res: Response) => {
+    if (!req.session?.playerId) {
+      res.json({success: false, data: "Session Error - could not authenticate player"});
+      return;
+    }
     const players = {
-      player: req.body.player_1_id,
+      player: req.session.playerId,
       opponent: req.body.player_2_id,
     };
     const currentGame = await checkForExistingGame(players.player, players.opponent);
@@ -95,11 +115,15 @@ async function createServer() {
   });
 
   app.post("api/logmove", async (req: Request, res: Response) => {
+    if (!req.session?.playerId) {
+      res.json({success: false, data: "Session Error - could not authenticate player"});
+      return;
+    }
     const move = {
       roundId: req.body.roundId,
       cardId: req.body.cardId,
       trenchPos: req.body.trenchPos,
-      playerId: req.body.playerId,
+      playerId: req.session.playerId,
     };
     const moveLogged = await logMove(move.roundId, move.cardId, move.trenchPos, move.playerId);
     if (!moveLogged.success) {
