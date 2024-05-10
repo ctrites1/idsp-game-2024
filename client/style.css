@@ -1,19 +1,16 @@
 /* root is leftover styles from the vite starter code */
 :root {
 	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-	line-height: 1.5;
-	font-weight: 400;
-
-	color-scheme: light dark;
-	color: rgba(255, 255, 255, 0.87);
-	background-color: #242424;
 
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+
+	color-scheme: light dark;
 	--scoreColor: rgba(17, 68, 105, 0.87);
 	--shadow: rgb(226, 217, 197);
+	--primary-background: #1a1a1ac4;
 }
 
 html {
@@ -300,9 +297,6 @@ button {
 	transition: border-color 0.25s;
 	margin: 5px;
 }
-button:hover {
-	box-shadow: 0 0 8px 8px rgba(45, 22, 248, 0.6);
-}
 
 button:focus,
 button:focus-visible {
@@ -343,13 +337,15 @@ button:focus-visible {
 }
 
 .pseudo-homepage {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	width: 100%;
-	height: 100%;
+	display: grid;
+	place-items: center;
+	width: 100vw;
+	height: 100vh;
 	z-index: 10;
-	background-color: whitesmoke;
+	background-image: url("/assets/Backgrounds/Background3.png");
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
 	position: fixed;
 	left: 0;
 	top: 0;
@@ -357,27 +353,53 @@ button:focus-visible {
 	align-content: center;
 }
 
-.pseudo-homepage > button {
+.pseudo-homepage > .player-selection-container {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 1rem;
+	place-items: center;
+	padding: 2rem;
+}
+
+.pseudo-homepage > .player-selection-container > button {
 	display: flex;
 	flex-wrap: wrap;
 	border-radius: 8px;
 	justify-content: center;
 	align-content: center;
 	color: white;
-	padding: 1rem 2rem;
+	padding: 1rem 1.5rem;
 	width: 100%;
 	height: 100%;
-	font-size: 5rem;
+	font-size: 1rem;
 	max-height: 15rem;
-	max-width: 20rem;
+	max-width: 10rem;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: background-color 0.3s, transform 0.2s;
+	text-transform: uppercase;
 }
 
-.pseudo-homepage > .red-btn {
-	background-color: red;
+.pseudo-homepage > .player-selection-container > button:hover,
+.pseudo-homepage > .player-selection-container > button:focus {
+	transform: scale(1.05);
 }
 
-.pseudo-homepage > .blue-btn {
-	background-color: blue;
+.pseudo-homepage > .player-selection-container > .player1-btn {
+	background-color: #c1301d00;
+}
+
+.pseudo-homepage > .player-selection-container > .player1-btn:hover {
+	/* background-color: #8c220f6f; */
+}
+
+.pseudo-homepage > .player-selection-container > .player2-btn {
+	/* background-color: #4e2a94; */
+}
+
+.pseudo-homepage > .player-selection-container > .player2-btn:hover {
+	/* background-color: #371d68; */
 }
 
 /* footer styling */
