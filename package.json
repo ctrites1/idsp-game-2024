@@ -1,20 +1,20 @@
 {
   "name": "idsp-game-2024",
-  "module": "server/server.ts",
+  "main": "server/server.ts",
   "type": "module",
   "scripts": {
-    "start": "node server/server.ts",
-    "dev": "nodemon server/server.ts",
-    "dev-bun": "bun --watch server/server.ts"
+    "start": "tsx server/server.ts",
+    "dev": "npx tsx watch server/server.ts",
+    "build": "tsc -p tsconfig.json --module ESNext"
   },
   "devDependencies": {
-    "@types/bun": "latest",
     "@types/express": "^4.17.21",
     "@types/node": "^20.12.11",
     "bcrypt": "^5.1.1",
     "express": "^4.19.2",
     "nodemon": "^3.1.0",
     "ts-node": "^10.9.2",
+    "tsx": "^4.9.3",
     "typescript": "^5.4.5"
   },
   "peerDependencies": {
