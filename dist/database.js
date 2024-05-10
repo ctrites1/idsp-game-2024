@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.cards = void 0;
-exports.cards = [
+export const cards = [
     {
         id: 1,
         name: "Water Dragon",
