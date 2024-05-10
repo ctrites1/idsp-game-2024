@@ -1,8 +1,8 @@
 import express, {Request, Response} from "express";
 import path from "path";
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { cards, Card } from "./database";
+import {dirname} from "path";
+import {fileURLToPath} from "url";
+import {cards, Card} from "./database";
 import {
   createInitialHand,
   startGame,
@@ -12,20 +12,24 @@ import {
   getCurrentHand,
   test,
 } from "../server/databaseAccess";
+import bodyParser from "body-parser";
+import exp from "constants";
 
 async function createServer() {
-	const app = express();
-	const port = 3000;
+  const app = express();
+  const port = 3000;
 
-	const __filename = fileURLToPath(import.meta.url);
-	const __dirname = dirname(__filename);
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
 
-	app.use(express.static(path.join(__dirname, "../client/dist"))); // Serve files from dist folder
+  app.use(express.static(path.join(__dirname, "../client/dist"))); // Serve files from dist folder
+  app.use(express.json());
+  app.use(bodyParser.urlencoded({extended: true}));
 
-	// test route to make sure api calls working
-	app.get("/api/hello", async (req: Request, res: Response) => {
-		res.json({ hello: "world" });
-	});
+  // test route to make sure api calls working
+  app.get("/api/hello", async (req: Request, res: Response) => {
+    res.json({hello: "world"});
+  });
 
   const data = await test();
   console.log(data);
@@ -36,6 +40,7 @@ async function createServer() {
       round: req.body.round_id,
       choice: req.body.player_deck_choice,
     };
+    console.log(params);
     const hand = await getCurrentHand(params.player, params.round);
     if (!hand.success) {
       const newHand = await createInitialHand(params.choice, params.round, params.player);
