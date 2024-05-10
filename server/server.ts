@@ -1,32 +1,87 @@
 import express, {Request, Response} from "express";
-import {cards, Card} from "../client/database";
-import path from "path";
+// import {cards, Card} from "./database";
+import {
+  createInitialHand,
+  startGame,
+  checkForExistingGame,
+  getRoundState,
+  logMove,
+  getCurrentHand,
+} from "../server/databaseAccess";
 
 async function createServer() {
   const app = express();
   const port = 3000;
-
-  app.use(express.static(path.join(__dirname, "../client/dist"))); // Serve files from dist folder
 
   // test route to make sure api calls working
   app.get("/api/hello", async (req: Request, res: Response) => {
     res.json({hello: "world"});
   });
 
-  app.get("/api/playerhand", async (req: Request, res: Response) => {
-    const element = "Water";
-    const hand = cards.filter((card) => {
-      return card.element === element;
-    });
+  app.post("/api/playerhand", async (req: Request, res: Response) => {
+    const params = {
+      player: req.body.player_id,
+      round: req.body.round_id,
+      choice: req.body.player_deck_choice,
+    };
+    const hand = await getCurrentHand(params.player, params.round);
+    if (!hand.success) {
+      const newHand = await createInitialHand(params.choice, params.round, params.player);
+      res.json(newHand);
+      return;
+    }
     res.json(hand);
   });
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
+  app.post("/api/startgame", async (req: Request, res: Response) => {
+    const players = {
+      player1: req.body.player_1_id,
+      player2: req.body.player_2_id,
+    };
+    const currentGame = await checkForExistingGame(players.player1, players.player2);
+    if (currentGame.gameExists) {
+      res.json({gameStarted: false, round_id: currentGame.round_id});
+      return;
+    }
+    const newRoundID = await startGame(players.player1, players.player2);
+    res.json({gameStarted: true, round_id: newRoundID});
   });
 
-  app.listen(port, "0.0.0.0", () => {
-    console.log(`Server running on http://localhost:${port}`);
+  app.post("/api/currentgame", async (req: Request, res: Response) => {
+    const players = {
+      player: req.body.player_1_id,
+      opponent: req.body.player_2_id,
+    };
+    const currentGame = await checkForExistingGame(players.player, players.opponent);
+    if (!currentGame.gameExists) {
+      res.json({gameExists: false});
+      return;
+    }
+    const roundState = await getRoundState(players.player, players.opponent, currentGame.round_id);
+    if (!roundState?.success) {
+      res.json({gameState: false, data: roundState.data});
+      return;
+    }
+    res.json({gameState: true, data: roundState.data});
+  });
+
+  app.post("api/logmove", async (req: Request, res: Response) => {
+    const move = {
+      roundId: req.body.roundId,
+      cardId: req.body.cardId,
+      trenchPos: req.body.trenchPos,
+      playerId: req.body.playerId,
+    };
+    const moveLogged = await logMove(move.roundId, move.cardId, move.trenchPos, move.playerId);
+    if (!moveLogged.success) {
+      res.json({success: false, data: "Error logging move"});
+      return;
+    }
+    res.json({success: true, data: "Move logged"});
+  });
+
+  app.listen(port, () => {
+    console.log(`server listening on port ${port}`);
   });
 }
 
