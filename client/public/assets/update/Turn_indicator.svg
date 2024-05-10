@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 2279.92 665.82">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#radial-gradient-2);
+      }
+
+      .cls-1, .cls-2 {
+        stroke-width: 0px;
+      }
+
+      .cls-2 {
+        fill: url(#radial-gradient);
+      }
+    </style>
+    <radialGradient id="radial-gradient" cx="998.43" cy="332.91" fx="998.43" fy="332.91" r="682.65" gradientTransform="translate(-79.52) scale(1.22 1)" gradientUnits="userSpaceOnUse">
+      <stop offset=".25" stop-color="#21274e"/>
+      <stop offset=".47" stop-color="#1f2443"/>
+      <stop offset="1" stop-color="#1c202f"/>
+      <stop offset="1" stop-color="#181b29"/>
+    </radialGradient>
+    <radialGradient id="radial-gradient-2" cx="998.2" cy="332.91" fx="998.2" fy="332.91" r="1601.13" gradientTransform="translate(2255.03 -103.34) rotate(150.28) scale(1.15 .52) skewX(4.9)" gradientUnits="userSpaceOnUse">
+      <stop offset=".09" stop-color="#f6910a"/>
+      <stop offset=".12" stop-color="#ed8c0a"/>
+      <stop offset=".34" stop-color="#b9700b"/>
+      <stop offset=".54" stop-color="#915a0d"/>
+      <stop offset=".73" stop-color="#744a0e"/>
+      <stop offset=".88" stop-color="#62400e"/>
+      <stop offset="1" stop-color="#5c3d0f"/>
+    </radialGradient>
+  </defs>
+  <g id="ACG_Logo" data-name="ACG Logo">
+    <g>
+      <polygon class="cls-2" points="1962.79 16.58 334.91 16.58 25.93 332.91 334.91 649.25 1962.79 649.25 2254.54 332.91 1962.79 16.58"/>
+      <path class="cls-1" d="M1972.88,665.82H325.17L0,332.91,325.17,0h1647.71l307.04,332.91-307.04,332.91ZM344.64,632.67h1608.06l276.46-299.75L1952.71,33.16H344.64L51.86,332.91l292.78,299.75Z"/>
+    </g>
+  </g>
+</svg>
