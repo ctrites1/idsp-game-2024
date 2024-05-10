@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: ACG
+    env: node
+    buildCommand: npm install
+    startCommand: npm run serve
+    plan: starter

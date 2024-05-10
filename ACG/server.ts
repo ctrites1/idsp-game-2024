@@ -31,3 +31,4 @@ function pickRandomCards(cards: Card[], count: number): Card[] {
 }
 
 createServer();
+
