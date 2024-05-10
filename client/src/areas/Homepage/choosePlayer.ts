@@ -1,27 +1,28 @@
-const player1Button = document.querySelector(".player1-btn");
-const player2Button = document.querySelector(".player2-btn");
-
-player1Button?.addEventListener("click", loginAsPlayer1);
-player2Button?.addEventListener("click", loginAsPlayer2);
-
-async function loginAsPlayer1() {
+export async function loginAsPlayer1() {
   const user = await fetch("/api/login", {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({
       username: "keeles",
       password: "strongPassword2",
     }),
   });
   const userResponse = await user.json();
+  console.log(userResponse);
   if (userResponse.success) {
     removeBigDiv();
     return;
   }
 }
 
-async function loginAsPlayer2() {
+export async function loginAsPlayer2() {
   const user = await fetch("/api/login", {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({
       username: "potat",
       password: "strongPassword1",
@@ -34,7 +35,16 @@ async function loginAsPlayer2() {
   }
 }
 
+export async function logout() {
+  const logout = await fetch("/api/logout");
+  const loggedOut = await logout.json();
+  if (loggedOut.success) {
+    return true;
+  }
+  return false;
+}
+
 function removeBigDiv() {
-  const bigDiv = document.querySelector("pseudo-homepage") as HTMLDivElement;
+  const bigDiv = document.querySelector(".pseudo-homepage") as HTMLDivElement;
   bigDiv.remove();
 }

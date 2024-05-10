@@ -23,9 +23,9 @@ async function createServer() {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
 
+  app.use(bodyParser.urlencoded({extended: true}));
   app.use(express.static(path.join(__dirname, "../client/dist"))); // Serve files from dist folder
   app.use(express.json());
-  app.use(bodyParser.urlencoded({extended: true}));
   app.use(
     cookieSession({
       name: "session",
@@ -50,6 +50,15 @@ async function createServer() {
     }
     req.session = {playerId: valid.playerId};
     res.json({success: true, playerId: valid.playerId});
+  });
+
+  app.get("/api/logout", async (req: Request, res: Response) => {
+    if (req.session) {
+      req.session = null;
+      res.json({success: true, message: "Logged out"});
+      return;
+    }
+    res.json({success: false, message: "No session found, logout failed"});
   });
 
   const data = await test();
