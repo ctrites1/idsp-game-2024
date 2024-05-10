@@ -23,7 +23,7 @@ function calculateAndDisplayScore(trench: HTMLElement | null, scoreDisplay: HTML
     
     cardHolders.forEach(cardHolder => {
         const card = cardHolder.querySelector('.card');
-        const score = parseInt(card?.getAttribute('data-score') || '0', 10);
+        const score = parseInt(card?.getAttribute('data-power') || '0', 10);
         totalScore += score;
     });
 
