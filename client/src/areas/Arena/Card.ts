@@ -13,6 +13,7 @@ export function moveCardToTrench(card: HTMLElement) {
     if (currentCardHolder && !trench.contains(currentCardHolder)) {
       currentCardHolder.parentNode?.removeChild(currentCardHolder);
     }
+    updateHillScores();
   }
 }
 
@@ -24,54 +25,22 @@ export function removeCardFromHand(card: HTMLElement) {
 export function viewSingleCard(card: HTMLElement) {
   const bigCard = card.cloneNode(true) as HTMLDivElement;
   const poppedCard: HTMLDivElement = document.querySelector(".singleCardView")!;
+  poppedCard.innerHTML = ""; // Clear previous content
   poppedCard.appendChild(bigCard);
   poppedCard.style.display = "flex";
 
-  const closeBtn: HTMLButtonElement = poppedCard.querySelector(".close")!;
-  closeBtn.addEventListener("click", () => {
-    poppedCard.style.display = "none";
-    poppedCard.removeChild(bigCard);
-  });
-  const playbutton: HTMLButtonElement = poppedCard.querySelector(".playCard")!;
-
-  const playCardHandler = () => {
-    removeCardFromHand(card);
-    moveCardToTrench(card);
-    poppedCard.style.display = "none";
-    poppedCard.removeChild(bigCard);
-    updateHillScores();
-  };
-
-  playbutton.addEventListener("click", playCardHandler);
-
-  closeBtn.addEventListener("click", () => {
-    poppedCard.style.display = "none";
-    poppedCard.removeChild(bigCard);
-    playBtn.removeEventListener("click", playCardHandler);
-  });
-
-  const playBtn: HTMLButtonElement = poppedCard.querySelector(".playCard")!;
-  playBtn.addEventListener("click", () => {
-    removeCardFromHand(card);
-    moveCardToTrench(card);
+  // Added event listener for closing the view when clicking outside the card
+  poppedCard.addEventListener("click", function (event) {
+    if (event.target === poppedCard) {
+      poppedCard.style.display = "none";
+      poppedCard.removeChild(bigCard);
+    }
   });
 }
 
 export async function getCardData() {
-  const response = await fetch("/api/playerhand", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      player_id: 3,
-      round_id: 4,
-      player_deck_choice: null,
-    }),
-  });
+  const response = await fetch("/api/playerhand");
   const data = await response.json();
-  console.log(data);
   createPlayerHand(data);
 }
 
@@ -83,7 +52,7 @@ export function createCard(data: any) {
 
   card.classList.add("card");
 
-  card.setAttribute("data-score", data.power);
+  card.setAttribute("data-power", String(data.power));
 
   const cardInside = document.createElement("div");
   cardInside.classList.add("card-inside");
