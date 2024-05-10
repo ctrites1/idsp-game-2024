@@ -1,6 +1,8 @@
-import {getCardData} from "./areas/Arena/cardArena";
+import {getCardData} from "./areas/Arena/Card";
+import {createHomepage} from "./areas/Homepage/homepage";
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  // await createHomepage();
   getCardData();
 });
 
