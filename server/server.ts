@@ -14,6 +14,7 @@ import {
 } from "../server/databaseAccess";
 import bodyParser from "body-parser";
 import exp from "constants";
+import cookieSession from "cookie-session";
 
 async function createServer() {
   const app = express();
@@ -25,10 +26,21 @@ async function createServer() {
   app.use(express.static(path.join(__dirname, "../client/dist"))); // Serve files from dist folder
   app.use(express.json());
   app.use(bodyParser.urlencoded({extended: true}));
+  app.use(
+    cookieSession({
+      name: "session",
+      keys: ["ACG-Secret-Key"],
+      maxAge: 24 * 60 * 60 * 1000,
+    })
+  );
 
   // test route to make sure api calls working
   app.get("/api/hello", async (req: Request, res: Response) => {
     res.json({hello: "world"});
+  });
+
+  app.post("/login", async (req: Request, res: Response) => {
+    const {username, password} = req.body;
   });
 
   const data = await test();

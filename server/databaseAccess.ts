@@ -225,6 +225,25 @@ export async function createPlayer(data: any) {
   });
 }
 
+export async function validateUser(username: string, password: string) {
+  const saltRounds = 10;
+  const salt = await bcrypt.genSalt(saltRounds);
+  const password_hash = await bcrypt.hash(password, salt);
+  const validateQuery = `
+    SELECT player_id, email, username FROM player WHERE username = :username AND password_hash = :password_hash;
+  `;
+  const validateParams = {
+    username: username,
+    password_hash: password_hash,
+  };
+  const valid: any = await database.query(validateQuery, validateParams);
+  if (valid[0]) {
+    return {success: true, playerId: valid[0][0].player_id};
+  } else {
+    return {success: false, playerId: null};
+  }
+}
+
 export async function test() {
   let sqlQuery = `
   SHOW VARIABLES LIKE 'version';
