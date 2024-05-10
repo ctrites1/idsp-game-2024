@@ -13,4 +13,9 @@
 - Macbook view is broken
 - Rules/Tutorial
 - Power font on cards is confusing
-- when opponent made his move, notify the player
+- When opponent made his move, notify player
+- Change cursor in drap and drop
+
+**Suggestions**
+
+- explain rules before demo to get better feedback
