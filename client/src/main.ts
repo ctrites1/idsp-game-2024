@@ -1,4 +1,4 @@
-import {getCardData, playCard } from "./areas/Arena/Card";
+import {getCardData} from "./areas/Arena/cardArena";
 
 document.addEventListener("DOMContentLoaded", () => {
   getCardData();
@@ -16,7 +16,7 @@ endTurnButton.addEventListener("click", async () => {
   const data = await response.json();
   if (data.success) {
     window.location.href = '/'; // Go back to homepage
-    playCard(data);
+    //playCard(data);
   } else {
     alert(data.error);
   }
