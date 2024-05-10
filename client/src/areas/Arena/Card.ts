@@ -1,6 +1,10 @@
 import{Card} from '../../../database';
 
 import { updateHillScores } from "./Hill";
+import { addCardToTrench } from './Trench';
+
+let playerId: number = 0;
+let currentPlayer: number = 0;
 
 export function moveCardToTrench(card: HTMLElement) {
   const trench = document.querySelector("#playerTrench")!;
@@ -15,6 +19,8 @@ export function moveCardToTrench(card: HTMLElement) {
       currentCardHolder.parentNode?.removeChild(currentCardHolder);
     }
   }
+
+  playCard(card)
 }
 
 export function removeCardFromHand(card: HTMLElement) {
@@ -71,10 +77,55 @@ export function createCard(data: any) {
   return card;
 }
 
+export function updateTrench(cards: any, playerId: number) {
+  cards.forEach((card: any) => {
+    const cardHolder = document.createElement("div");
+    cardHolder.classList.add("cardHolder");
+    const cardElement = createCard(card); 
+    cardHolder.appendChild(cardElement);
+  });
+
+  addCardToTrench(cards, playerId);
+}
+
 export async function getCardData() {
-  const response = await fetch("/api/playerhand");
+  const response = await fetch('/api/playerhand', {
+    method: 'Get',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ playerId })
+  });
   const data = await response.json();
-  createPlayerHand(data);
+  createPlayerHand(data.hand);
+  if (data.trench.length > 0) {
+    moveCardToTrench(data.trench);
+    console.log("successfully moved it to trench")
+  }
+}
+
+// export async function startGame() {
+//   const response = await fetch('/api/playerhand', {
+//     method: 'POST',
+//     headers: { 'Content-Type': 'application/json' },
+//     body: JSON.stringify({ playerId })
+//   });
+//   const data = await response.json();
+//   currentPlayer = data.player;
+
+  
+// }
+
+export async function playCard(card: any) {
+  const response = await fetch('/api/turn', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ playerId, card })
+  });
+  const data = await response.json();
+  if (data.success) {
+    await updateTrench(card, playerId);
+  } else {
+    alert(data.error);
+  }
 }
 
 export function createPlayerHand(cards: Card[]): void {
