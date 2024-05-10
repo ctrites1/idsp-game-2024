@@ -5,11 +5,9 @@ export async function createHomepage() {
 	homepage.className = "pseudo-homepage";
 
 	const btn1: HTMLButtonElement = document.createElement("button");
-	// btn1.textContent = "Player 1";
 	btn1.className = "player1-btn";
 
 	const btn2: HTMLButtonElement = document.createElement("button");
-	// btn2.textContent = "Player 2";
 	btn2.className = "player2-btn";
 
 	const player1Img: HTMLImageElement = document.createElement("img");

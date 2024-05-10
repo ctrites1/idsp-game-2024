@@ -356,7 +356,7 @@ button:focus-visible {
 .pseudo-homepage > .player-selection-container {
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
-	gap: 1rem;
+	gap: 4rem;
 	place-items: center;
 	padding: 2rem;
 }
@@ -372,34 +372,99 @@ button:focus-visible {
 	width: 100%;
 	height: 100%;
 	font-size: 1rem;
-	max-height: 15rem;
-	max-width: 10rem;
+	max-height: 20rem;
+	max-width: 15rem;
 	border: none;
 	border-radius: 8px;
 	cursor: pointer;
-	transition: background-color 0.3s, transform 0.2s;
+	transition: background-color 0.3s, transform 0.2s box-shadow;
 	text-transform: uppercase;
+	background-color: #9d9d9d;
 }
 
 .pseudo-homepage > .player-selection-container > button:hover,
 .pseudo-homepage > .player-selection-container > button:focus {
 	transform: scale(1.05);
+	box-shadow: 0 5px 35px 0px rgba(0, 0, 0, 0.1);
 }
 
-.pseudo-homepage > .player-selection-container > .player1-btn {
-	background-color: #c1301d00;
+.pseudo-homepage > .player-selection-container > button:hover::before,
+.pseudo-homepage > .player-selection-container > button:hover::after {
+	display: block;
+	content: "";
+	position: absolute;
+	width: inherit;
+	height: inherit;
+	background: var(--primary-background);
+	border-radius: inherit;
+	z-index: -1;
+	animation: 0.2s clockwise infinite;
 }
 
-.pseudo-homepage > .player-selection-container > .player1-btn:hover {
-	/* background-color: #8c220f6f; */
+.pseudo-homepage > .player-selection-container > button:hover::after {
+	background: rgba(243, 206, 94, 0.601);
+	animation: 0.2s counterclockwise infinite;
+	z-index: -1;
 }
 
-.pseudo-homepage > .player-selection-container > .player2-btn {
-	/* background-color: #4e2a94; */
+@keyframes clockwise {
+	0% {
+		top: 0;
+		left: 0;
+	}
+	25% {
+		top: 0.125rem;
+		left: 0.075rem;
+	}
+	50% {
+		top: 0.25rem;
+		left: 0.15rem;
+	}
+	75% {
+		top: 0.375rem;
+		left: 0.2rem;
+	}
+	100% {
+		top: 0.5rem;
+		left: 0.25rem;
+	}
 }
 
-.pseudo-homepage > .player-selection-container > .player2-btn:hover {
-	/* background-color: #371d68; */
+@keyframes counterclockwise {
+	0% {
+		top: 0rem;
+		right: 0;
+	}
+	25% {
+		top: 0.125rem;
+		right: 0.075rem;
+	}
+	50% {
+		bottom: 0.25rem;
+		right: 0.15rem;
+	}
+	75% {
+		bottom: 0.2rem;
+		right: 0.2rem;
+	}
+	100% {
+		bottom: 0.15rem;
+		right: 0.25rem;
+	}
+}
+
+.pseudo-homepage > .player-selection-container > button > img {
+	border: solid white 0.25rem;
+	border-radius: 50%;
+	padding: 6rem;
+	object-fit: cover;
+	background: linear-gradient(
+			217deg,
+			rgba(255, 0, 0, 0.8),
+			rgba(255, 0, 0, 0) 70.71%
+		),
+		linear-gradient(127deg, rgba(0, 255, 0, 0.8), rgba(0, 255, 0, 0) 70.71%),
+		linear-gradient(336deg, rgba(0, 0, 255, 0.8), rgba(0, 0, 255, 0) 70.71%);
 }
 
 /* footer styling */
