@@ -1,5 +1,8 @@
 import express, {Request, Response} from "express";
-// import {cards, Card} from "./database";
+import path from "path";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import { cards, Card } from "./database";
 import {
   createInitialHand,
   startGame,
@@ -11,15 +14,18 @@ import {
 } from "../server/databaseAccess";
 
 async function createServer() {
-  const app = express();
-  const port = 3000;
+	const app = express();
+	const port = 3000;
 
-  //TODO - check for turns,
+	const __filename = fileURLToPath(import.meta.url);
+	const __dirname = dirname(__filename);
 
-  // test route to make sure api calls working
-  app.get("/api/hello", async (req: Request, res: Response) => {
-    res.json({hello: "world"});
-  });
+	app.use(express.static(path.join(__dirname, "../client/dist"))); // Serve files from dist folder
+
+	// test route to make sure api calls working
+	app.get("/api/hello", async (req: Request, res: Response) => {
+		res.json({ hello: "world" });
+	});
 
   const data = await test();
   console.log(data);
