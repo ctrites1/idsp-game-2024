@@ -1,14 +1,15 @@
-export async function showLoginForm() {
+export async function showRegisterForm() {
   const body = document.querySelector("body") as HTMLBodyElement;
   const formDiv = document.createElement("div");
-  formDiv.className = "login-form";
+  formDiv.className = "register-form";
 
-  const loginForm: HTMLFormElement = document.createElement("form");
-  loginForm.method = "POST";
-  loginForm.action = "/api/login";
+  const registerForm: HTMLFormElement = document.createElement("form");
+  registerForm.method = "POST";
+  registerForm.action = "/api/register";
 
   const username: HTMLInputElement = document.createElement("input");
   const password: HTMLInputElement = document.createElement("input");
+  const email: HTMLInputElement = document.createElement("input");
   const submit: HTMLButtonElement = document.createElement("button");
 
   username.setAttribute("placeholder", "username");
@@ -19,12 +20,17 @@ export async function showLoginForm() {
   password.setAttribute("name", "password");
   password.type = "password";
 
+  email.setAttribute("placeholder", "email");
+  email.setAttribute("name", "email");
+  email.type = "email";
+
   submit.type = "submit";
   submit.innerText = "Login";
 
-  loginForm.appendChild(username);
-  loginForm.appendChild(password);
-  loginForm.appendChild(submit);
-  formDiv.appendChild(loginForm);
+  registerForm.appendChild(username);
+  registerForm.appendChild(password);
+  registerForm.appendChild(email);
+  registerForm.appendChild(submit);
+  formDiv.appendChild(registerForm);
   body.appendChild(formDiv);
 }
