@@ -45,6 +45,7 @@ export async function getCardData() {
 		method: "POST",
 	});
 	const data = await response.json();
+	console.log(data);
 	createPlayerHand(data);
 }
 
