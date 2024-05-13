@@ -1,4 +1,12 @@
 import {getCardData} from "../Arena/Card";
+import {createArenaPage} from "../Arena/mainArena";
+import {removeHomepage} from "./homepage";
+
+async function loginSuccess() {
+  await removeHomepage();
+  await getCardData();
+  await createArenaPage();
+}
 
 export async function loginAsPlayer1() {
   const user = await fetch("/api/login", {
@@ -14,8 +22,7 @@ export async function loginAsPlayer1() {
   const userResponse = await user.json();
   console.log(userResponse);
   if (userResponse.success) {
-    removeBigDiv();
-    await getCardData();
+    await loginSuccess();
     return;
   }
 }
@@ -33,8 +40,7 @@ export async function loginAsPlayer2() {
   });
   const userResponse = await user.json();
   if (userResponse.success) {
-    removeBigDiv();
-    await getCardData();
+    await loginSuccess();
     return;
   }
 }
@@ -46,9 +52,4 @@ export async function logout() {
     return true;
   }
   return false;
-}
-
-function removeBigDiv() {
-  const bigDiv = document.querySelector(".pseudo-homepage") as HTMLDivElement;
-  bigDiv.remove();
 }
