@@ -5,6 +5,7 @@ import {
 	loginAsPlayer2,
 	logout,
 } from "./areas/Homepage/choosePlayer";
+import { createArenaPage } from "./areas/Arena/mainArena";
 
 document.addEventListener("DOMContentLoaded", async () => {
 	await createHomepage();
