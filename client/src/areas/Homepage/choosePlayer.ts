@@ -1,3 +1,5 @@
+import {getCardData} from "../Arena/Card";
+
 export async function loginAsPlayer1() {
   const user = await fetch("/api/login", {
     method: "POST",
@@ -13,6 +15,7 @@ export async function loginAsPlayer1() {
   console.log(userResponse);
   if (userResponse.success) {
     removeBigDiv();
+    await getCardData();
     return;
   }
 }
@@ -31,6 +34,7 @@ export async function loginAsPlayer2() {
   const userResponse = await user.json();
   if (userResponse.success) {
     removeBigDiv();
+    await getCardData();
     return;
   }
 }

@@ -71,7 +71,7 @@ async function createServer() {
     }
     const params = {
       player: req.session.playerId,
-      round: req.body.round_id,
+      round: 1, //! Hard coded round ID !!!!!
       choice: req.body.player_deck_choice,
     };
     const hand = await getCurrentHand(params.player, params.round);
@@ -88,9 +88,15 @@ async function createServer() {
       res.json({gameStarted: false, message: "Session Error - could not authenticate player"});
       return;
     }
+    let player2Id;
+    if (req.session.playerId === 3) {
+      player2Id = 4;
+    } else {
+      player2Id = 3;
+    }
     const players = {
       player1: req.session.playerId,
-      player2: req.body.player_2_id,
+      player2: player2Id,
     };
     const currentGame = await checkForExistingGame(players.player1, players.player2);
     if (currentGame.gameExists) {

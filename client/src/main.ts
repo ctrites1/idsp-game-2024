@@ -4,7 +4,6 @@ import {loginAsPlayer1, loginAsPlayer2, logout} from "./areas/Homepage/choosePla
 
 document.addEventListener("DOMContentLoaded", async () => {
   await createHomepage();
-  getCardData();
   const player1Button = document.querySelector(".player1-btn") as HTMLButtonElement;
   const player2Button = document.querySelector(".player2-btn") as HTMLButtonElement;
 

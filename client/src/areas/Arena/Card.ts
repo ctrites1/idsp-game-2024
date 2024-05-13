@@ -39,7 +39,9 @@ export function viewSingleCard(card: HTMLElement) {
 }
 
 export async function getCardData() {
-  const response = await fetch("/api/playerhand");
+  const response = await fetch("/api/playerhand", {
+    method: "POST",
+  });
   const data = await response.json();
   createPlayerHand(data);
 }
