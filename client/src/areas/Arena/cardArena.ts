@@ -1,18 +1,4 @@
-export function moveCardToTrench(card: HTMLElement) {
-  const trench = document.querySelector("#playerTrench")!;
-  const cardHolders = trench.querySelectorAll(".cardHolder");
-  const emptyHolder = Array.from(cardHolders).find((holder) => !holder.hasChildNodes());
-
-  if (emptyHolder) {
-    const currentCardHolder = card.closest(".cardHolder");
-    emptyHolder.appendChild(card);
-    emptyHolder.prepend();
-
-    if (currentCardHolder && !trench.contains(currentCardHolder)) {
-      currentCardHolder.parentNode?.removeChild(currentCardHolder);
-    }
-  }
-}
+import { dragstartHandler, moveCardToTrench } from "./Card";
 
 export function removeCardFromHand(card: HTMLElement) {
   const holder = card.closest("cardHolder");
@@ -45,52 +31,70 @@ export function viewSingleCard(card: HTMLElement) {
   });
 }
 
-export async function getCardData() {
-  const response = await fetch("/api/playerhand");
+export async function getCardData(gamestate: any) {
+  console.log("Sending request to /api/playerhand");
+  const response = await fetch('/api/playerhand', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      round_id: gamestate.round_id, 
+      player_deck_choice: 1,
+      opp_id: gamestate.oppId,
+    }),
+    credentials: 'include' // Ensures cookies are sent with the request
+  })
+
   const data = await response.json();
+  console.log("data", data);
   createPlayerHand(data);
 }
 
 export function createCard(data: any) {
-  const card: HTMLDivElement = document.createElement("div");
+
+  const card = document.createElement("div");
+  card.id = `card-${data.card_id}`;
+  card.classList.add("card");
+  card.draggable = true;
+
   card.classList.add("card");
 
-  const cardInside: HTMLDivElement = document.createElement("div");
+  card.setAttribute("data-power", String(data.power));
+
+  const cardInside = document.createElement("div");
   cardInside.classList.add("card-inside");
 
-  const cardFront: HTMLDivElement = document.createElement("div");
+  const cardFront = document.createElement("div");
   cardFront.classList.add("card-front");
   cardFront.style.backgroundImage = "url('/assets/Water/EmptyCardFront.svg')";
 
-  const cardFrontText: HTMLUListElement = document.createElement("ul");
+  const cardFrontText = document.createElement("ul");
   const cardName = document.createElement("li");
   cardName.textContent = data.name;
-  const cardDescription = document.createElement("li");
-  cardDescription.textContent = data.description;
+  const cardPower = document.createElement("li");
+  cardPower.textContent = `${data.power}`;
+  // const cardDescription = document.createElement("li");
+  // cardDescription.textContent = data.description;
 
-  cardFrontText.appendChild(cardName);
-  cardFrontText.appendChild(cardDescription);
+  cardFrontText.append(cardPower, cardName);
   cardFront.appendChild(cardFrontText);
 
-  const cardBack: HTMLDivElement = document.createElement("div");
-  // cardBack.style.backgroundImage = `url("/assets/Fire/Fire_Back_1.svg")`;
-  // cardBack.style.backgroundSize = "cover";
-  // cardBack.style.backgroundPosition = "center";
+  const cardBack = document.createElement("div");
   cardBack.classList.add("card-back");
 
-  cardInside.appendChild(cardFront);
-  card.appendChild(cardInside);
+  cardInside.append(cardFront, cardBack);
+  card.append(cardInside);
 
-  card.addEventListener("click", () => {
-    viewSingleCard(card);
-  });
+  card.addEventListener("click", () => viewSingleCard(card));
+  card.addEventListener("dragstart", dragstartHandler);
 
   return card;
 }
 
 export function createPlayerHand(data: any) {
   const hand: HTMLDivElement = document.querySelector(".playerHand")!;
-  data.map((cardData: any) => {
+  data.hand.map((cardData: any) => {
     const cardHolder: HTMLDivElement = document.createElement("div");
     cardHolder.classList.add("cardHolder");
     const card = createCard(cardData);

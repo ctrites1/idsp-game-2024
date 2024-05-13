@@ -1,3 +1,6 @@
+import { getCardData } from "../Arena/cardArena";
+import { startgame } from "../Arena/game";
+
 export async function loginAsPlayer1() {
   const user = await fetch("/api/login", {
     method: "POST",
@@ -10,8 +13,11 @@ export async function loginAsPlayer1() {
     }),
   });
   const userResponse = await user.json();
-  console.log(userResponse);
+  console.log("user respomse", userResponse);
   if (userResponse.success) {
+    const roundState = await startgame();
+    console.log("roundstate", roundState);
+    await getCardData(roundState.data);
     removeBigDiv();
     return;
   }
@@ -30,6 +36,8 @@ export async function loginAsPlayer2() {
   });
   const userResponse = await user.json();
   if (userResponse.success) {
+    const roundState = await startgame();
+    getCardData(roundState);
     removeBigDiv();
     return;
   }
