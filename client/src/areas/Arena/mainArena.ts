@@ -1,15 +1,10 @@
-export async function createArenaPage() {
-	const html: HTMLElement = document.documentElement;
-	const content: string = `
-    <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>ACG Arena</title>
-    <script defer src="./src/main.ts" type="module"></script>
-    </head>
+import { logout } from "../Homepage/choosePlayer";
+import { createHomepage } from "../Homepage/homepage";
+import { getCardData } from "./Card";
 
-    <body>
+export async function createArenaPage() {
+	const body = document.querySelector("body") as HTMLBodyElement;
+	const content: string = `
         <header><div class="header-btns">
             <button type="button" class="home-button">
             </button>
@@ -78,9 +73,25 @@ export async function createArenaPage() {
                     <button class="surrender-button" type="button">Surrender</button>
                     <button class="log-button" type="button">Log</button>
                 </div>
-            </footer>
-    </body>
+        </footer>
     `;
-	html.innerHTML = content;
-	return html;
+	body.innerHTML = content;
+	await getCardData();
+	//* For demo, should refactor later - maybe not use class for footer for easier function calls?
+	const surrenderButton = document.querySelector(
+		".surrender-button"
+	) as HTMLButtonElement;
+	surrenderButton.addEventListener("click", () => {
+		console.log("Surrender clicked");
+		location.reload();
+		// TODO: Logic to handle log viewing to be added here
+	});
+
+	const homeButton = document.querySelector(
+		".home-button"
+	) as HTMLButtonElement;
+	homeButton?.addEventListener("click", async () => {
+		await logout();
+		await createHomepage();
+	});
 }

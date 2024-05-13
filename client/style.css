@@ -17,6 +17,10 @@ html {
 	width: 100%;
 	height: 100%;
 }
+
+/* -------------------------------------------------------------------------- */
+/*                                    Arena                                   */
+/* -------------------------------------------------------------------------- */
 body {
 	margin: 0;
 	display: flex;
@@ -336,12 +340,15 @@ button:focus-visible {
 	font-size: 3rem;
 }
 
+/* -------------------------------------------------------------------------- */
+/*                                  Homepage                                  */
+/* -------------------------------------------------------------------------- */
+
 .pseudo-homepage {
 	display: grid;
 	place-items: center;
 	width: 100vw;
 	height: 100vh;
-	z-index: 10;
 	background-image: url("/assets/Backgrounds/Background3.png");
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -463,7 +470,9 @@ button:focus-visible {
 		linear-gradient(336deg, rgba(0, 0, 255, 0.8), rgba(0, 0, 255, 0) 70.71%);
 }
 
-/* footer styling */
+/* -------------------------------------------------------------------------- */
+/*                                   Footer                                   */
+/* -------------------------------------------------------------------------- */
 
 footer {
 	display: flex;

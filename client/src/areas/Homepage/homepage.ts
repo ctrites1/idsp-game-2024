@@ -1,15 +1,15 @@
+import { loginAsPlayer1, loginAsPlayer2 } from "./choosePlayer";
+
 export async function createHomepage() {
-	const html: HTMLElement = document.documentElement;
+	const body = document.querySelector("body") as HTMLBodyElement;
 	const homepage: HTMLDivElement = document.createElement("div");
 
 	homepage.className = "pseudo-homepage";
 
 	const btn1: HTMLButtonElement = document.createElement("button");
-	// btn1.textContent = "Player 1";
 	btn1.className = "player-select player1-btn";
 
 	const btn2: HTMLButtonElement = document.createElement("button");
-	// btn2.textContent = "Player 2";
 	btn2.className = "player-select player2-btn";
 
 	const player1Img: HTMLImageElement = document.createElement("img");
@@ -28,8 +28,17 @@ export async function createHomepage() {
 	const playerBtnDiv: HTMLDivElement = document.createElement("div");
 	playerBtnDiv.className = "player-selection-container";
 
+	btn1.addEventListener("click", loginAsPlayer1);
+	btn2.addEventListener("click", loginAsPlayer2);
+
 	playerBtnDiv.appendChild(btn1);
 	playerBtnDiv.appendChild(btn2);
 	homepage.appendChild(playerBtnDiv);
-	html.appendChild(homepage);
+
+	body.appendChild(homepage);
+}
+
+export async function removeHomepage() {
+	const homepage = document.querySelector(".pseudo-homepage") as HTMLDivElement;
+	homepage.remove();
 }
