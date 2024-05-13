@@ -364,7 +364,6 @@ button:focus-visible {
 .player-select {
 	display: flex;
 	flex-wrap: wrap;
-	border-radius: 8px;
 	justify-content: center;
 	align-content: center;
 	color: white;
@@ -381,15 +380,76 @@ button:focus-visible {
 	text-transform: uppercase;
 	border: none;
 	outline: none;
+	background: #111;
 }
 
-.player-select:hover,
+/* .player-select::before {
+	content: "";
+	background: linear-gradient(
+		45deg,
+		#ff0000,
+		#ff7300,
+		#fffb00,
+		#48ff00,
+		#00ffd5,
+		#002bff,
+		#7a00ff,
+		#ff00c8,
+		#ff0000
+	);
+	position: absolute;
+	top: -2px;
+	left: -2px;
+	background-size: 400%;
+	z-index: -1;
+	filter: blur(5px);
+	width: calc(100% + 4px);
+	height: calc(100% + 4px);
+	animation: glowing 20s linear infinite;
+	opacity: 0;
+	transition: opacity 0.3s ease-in-out;
+	border-radius: 10px;
+}
+
+.player-select:active::after {
+	background: transparent;
+}
+
+.player-select:hover::before {
+	opacity: 1;
+}
+
+.player-select::after {
+	z-index: -1;
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: #111;
+	left: 0;
+	top: 0;
+	border-radius: 10px;
+}
+
+@keyframes glowing {
+	0% {
+		background-position: 0 0;
+	}
+	50% {
+		background-position: 400% 0;
+	}
+	100% {
+		background-position: 0 0;
+	}
+} */
+
+/* .player-select:hover,
 .player-select:focus {
-	transform: scale(1.05);
-	filter: drop-shadow(0.5rem 0.5rem 1rem #ffd66fa1);
-}
-
-.player-select > img {
+	/* Up and blurred shadow */
+/* transform: scale(1.05);
+	filter: drop-shadow(0rem 0.8125rem 1.6875rem rgba(50, 50, 93, 0.25))
+		drop-shadow(0rem 0.5rem 1rem rgba(0, 0, 0, 0.3)); */
+*/ .player-select > img {
 	border: solid white 0.25rem;
 	border-radius: 50%;
 	padding: 6rem;
