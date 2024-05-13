@@ -1,487 +1,581 @@
 /* root is leftover styles from the vite starter code */
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  --scoreColor: rgba(17, 68, 105, 0.87);
-  --shadow: rgb(226, 217, 197);
+	color-scheme: light dark;
+	--scoreColor: rgba(17, 68, 105, 0.87);
+	--shadow: rgb(226, 217, 197);
+	--primary-background: #1a1a1ac4;
 }
 
-html,
+html {
+	width: 100%;
+	height: 100%;
+}
 body {
-  /* min-width: 1920px;
-  min-height: 1080px; */
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100vh;
-  justify-content: space-between;
-  justify-items: center;
-  background-image: url("/assets/Backgrounds/Background2.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  overflow: auto;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	width: 100vw;
+	height: 100vh;
+	justify-content: space-between;
+	justify-items: center;
+	background-image: url("/assets/Backgrounds/Background2.png");
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	overflow: hidden;
 }
 
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: top;
-  width: 100%;
-  height: 6vh;
-  background-color: #1a1a1a;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	height: 3rem;
+	background-color: #1a1a1a;
 }
 
 .round-indicator {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-size: 1.8rem;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-  background-image: url("/assets/update/Round_indicator.svg");
-  background-repeat: no-repeat;
-  background-position: center;
-  width: 30vh;
-  height: 8vh;
-  margin-top: 0.5rem;
-  margin-left: 7.8rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: white;
+	font-size: 1.2rem;
+	font-size: 2rem;
+	font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+	background-image: url("/assets/update/Round_indicator.svg");
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 30vh;
+	height: 8vh;
+	margin-top: 0.5rem;
+	margin-left: 7.8rem;
 }
 
 header button {
-  margin-top: 0.5rem;
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
+	margin-top: 0.5rem;
+	width: 4rem;
+	height: 4rem;
+	border-radius: 50%;
 }
 
 header .home-button {
-  background-image: url("/assets/Icons/home-btn.svg");
+	background-image: url("/assets/Icons/home-btn.svg");
 }
 
 header .howTo-button {
-  background-image: url("/assets/Icons/howto-btn.svg");
+	background-image: url("/assets/Icons/howto-btn.svg");
 }
 
 header .oppInfo {
-  background-image: url("./public/assets/update/Opponent_Tag.svg");
-  background-repeat: no-repeat;
-  height: 8rem;
-  width: 17rem;
-  margin-top: 0.5rem;
-  margin-right: 0.5rem;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
+	background-image: url("./public/assets/update/Opponent_Tag.svg");
+	background-repeat: no-repeat;
+	height: 8rem;
+	width: 17rem;
+	margin-top: 0.5rem;
+	margin-right: 0.5rem;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
 }
 
 header .oppInfo .oppName {
-  font-size: large;
-  font-family: fantasy;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: -1.4rem;
-  margin-right: 0.5rem;
+	font-size: large;
+	font-family: fantasy;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: -1.4rem;
+	margin-right: 0.5rem;
+}
+
+body > header > div.oppInfo > div.oppPic {
+	height: 100%;
+	width: 100%;
+	border-radius: 50%;
 }
 
 header #oppDisplayPic {
-  display: flex;
-  width: 5.6rem;
-  height: 5.6rem;
-  margin: 0.4rem 0.4rem 0.4rem 0.4rem;
-  border-radius: 50%;
+	display: flex;
+	width: 100%;
+	height: 100%;
+	/* margin: 6px 6px 0px 6px; */
+	border-radius: 50%;
+	object-fit: contain;
 }
 
 .arena {
-  display: flex;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+	display: flex;
+	flex: 1;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
 }
 
 .lane {
-  width: 80%;
-  max-height: 50vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: auto;
+	width: 80%;
+	max-height: 50vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin: auto;
 }
 
 .hill {
-  display: flex;
-  position: relative;
-  text-align: center;
-  height: 100%;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
+	position: relative;
+	text-align: center;
+	height: 100%;
+	width: 100%;
 }
 
 .hill img {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 20rem;
-  width: 20rem;
-  margin: 3rem 0rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 300px;
+	width: 100%;
+	margin: 30px 0px 30px 0px;
 }
 
 .trench {
-  display: grid;
-  grid-template-columns: auto auto auto;
-  grid-column-start: 1;
-  grid-column-end: 3;
-  justify-content: space-evenly;
-  z-index: 2;
-
-  /* margin: 2rem 0rem; */
-  /* background-color: #1a1a1a89;
+	display: grid;
+	grid-template-columns: auto auto auto;
+	grid-column-start: 1;
+	grid-column-end: 3;
+	justify-content: space-evenly;
+	z-index: 2;
+	margin: 2rem 0rem;
+	/* background-color: #1a1a1a89;
 	border-radius: 10px; */
 }
 
 .trench .cardHolder {
-  background-color: #1a1a1a89;
-  border-radius: 10px;
-  margin: 0rem 1rem;
+	background-color: #1a1a1a89;
+	border-radius: 10px;
+	margin: 0rem 1rem;
 }
 
 .trench .cardHolder:hover {
-  transform: scale(2);
-  z-index: 2;
+	transform: scale(2);
+	z-index: 2;
 }
 
 .cardHolder {
-  width: 8rem;
-  height: 12rem;
-  transition: transform 0.2s;
+	width: 101px;
+	height: 150px;
+	transition: transform 0.2s;
 }
 
 .card {
-  width: 100%;
-  height: 100%;
-  background-color: transparent;
-  perspective: 1000px;
+	width: 100%;
+	height: 100%;
+	background-color: transparent;
+	perspective: 1000px;
 }
 
 .card-inside {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  text-align: center;
+	position: relative;
+	width: 100%;
+	height: 100%;
+	text-align: center;
 
-  transition: transform 0.5s;
-  transform-style: preserve-3d;
-  position: relative;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  transition: transform 0.5s;
-  transform-style: preserve-3d;
+	transition: transform 0.5s;
+	transform-style: preserve-3d;
+	position: relative;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+
+	transition: transform 0.5s;
+	transform-style: preserve-3d;
 }
 
 .card-front,
 .card-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  border-radius: 8px;
-  justify-content: center;
-  align-content: center;
-  font-size: large;
-  font-family: "Papyrus", fantasy;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	backface-visibility: hidden;
+	border-radius: 8px;
+	justify-content: center;
+	align-content: center;
+	font-size: large;
+	font-family: "Papyrus", fantasy;
 }
 
 .card-front > ul {
-  padding-left: 0;
+	padding-left: 0;
 }
 
 .card-front > ul > li {
-  list-style-type: none;
-  color: black;
-  font-size: small;
-  padding: 15px;
+	list-style-type: none;
+	color: black;
+	font-size: small;
+	padding: 15px;
 }
 
 .trench > .cardHolder > .card > .card-inside > .card-front > ul {
-  margin: 0;
-  height: inherit;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+	margin: 0;
+	height: inherit;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 
 .trench > .cardHolder > .card > .card-inside > .card-front > ul > li {
-  font-size: 0.3rem;
-  padding: 0.2rem 0rem;
+	font-size: 0.3rem;
+	padding: 0.2rem 0rem;
 }
 
 .card-back {
-  transform: rotateY(180deg);
+	transform: rotateY(180deg);
 }
 
 .singleCardView {
-  display: none;
-  position: fixed;
-  flex-direction: column;
-  left: 0;
-  top: 0;
-  z-index: 5;
-  width: 100%;
-  height: 100%;
-  overflow: none;
-  background-color: rgba(0, 0, 0, 0.4);
-  align-items: center;
-  justify-content: center;
+	display: none;
+	position: fixed;
+	flex-direction: column;
+	left: 0;
+	top: 0;
+	z-index: 5;
+	width: 100%;
+	height: 100%;
+	overflow: none;
+	background-color: rgba(0, 0, 0, 0.4);
+	align-items: center;
+	justify-content: center;
 }
 
 .singleCardView > .card {
-  overflow: none;
-  height: 36em;
+	overflow: none;
+	height: 36em;
 }
 
 .singleCardView > .card,
 .cardViewFooter {
-  width: 24em;
+	width: 24em;
 }
 
 .singleCardView > .card > .card-inside > .card-front > ul > li {
-  font-size: 1.5em;
+	font-size: 1.5em;
 }
 
 .singleCardView > .card > .card-inside > .card-front > ul > li:first-child {
-  text-decoration: underline;
+	text-decoration: underline;
 }
 
 .cardViewFooter {
-  display: flex;
-  justify-content: space-evenly;
+	display: flex;
+	justify-content: space-evenly;
 }
 
 .cardViewFooter > button {
-  height: 3em;
-  background-color: #1a1a1a;
-  border-radius: 5px;
+	height: 3em;
+	background-color: #1a1a1a;
+	border-radius: 5px;
 }
 
 button {
-  background-size: cover;
-  border: none;
-  cursor: pointer;
-  border: 1px solid transparent;
-  padding: 0.6em 1em;
-  font-size: 1em;
-  font-weight: 500;
-  outline: none;
-  font-family: inherit;
-  background-color: transparent;
-  cursor: pointer;
-  transition: border-color 0.25s;
-  margin: 5px;
-}
-button:hover {
-  box-shadow: 0 0 8px 8px rgba(45, 22, 248, 0.6);
+	background-size: cover;
+	border: none;
+	cursor: pointer;
+	border: 1px solid transparent;
+	padding: 0.6em 1em;
+	font-size: 1em;
+	font-weight: 500;
+	outline: none;
+	font-family: inherit;
+	background-color: transparent;
+	cursor: pointer;
+	transition: border-color 0.25s;
+	margin: 5px;
 }
 
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+	outline: 4px auto -webkit-focus-ring-color;
 }
 
 .scoreDisplay {
-  display: flex;
-  color: var(--scoreColor);
-  font-size: 2rem;
-  font-weight: bold;
-  position: absolute;
-  width: 100%;
-  flex-direction: column;
-  justify-content: space-around;
-  top: 50%;
-  transform: translateY(-50%);
-  text-shadow: 3px 0px 7px var(--shadow), -3px 0px 7px var(--shadow),
-    0px 4px 7px var(--shadow);
+	display: flex;
+	color: var(--scoreColor);
+	font-size: 30px;
+	font-weight: bold;
+	text-shadow: 3px 0px 7px var(--shadow), -3px 0px 7px var(--shadow),
+		0px 4px 7px var(--shadow);
+	position: absolute;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	top: 50%;
+	transform: translateY(-50%);
+	color: var(--scoreColor);
+	font-size: 2rem;
+	font-weight: bold;
+	text-shadow: 3px 0px 7px var(--shadow), -3px 0px 7px var(--shadow),
+		0px 4px 7px var(--shadow);
 }
 
 #oppHill {
-  position: relative;
-  bottom: 3.5rem;
-  font-size: 3rem;
+	position: relative;
+	bottom: 56px;
+	font-size: 3rem;
 }
 
 #playerHill {
-  position: relative;
-  top: 3rem;
-  font-size: 3rem;
+	position: relative;
+	top: 40px;
+	font-size: 3rem;
 }
 
 .pseudo-homepage {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 100%;
-  height: 100%;
-  z-index: 10;
-  background-color: whitesmoke;
-  position: fixed;
-  left: 0;
-  top: 0;
-  justify-content: space-evenly;
-  align-content: center;
+	display: grid;
+	place-items: center;
+	width: 100vw;
+	height: 100vh;
+	z-index: 10;
+	background-image: url("/assets/Backgrounds/Background3.png");
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	position: fixed;
+	left: 0;
+	top: 0;
+	justify-content: space-evenly;
+	align-content: center;
 }
 
-.pseudo-homepage > button {
-  display: flex;
-  flex-wrap: wrap;
-  border-radius: 8px;
-  justify-content: center;
-  align-content: center;
-  color: white;
-  padding: 1rem 2rem;
-  width: 100%;
-  height: 100%;
-  font-size: 5rem;
-  max-height: 15rem;
-  max-width: 20rem;
+.pseudo-homepage > .player-selection-container {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 4rem;
+	place-items: center;
+	padding: 2rem;
 }
 
-.pseudo-homepage > .red-btn {
-  background-color: red;
+.player-select {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-content: center;
+	color: white;
+	padding: 1rem 1.5rem;
+	width: 100%;
+	height: 100%;
+	font-size: 1rem;
+	max-height: 20rem;
+	max-width: 15rem;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: transform 0.4s ease-out, filter 0.2s ease-in-out;
+	text-transform: uppercase;
+	border: none;
+	outline: none;
+	background: #111;
 }
 
-.pseudo-homepage > .blue-btn {
-  background-color: blue;
+/* .player-select::before {
+	content: "";
+	background: linear-gradient(
+		45deg,
+		#ff0000,
+		#ff7300,
+		#fffb00,
+		#48ff00,
+		#00ffd5,
+		#002bff,
+		#7a00ff,
+		#ff00c8,
+		#ff0000
+	);
+	position: absolute;
+	top: -2px;
+	left: -2px;
+	background-size: 400%;
+	z-index: -1;
+	filter: blur(5px);
+	width: calc(100% + 4px);
+	height: calc(100% + 4px);
+	animation: glowing 20s linear infinite;
+	opacity: 0;
+	transition: opacity 0.3s ease-in-out;
+	border-radius: 10px;
+}
+
+.player-select:active::after {
+	background: transparent;
+}
+
+.player-select:hover::before {
+	opacity: 1;
+}
+
+.player-select::after {
+	z-index: -1;
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: #111;
+	left: 0;
+	top: 0;
+	border-radius: 10px;
+}
+
+@keyframes glowing {
+	0% {
+		background-position: 0 0;
+	}
+	50% {
+		background-position: 400% 0;
+	}
+	100% {
+		background-position: 0 0;
+	}
+} */
+
+/* .player-select:hover,
+.player-select:focus {
+	/* Up and blurred shadow */
+/* transform: scale(1.05);
+	filter: drop-shadow(0rem 0.8125rem 1.6875rem rgba(50, 50, 93, 0.25))
+		drop-shadow(0rem 0.5rem 1rem rgba(0, 0, 0, 0.3)); */
+*/ .player-select > img {
+	border: solid white 0.25rem;
+	border-radius: 50%;
+	padding: 6rem;
+	object-fit: cover;
+	background: linear-gradient(
+			217deg,
+			rgba(255, 0, 0, 0.8),
+			rgba(255, 0, 0, 0) 70.71%
+		),
+		linear-gradient(127deg, rgba(0, 255, 0, 0.8), rgba(0, 255, 0, 0) 70.71%),
+		linear-gradient(336deg, rgba(0, 0, 255, 0.8), rgba(0, 0, 255, 0) 70.71%);
 }
 
 /* footer styling */
 
 footer {
-  display: flex;
-  flex-direction: row;
-  height: 20rem;
-  width: 100%;
-  background-color: #1a1a1ac4;
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	flex-direction: row;
+	height: 20rem;
+	width: 100%;
+	background-color: #1a1a1ac4;
+	justify-content: center;
+	align-items: center;
 }
 
 .playerHand {
-  display: flex;
-  flex-direction: row;
-  width: fit-content;
-  margin: 0rem 2rem 0rem 6rem;
+	display: flex;
+	flex-direction: row;
+	width: fit-content;
+	margin: 0rem 2rem 0rem 6rem;
 }
 
 #playerHandContainer .cardHolder {
-  margin-left: -4rem;
-  box-shadow: 4px 4px 15px 2px rgba(black, 0.75);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 257px;
-  width: 173px;
-  overflow: hidden;
-  transition: 0.2s;
+	margin-left: -4rem;
+	box-shadow: 4px 4px 15px 2px rgba(black, 0.75);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 257px;
+	width: 173px;
+	overflow: hidden;
+	transition: 0.2s;
 }
 
 #playerHandContainer .cardHolder:not(:first-child) {
-  margin-left: -4rem;
+	margin-left: -4rem;
 }
 
 #playerHandContainer .cardHolder:hover {
-  transform: translateY(-1rem);
-  z-index: 2;
+	transform: translateY(-1rem);
+	z-index: 2;
 }
 
 #playerHandContainer .cardHolder:hover ~ .cardHolder {
-  transform: translateX(3rem);
+	transform: translateX(3rem);
 }
 
 #playerHandContainer.cardHolder.img {
-  height: 200px;
-  width: 150px;
+	height: 200px;
+	width: 150px;
 }
 
 .action-buttons {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 0rem 2rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin: 0rem 2rem;
 }
 .action-buttons button {
-  margin-bottom: 10px;
-  width: 10rem;
-  background-image: url("/assets/update/btn.svg");
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-  border: none;
-  cursor: pointer;
-  display: block;
-  filter: drop-shadow(0 0 0 transparent);
-  transition: filter 0.3s ease-in-out;
+	margin-bottom: 10px;
+	width: 10rem;
+	background-image: url("/assets/update/btn.svg");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+	border: none;
+	cursor: pointer;
+	display: block;
+	filter: drop-shadow(0 0 0 transparent);
+	transition: filter 0.3s ease-in-out;
 }
 
 .turn-indicator {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  font-size: 1.2rem;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-  background-image: url("/assets/update/Turn_indicator.svg");
-  background-repeat: no-repeat;
-  width: 17rem;
-  height: 3rem;
-  background-position: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	font-size: 1.2rem;
+	font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+	background-image: url("/assets/update/Turn_indicator.svg");
+	background-repeat: no-repeat;
+	width: 17rem;
+	height: 3rem;
+	background-position: center;
 }
 
 .playInfo {
-  display: flex;
-  flex-direction: column;
-  margin: 0rem 2rem;
+	display: flex;
+	flex-direction: column;
+	margin: 0rem 2rem;
 }
 
 .playerInfo {
-  background-image: url("/assets/update/Player_tag.svg");
-  width: 17rem;
-  height: 8rem;
-  background-repeat: no-repeat;
-  background-position: center;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+	background-image: url("/assets/update/Player_tag.svg");
+	width: 17rem;
+	height: 8rem;
+	background-repeat: no-repeat;
+	display: flex;
+	flex-direction: row;
 }
 
 .playerName {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-left: 1rem;
-  font-size: large;
-  font-family: fantasy;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 25px;
+	margin-left: 10px;
+	font-size: large;
+	font-family: fantasy;
 }
 
 .playerPic #displayPic {
-  display: flex;
-  width: 5.6rem;
-  height: 5.6rem;
-  margin: 0.4rem 0.4rem 0.4rem 0.4rem;
-  border-radius: 50%;
+	display: flex;
+	width: 90px;
+	height: 90px;
+	margin: 6px 6px 0px 6px;
+	border-radius: 50%;
 }
