@@ -3,13 +3,9 @@ import { createArenaPage } from "../Arena/mainArena";
 import { removeHomepage } from "./homepage";
 
 export async function loginSuccess() {
-	await createPlayerHand();
 	await removeHomepage();
 	await createArenaPage();
 }
-
-import { getCardData } from "../Arena/cardArena";
-import { startgame } from "../Arena/game";
 
 export async function loginAsPlayer1() {
 	const user = await fetch("/api/login", {
@@ -25,7 +21,7 @@ export async function loginAsPlayer1() {
 	const userResponse = await user.json();
 	console.log(userResponse);
 	if (userResponse.success) {
-		removeBigDiv();
+		removeHomepage();
 		return;
 	}
 }
@@ -43,7 +39,7 @@ export async function loginAsPlayer2() {
 	});
 	const userResponse = await user.json();
 	if (userResponse.success) {
-		removeBigDiv();
+		removeHomepage();
 		return;
 	}
 }
