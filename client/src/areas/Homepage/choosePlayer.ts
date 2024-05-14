@@ -21,9 +21,9 @@ export async function loginAsPlayer1() {
   });
   const userResponse = await user.json();
   if (userResponse.success) {
+    await loginSuccess();
     const roundState = await startgame();
     console.log("roundstate: ", roundState);
-    await loginSuccess();
     await getHandData(roundState.data);
     return;
   }
