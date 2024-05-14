@@ -1,6 +1,6 @@
 import { logout } from "../Homepage/choosePlayer";
 import { createHomepage } from "../Homepage/homepage";
-import { createPlayerHand } from "./cardArena";
+import { setupDropZones } from "./cardArena";
 
 export async function createArenaPage() {
 	const body = document.querySelector("body") as HTMLBodyElement;
@@ -76,7 +76,6 @@ export async function createArenaPage() {
         </footer>
     `;
 	body.innerHTML = content;
-	await createPlayerHand();
 
 	//* For demo, should refactor later - maybe not use class for footer for easier function calls?
 	const surrenderButton = document.querySelector(
@@ -95,4 +94,6 @@ export async function createArenaPage() {
 		await logout();
 		await createHomepage();
 	});
+
+	setupDropZones();
 }

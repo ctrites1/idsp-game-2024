@@ -1,8 +1,8 @@
-import express, {Request, Response} from "express";
+import express, { Request, Response } from "express";
 import path from "path";
-import {dirname} from "path";
-import {fileURLToPath} from "url";
-import {cards} from "./database";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import { cards } from "./database";
 import {
   createInitialHand,
   startGame,
@@ -16,7 +16,7 @@ import {
 import bodyParser from "body-parser";
 import cookieSession from "cookie-session";
 import cors from "cors";
-import {Card} from "./types/Card";
+import { Card } from "./types/Card";
 
 export default interface CardIn {
   card_id: number;
@@ -40,7 +40,7 @@ async function createServer() {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
 
-  app.use(bodyParser.urlencoded({extended: true}));
+  app.use(bodyParser.urlencoded({ extended: true }));
   app.use(express.static(path.join(__dirname, "../client/dist"))); // Serve files from dist folder
   app.use(express.json());
   app.use(
@@ -61,17 +61,17 @@ async function createServer() {
   app.get("/api/hello", async (req: Request, res: Response) => {
     const playerId = req.session?.playerId;
     console.log(playerId);
-    res.json({hello: "world"});
+    res.json({ hello: "world" });
   });
 
   app.post("/api/login", async (req: Request, res: Response) => {
-    const {username, password} = req.body;
+    const { username, password } = req.body;
     const valid = await validateUser(username, password);
     if (!valid.success) {
-      res.json({success: false, playerId: null});
+      res.json({ success: false, playerId: null });
       return;
     }
-    req.session = {playerId: valid.playerId};
+    req.session = { playerId: valid.playerId };
 
     // let deckId = 0;
 
@@ -91,40 +91,43 @@ async function createServer() {
     //   res.json(hand);
     //   console.log("your hand ", hand);
 
-    res.json({success: true, playerId: valid.playerId});
+    res.json({ success: true, playerId: valid.playerId });
   });
 
   app.get("/api/logout", async (req: Request, res: Response) => {
     if (req.session) {
       req.session = null;
-      res.json({success: true, message: "Logged out"});
+      res.json({ success: true, message: "Logged out" });
       return;
     }
-    res.json({success: false, message: "No session found, logout failed"});
+    res.json({ success: false, message: "No session found, logout failed" });
   });
 
   const data = await test();
   console.log(data);
 
   app.post("/api/playerhand", async (req: Request, res: Response) => {
-    console.log("Received playerhand request with data:", req.body);
     if (!req.session?.playerId) {
-      res.json({success: false, data: "Session Error - could not authenticate player"});
+      res.json({
+        success: false,
+        data: "Session Error - could not authenticate player",
+      });
       return;
     }
     const params = {
       player: req.session.playerId,
-      round: 1, //! Hard coded round ID !!!!!
+      round: req.body.round_id,
       choice: req.body.player_deck_choice,
     };
 
-    let deckId = 0;
-
     console.log("player ", params.player);
-    const hand: NewHandResponse = await getCurrentHand(params.player, params.round);
+    const hand: NewHandResponse = await getCurrentHand(
+      params.player,
+      params.round
+    );
     if (hand.hand?.length === 0) {
-      deckId++;
       const newHand = await createInitialHand(params.choice, params.player);
+      console.log(newHand);
       if (!newHand || !newHand.hand || newHand.hand.length === 0) {
         console.error("Failed to create new hand or no cards found.");
         return [];
@@ -146,7 +149,10 @@ async function createServer() {
 
   app.post("/api/startgame", async (req: Request, res: Response) => {
     if (!req.session?.playerId) {
-      res.json({gameStarted: false, message: "Session Error - could not authenticate player"});
+      res.json({
+        gameStarted: false,
+        message: "Session Error - could not authenticate player",
+      });
       return;
     }
     let player2Id;
@@ -155,24 +161,37 @@ async function createServer() {
     } else {
       player2Id = 3;
     }
+
     const players = {
       player1: req.session.playerId,
       player2: player2Id,
     };
-
-    const currentGame = await checkForExistingGame(players.player1, players.player2);
-    console.log("sldliksl", currentGame);
+    const currentGame = await checkForExistingGame(
+      players.player1,
+      players.player2
+    );
     if (currentGame.gameExists) {
-      res.json({gameStarted: false, round_id: currentGame.round_id, oppId: players.player2});
+      res.json({
+        gameStarted: false,
+        round_id: currentGame.round_id,
+        oppId: players.player2,
+      });
       return;
     }
     const newRoundID = await startGame(players.player1, players.player2);
-    res.json({gameStarted: true, round_id: newRoundID, oppId: players.player2});
+    res.json({
+      gameStarted: true,
+      round_id: newRoundID,
+      oppId: players.player2,
+    });
   });
 
   app.post("/api/currentgame", async (req: Request, res: Response) => {
     if (!req.session?.playerId) {
-      res.json({success: false, data: "Session Error - could not authenticate player"});
+      res.json({
+        success: false,
+        data: "Session Error - could not authenticate player",
+      });
       return;
     }
 
@@ -187,26 +206,40 @@ async function createServer() {
       player: req.session.playerId,
       opponent: player2Id,
     };
-    const currentGame = await checkForExistingGame(players.player, players.opponent);
-
-    console.log("current game server", currentGame);
-
+    const currentGame = await checkForExistingGame(
+      players.player,
+      players.opponent
+    );
     if (!currentGame.gameExists) {
-      res.json({gameExists: false});
+      res.json({ gameExists: false });
       return;
     }
-    const roundState = await getRoundState(players.player, players.opponent, currentGame.round_id);
-    console.log("round state server", roundState);
+    const roundState = await getRoundState(
+      players.player,
+      players.opponent,
+      currentGame.round_id
+    );
     if (!roundState?.success) {
-      res.json({gameState: false, data: roundState.data, oppId: players.opponent});
+      res.json({
+        gameState: false,
+        data: roundState.data,
+        oppID: players.opponent,
+      });
       return;
     }
-    res.json({gameState: true, data: roundState.data, oppId: players.opponent});
+    res.json({
+      gameState: true,
+      data: roundState.data,
+      oppID: players.opponent,
+    });
   });
 
   app.post("api/logmove", async (req: Request, res: Response) => {
     if (!req.session?.playerId) {
-      res.json({success: false, data: "Session Error - could not authenticate player"});
+      res.json({
+        success: false,
+        data: "Session Error - could not authenticate player",
+      });
       return;
     }
     const move = {
@@ -215,12 +248,17 @@ async function createServer() {
       trenchPos: req.body.trenchPos,
       playerId: req.session.playerId,
     };
-    const moveLogged = await logMove(move.roundId, move.cardId, move.trenchPos, move.playerId);
+    const moveLogged = await logMove(
+      move.roundId,
+      move.cardId,
+      move.trenchPos,
+      move.playerId
+    );
     if (!moveLogged.success) {
-      res.json({success: false, data: "Error logging move"});
+      res.json({ success: false, data: "Error logging move" });
       return;
     }
-    res.json({success: true, data: "Move logged"});
+    res.json({ success: true, data: "Move logged" });
   });
 
   app.listen(port, () => {
