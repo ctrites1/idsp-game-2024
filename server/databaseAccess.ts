@@ -1,6 +1,6 @@
 import {database} from "./databaseConnection";
 import bcrypt from "bcrypt";
-import { Card } from "./types/Card";
+import {Card} from "./types/Card";
 
 export async function createInitialHand(deckID: number, playerId: number) {
   try {
@@ -205,10 +205,10 @@ export async function getRoundState(playerId: number, oppId: number, roundId: nu
     AND round_id = :roundId;
   `;
 
-    const playersMoves: any = database.query(getPlayersMoves, {playerId, roundId});
-    const oppMoves: any = database.query(getOppMoves, {oppId, roundId});
+    const playersMoves: any = await database.query(getPlayersMoves, {playerId, roundId});
+    const oppMoves: any = await database.query(getOppMoves, {oppId, roundId});
 
-    console.log("move", {playersMoves: playersMoves[0], oppMoves: oppMoves[0], round_id: roundId})
+    console.log("move", {playersMoves: playersMoves[0], oppMoves: oppMoves[0], round_id: roundId});
 
     return {success: true, data: {playersMoves: playersMoves[0], oppMoves: oppMoves[0], round_id: roundId}};
   } catch (err) {
