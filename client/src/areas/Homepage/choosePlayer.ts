@@ -1,5 +1,10 @@
-import { getCardData } from "../Arena/cardArena";
-import { startgame } from "../Arena/game";
+import {createArenaPage} from "../Arena/mainArena";
+import {removeHomepage} from "./homepage";
+
+export async function loginSuccess() {
+  await removeHomepage();
+  await createArenaPage();
+}
 
 export async function loginAsPlayer1() {
   const user = await fetch("/api/login", {
@@ -13,12 +18,9 @@ export async function loginAsPlayer1() {
     }),
   });
   const userResponse = await user.json();
-  console.log("user respomse", userResponse);
+  console.log(userResponse);
   if (userResponse.success) {
-    const roundState = await startgame();
-    console.log("roundstate", roundState);
-    await getCardData(roundState.data);
-    removeBigDiv();
+    await loginSuccess();
     return;
   }
 }
@@ -36,9 +38,7 @@ export async function loginAsPlayer2() {
   });
   const userResponse = await user.json();
   if (userResponse.success) {
-    const roundState = await startgame();
-    getCardData(roundState);
-    removeBigDiv();
+    await loginSuccess();
     return;
   }
 }
@@ -50,9 +50,4 @@ export async function logout() {
     return true;
   }
   return false;
-}
-
-function removeBigDiv() {
-  const bigDiv = document.querySelector(".pseudo-homepage") as HTMLDivElement;
-  bigDiv.remove();
 }

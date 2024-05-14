@@ -17,6 +17,10 @@ html {
 	width: 100%;
 	height: 100%;
 }
+
+/* -------------------------------------------------------------------------- */
+/*                                    Arena                                   */
+/* -------------------------------------------------------------------------- */
 body {
 	margin: 0;
 	display: flex;
@@ -336,12 +340,15 @@ button:focus-visible {
 	font-size: 3rem;
 }
 
+/* -------------------------------------------------------------------------- */
+/*                                  Homepage                                  */
+/* -------------------------------------------------------------------------- */
+
 .pseudo-homepage {
 	display: grid;
 	place-items: center;
 	width: 100vw;
 	height: 100vh;
-	z-index: 10;
 	background-image: url("/assets/Backgrounds/Background3.png");
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -356,15 +363,14 @@ button:focus-visible {
 .pseudo-homepage > .player-selection-container {
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
-	gap: 1rem;
+	gap: 4rem;
 	place-items: center;
 	padding: 2rem;
 }
 
-.pseudo-homepage > .player-selection-container > button {
+.player-select {
 	display: flex;
 	flex-wrap: wrap;
-	border-radius: 8px;
 	justify-content: center;
 	align-content: center;
 	color: white;
@@ -372,37 +378,101 @@ button:focus-visible {
 	width: 100%;
 	height: 100%;
 	font-size: 1rem;
-	max-height: 15rem;
-	max-width: 10rem;
+	max-height: 20rem;
+	max-width: 15rem;
 	border: none;
 	border-radius: 8px;
 	cursor: pointer;
-	transition: background-color 0.3s, transform 0.2s;
+	transition: transform 0.4s ease-out, filter 0.2s ease-in-out;
 	text-transform: uppercase;
+	border: none;
+	outline: none;
+	background: #111;
 }
 
-.pseudo-homepage > .player-selection-container > button:hover,
-.pseudo-homepage > .player-selection-container > button:focus {
-	transform: scale(1.05);
+/* .player-select::before {
+	content: "";
+	background: linear-gradient(
+		45deg,
+		#ff0000,
+		#ff7300,
+		#fffb00,
+		#48ff00,
+		#00ffd5,
+		#002bff,
+		#7a00ff,
+		#ff00c8,
+		#ff0000
+	);
+	position: absolute;
+	top: -2px;
+	left: -2px;
+	background-size: 400%;
+	z-index: -1;
+	filter: blur(5px);
+	width: calc(100% + 4px);
+	height: calc(100% + 4px);
+	animation: glowing 20s linear infinite;
+	opacity: 0;
+	transition: opacity 0.3s ease-in-out;
+	border-radius: 10px;
 }
 
-.pseudo-homepage > .player-selection-container > .player1-btn {
-	background-color: #c1301d00;
+.player-select:active::after {
+	background: transparent;
 }
 
-.pseudo-homepage > .player-selection-container > .player1-btn:hover {
-	/* background-color: #8c220f6f; */
+.player-select:hover::before {
+	opacity: 1;
 }
 
-.pseudo-homepage > .player-selection-container > .player2-btn {
-	/* background-color: #4e2a94; */
+.player-select::after {
+	z-index: -1;
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: #111;
+	left: 0;
+	top: 0;
+	border-radius: 10px;
 }
 
-.pseudo-homepage > .player-selection-container > .player2-btn:hover {
-	/* background-color: #371d68; */
+@keyframes glowing {
+	0% {
+		background-position: 0 0;
+	}
+	50% {
+		background-position: 400% 0;
+	}
+	100% {
+		background-position: 0 0;
+	}
+} */
+
+/* .player-select:hover,
+.player-select:focus {
+	/* Up and blurred shadow */
+/* transform: scale(1.05);
+	filter: drop-shadow(0rem 0.8125rem 1.6875rem rgba(50, 50, 93, 0.25))
+		drop-shadow(0rem 0.5rem 1rem rgba(0, 0, 0, 0.3)); */
+*/ .player-select > img {
+	border: solid white 0.25rem;
+	border-radius: 50%;
+	padding: 6rem;
+	object-fit: cover;
+	background: linear-gradient(
+			217deg,
+			rgba(255, 0, 0, 0.8),
+			rgba(255, 0, 0, 0) 70.71%
+		),
+		linear-gradient(127deg, rgba(0, 255, 0, 0.8), rgba(0, 255, 0, 0) 70.71%),
+		linear-gradient(336deg, rgba(0, 0, 255, 0.8), rgba(0, 0, 255, 0) 70.71%);
 }
 
-/* footer styling */
+/* -------------------------------------------------------------------------- */
+/*                                   Footer                                   */
+/* -------------------------------------------------------------------------- */
 
 footer {
 	display: flex;

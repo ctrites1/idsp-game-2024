@@ -1,60 +1,55 @@
-import { dragstartHandler, moveCardToTrench } from "./Card";
+import {Card} from "../../../../server/database";
+import {updateHillScores} from "./Hill";
+import {Hand} from "../../../../server/types/Hand";
+
+export function moveCardToTrench(card: HTMLElement) {
+  const trench = document.querySelector("#playerTrench")!;
+  const cardHolders = trench.querySelectorAll(".cardHolder");
+  const emptyHolder = Array.from(cardHolders).find((holder) => !holder.hasChildNodes());
+
+  if (emptyHolder) {
+    const currentCardHolder = card.closest(".cardHolder");
+    emptyHolder.appendChild(card);
+
+    if (currentCardHolder && !trench.contains(currentCardHolder)) {
+      currentCardHolder.parentNode?.removeChild(currentCardHolder);
+    }
+    updateHillScores();
+  }
+}
 
 export function removeCardFromHand(card: HTMLElement) {
-  const holder = card.closest("cardHolder");
+  const holder = card.closest(".cardHolder");
   holder?.removeChild(card);
 }
 
 export function viewSingleCard(card: HTMLElement) {
   const bigCard = card.cloneNode(true) as HTMLDivElement;
-
   const poppedCard: HTMLDivElement = document.querySelector(".singleCardView")!;
-  poppedCard?.appendChild(bigCard);
+  poppedCard.innerHTML = ""; // Clear previous content
+  poppedCard.appendChild(bigCard);
   poppedCard.style.display = "flex";
 
-  const playBtn: HTMLButtonElement = poppedCard.querySelector(".playCard")!;
-  const closeBtn: HTMLButtonElement = poppedCard.querySelector(".close")!;
-
-  const playCardHandler = () => {
-    removeCardFromHand(card);
-    moveCardToTrench(card);
-    poppedCard.style.display = "none";
-    poppedCard.removeChild(bigCard);
-  };
-
-  playBtn.addEventListener("click", playCardHandler);
-
-  closeBtn.addEventListener("click", () => {
-    poppedCard.style.display = "none";
-    poppedCard.removeChild(bigCard);
-    playBtn.removeEventListener("click", playCardHandler);
+  poppedCard.addEventListener("click", function (event) {
+    if (event.target === poppedCard) {
+      poppedCard.style.display = "none";
+      poppedCard.removeChild(bigCard);
+    }
   });
 }
 
-export async function getCardData(gamestate: any) {
-  console.log("Sending request to /api/playerhand");
-  const response = await fetch('/api/playerhand', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      round_id: gamestate.round_id, 
-      player_deck_choice: 1,
-      opp_id: gamestate.oppId,
-    }),
-    credentials: 'include' // Ensures cookies are sent with the request
-  })
-
+export async function getHandData() {
+  const response = await fetch("/api/playerhand", {
+    method: "POST",
+  });
   const data = await response.json();
-  console.log("data", data);
-  createPlayerHand(data);
+  const hand = data.hand[0];
+  return hand;
 }
 
 export function createCard(data: any) {
-
   const card = document.createElement("div");
-  card.id = `card-${data.card_id}`;
+  card.id = `card-${data.id}`;
   card.classList.add("card");
   card.draggable = true;
 
@@ -64,6 +59,7 @@ export function createCard(data: any) {
 
   const cardInside = document.createElement("div");
   cardInside.classList.add("card-inside");
+  card.setAttribute("data-power", String(data.power));
 
   const cardFront = document.createElement("div");
   cardFront.classList.add("card-front");
@@ -74,10 +70,10 @@ export function createCard(data: any) {
   cardName.textContent = data.name;
   const cardPower = document.createElement("li");
   cardPower.textContent = `${data.power}`;
-  // const cardDescription = document.createElement("li");
-  // cardDescription.textContent = data.description;
+  const cardDescription = document.createElement("li");
+  cardDescription.textContent = data.description;
 
-  cardFrontText.append(cardPower, cardName);
+  cardFrontText.append(cardPower, cardName, cardDescription);
   cardFront.appendChild(cardFrontText);
 
   const cardBack = document.createElement("div");
@@ -92,13 +88,72 @@ export function createCard(data: any) {
   return card;
 }
 
-export function createPlayerHand(data: any) {
-  const hand: HTMLDivElement = document.querySelector(".playerHand")!;
-  data.hand.map((cardData: any) => {
-    const cardHolder: HTMLDivElement = document.createElement("div");
+export async function createPlayerHand() {
+  const data = await getHandData();
+
+  const justCards = Object.keys(data)
+    .filter((key) => {
+      if (key.includes("card")) {
+        return key;
+      }
+      return false;
+    })
+    .map((key) => ({[key]: data[key]}));
+
+  justCards.forEach((card) => {
+    const cardId: string = Object.values(card)[0].toString();
+    console.log(cardId);
+    const hand = document.querySelector(".playerHand")!;
+    const cardHolder = document.createElement("div");
     cardHolder.classList.add("cardHolder");
-    const card = createCard(cardData);
-    cardHolder.appendChild(card);
+    const cardElement = createCard(cardId);
+    cardHolder.appendChild(cardElement);
     hand.appendChild(cardHolder);
   });
 }
+
+function isDragEvent(event: Event): event is DragEvent {
+  return "dataTransfer" in event;
+}
+
+export function dragstartHandler(event: Event) {
+  if (isDragEvent(event) && event.dataTransfer) {
+    // Setting data for the drag and specifying that the drag allows for moving the element.
+    event.dataTransfer.setData("text/plain", (event.target as HTMLElement).id);
+    event.dataTransfer.effectAllowed = "move";
+
+    // Logging the start of dragging.
+    console.log(`Dragging started for element with ID: ${(event.target as HTMLElement).id}`);
+  } else {
+    console.error("Failed to handle drag event due to missing dataTransfer");
+  }
+}
+
+export function setupDropZones() {
+  const cardHolders = document.querySelectorAll("#playerTrench .cardHolder");
+  console.log(`Found ${cardHolders.length} drop zones.`); // Check how many were found
+  cardHolders.forEach((holder) => {
+    console.log("Setting up drop zone"); // Confirm setup
+    holder.addEventListener("dragover", (event) => {
+      event.preventDefault(); // Necessary to allow for the drop event to fire
+      console.log("Drag over active zone"); // Debugging dragover activity
+    });
+
+    holder.addEventListener("drop", (event) => {
+      event.preventDefault();
+      console.log("Drop event triggered"); // Debugging drop activity
+      if (isDragEvent(event) && event.dataTransfer) {
+        const cardId = event.dataTransfer.getData("text/plain");
+        const card = document.getElementById(cardId);
+        if (card && !holder.hasChildNodes()) {
+          moveCardToTrench(card);
+          console.log(`Card with ID: ${cardId} moved to new holder`);
+        }
+      }
+    });
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  setupDropZones();
+});
