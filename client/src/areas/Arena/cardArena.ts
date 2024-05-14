@@ -38,7 +38,8 @@ export function setupDropZones() {
       if (isDragEvent(event) && event.dataTransfer) {
         const cardId = event.dataTransfer.getData("text/plain");
         console.log(cardId);
-        const card = document.getElementById(cardId);
+        const playerHand = document.querySelector("#playerHandContainer");
+        const card = playerHand?.querySelector(`#${cardId}`) as HTMLElement;
         // endTurnButton.setAttribute("cardId", cardId)
         if (card && !holder.hasChildNodes()) {
           moveCardToTrench(card);
