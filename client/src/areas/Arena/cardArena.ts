@@ -22,9 +22,22 @@ export function dragstartHandler(event: Event) {
 	}
 }
 
+function checkIfCardPlayedThisTurn(cardId: string) {
+	const endTurnButton: HTMLButtonElement =
+		document.querySelector(".endTurn-button")!;
+	console.log("test: ", endTurnButton.attributes.getNamedItem("card-played"));
+	if (!endTurnButton.attributes.getNamedItem("card-played")) {
+		endTurnButton.setAttribute("card-played", cardId);
+		return false;
+	} else {
+		return true; // card HAS been played this turn
+	}
+}
+
 export function setupDropZones() {
 	const cardHolders = document.querySelectorAll("#playerTrench .cardHolder");
 	console.log(`Found ${cardHolders.length} drop zones.`); // Check how many were found
+
 	cardHolders.forEach((holder) => {
 		console.log("Setting up drop zone"); // Confirm setup
 		holder.addEventListener("dragover", (event) => {
@@ -34,14 +47,18 @@ export function setupDropZones() {
 
 		holder.addEventListener("drop", (event) => {
 			event.preventDefault();
-			console.log("Drop event triggered"); // Debugging drop activity
+
 			if (isDragEvent(event) && event.dataTransfer) {
 				const cardId = event.dataTransfer.getData("text/plain");
 				const card = document.getElementById(cardId);
-				// endTurnButton.setAttribute("cardId", cardId)
 				if (card && !holder.hasChildNodes()) {
-					moveCardToTrench(card);
-					console.log(`Card with ID: ${cardId} moved to new holder`);
+					if (!checkIfCardPlayedThisTurn(cardId)) {
+						moveCardToTrench(card);
+						console.log(`Card with ID: ${cardId} moved to new holder`);
+					} else {
+						console.log("Cannot play more than 1 card per turn");
+						return;
+					}
 				}
 			}
 		});
@@ -100,7 +117,7 @@ export async function getHandData(gamestate: any) {
 
 export function createCard(data: any) {
 	const card: HTMLDivElement = document.createElement("div");
-	card.id = `card-${data.id}`;
+	card.id = `card-${data.card_id}`;
 	card.classList.add("card");
 	card.draggable = true;
 	card.setAttribute("data-power", String(data.power));
