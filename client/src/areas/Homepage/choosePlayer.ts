@@ -8,6 +8,9 @@ export async function loginSuccess() {
 	await createArenaPage();
 }
 
+import { getCardData } from "../Arena/cardArena";
+import { startgame } from "../Arena/game";
+
 export async function loginAsPlayer1() {
 	const user = await fetch("/api/login", {
 		method: "POST",
@@ -22,7 +25,7 @@ export async function loginAsPlayer1() {
 	const userResponse = await user.json();
 	console.log(userResponse);
 	if (userResponse.success) {
-		await loginSuccess();
+		removeBigDiv();
 		return;
 	}
 }
@@ -40,7 +43,7 @@ export async function loginAsPlayer2() {
 	});
 	const userResponse = await user.json();
 	if (userResponse.success) {
-		await loginSuccess();
+		removeBigDiv();
 		return;
 	}
 }

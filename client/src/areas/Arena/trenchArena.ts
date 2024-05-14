@@ -1,7 +1,7 @@
 import { clearHillScores, updateHillScores } from "./Hill";
 
-export function addCardToTrench(element: HTMLDivElement) {
-  const trench = document.querySelector("#playerTrench")!;
+export function addCardToOppTrench(element: HTMLDivElement) {
+  const trench = document.querySelector("#oppTrench")!;
   const cardHolders = trench.querySelectorAll(".cardHolder");
   Array.from(cardHolders).map((holder) => {
     if (holder.hasChildNodes()) {

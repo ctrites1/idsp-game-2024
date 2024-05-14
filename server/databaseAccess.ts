@@ -1,16 +1,20 @@
 import {database} from "./databaseConnection";
 import bcrypt from "bcrypt";
-import {Card} from "./types/Card";
+import { Card } from "./types/Card";
 
-export async function createInitialHand(deckID: number, playerId: number, roundId: number) {
+export async function createInitialHand(deckID: number, playerId: number) {
   try {
     const deckChoice = deckID;
     let getDeck = `
-    SELECT name, power, unit_type_id FROM card
+    SELECT card_id, name, power, unit_type_id FROM card
     WHERE element_id = :deckChoice;
     `;
     const deck: any = await database.query(getDeck, {deckChoice});
+    console.log("deck", deck);
     const hand = randomizeDeck(deck[0]);
+
+    console.log("hand", hand);
+    const roundId = 1;
 
     let logHand = `
     INSERT INTO hand 
@@ -22,15 +26,18 @@ export async function createInitialHand(deckID: number, playerId: number, roundI
     const handParams = {
       playerId,
       roundId,
-      card_1_id: hand[0],
-      card_2_id: hand[1],
-      card_3_id: hand[2],
-      card_4_id: hand[3],
-      card_5_id: hand[4],
-      card_6_id: hand[5],
-      card_7_id: hand[6],
+      card_1_id: hand[0].card_id,
+      card_2_id: hand[1].card_id,
+      card_3_id: hand[2].card_id,
+      card_4_id: hand[3].card_id,
+      card_5_id: hand[4].card_id,
+      card_6_id: hand[5].card_id,
+      card_7_id: hand[6].card_id,
     };
+
+    console.log("params", handParams);
     await database.query(logHand, handParams);
+    console.log(hand);
     return {success: true, hand};
   } catch (err) {
     console.log(`Error getting deck: ${err}`);
@@ -42,17 +49,24 @@ export async function getCurrentHand(playerId: number, roundId: number) {
   //? Send back info about whether it is player or opponent turn
   try {
     let getHand = `
-        SELECT * FROM hand 
-        WHERE player_id = :playerId AND round_id = :roundId;
-        `;
+    SELECT 
+    h.player_id, 
+    h.round_id,
+    c.card_id AS card_id, c.name AS name, c.power AS power, c.element_id AS element, c.unit_type_id AS unit_type, c.support_type_id AS support_type
+    FROM hand h
+    JOIN card as c ON c.card_id in (h.card_1_id, h.card_2_id, h.card_3_id, h.card_4_id, h.card_5_id, h.card_6_id, h.card_7_id)
+    WHERE h.player_id = :playerId AND h.round_id = :roundId;`;
+
     let handParams = {
       playerId,
       roundId,
     };
     const hand: any = await database.query(getHand, handParams);
+    console.log(hand);
     if (hand.length === 0) {
       throw new Error("No hand exists for this player in the current round");
     }
+    console.log(hand);
     return {success: true, hand: hand[0]};
   } catch (err) {
     console.log(`Error getting current hand: ${err}`);
@@ -125,14 +139,14 @@ export async function startGame(player_1_id: number, player_2_id: number) {
 
     const getMatchId = "SELECT MAX(match_id) AS 'created_match' FROM `match`;";
     let match: any = await database.query(getMatchId);
-    const match_id = match[0][0].created_match;
+    const match_id = match[0].created_match;
 
     let startRound = "INSERT INTO round (match_id) VALUES (:match_id);";
     await database.query(startRound, {match_id});
 
     let getRound = "SELECT MAX(round_id) AS 'created_round' FROM `round`;";
     const round: any = await database.query(getRound);
-    const round_id = round[0][0].created_round;
+    const round_id = round[0].created_round;
 
     let commitChanges = `COMMIT;`;
     await database.query(commitChanges);
@@ -147,21 +161,28 @@ export async function startGame(player_1_id: number, player_2_id: number) {
 
 export async function checkForExistingGame(player_1_id: number, player_2_id: number) {
   let checkForPlayer1Matches =
-    "SELECT match_id, player_1_id, player_2_id, is_completed FROM `match` WHERE player_1_id = :player_1_id OR player_2_id = :player_1_id;";
+    "SELECT m.match_id, player_1_id, player_2_id, is_completed, round_id FROM `match` AS m JOIN `round` AS r ON m.match_id = r.match_id WHERE player_1_id = :player_1_id OR player_2_id = :player_1_id ORDER BY round_id desc LIMIT 1;";
 
   const player1Games: any = await database.query(checkForPlayer1Matches, {
     player_1_id,
   });
-  const gameAlreadyExists = player1Games[0][0].filter((game: any) => {
+
+  console.log("gamestate", player1Games);
+
+  const gameAlreadyExists = player1Games[0].filter((game: any) => {
     if ((game.player_1_id !== player_2_id || game.player_2_id !== player_2_id) && !game.is_completed) {
       return game;
     }
   });
 
+  console.log("game that exists", gameAlreadyExists);
+
   if (gameAlreadyExists.length > 0) {
-    let existing_game_id = gameAlreadyExists[0].game_id;
-    let getCurrentRound = "SELECT MAX(round_id) FROM `round` WHERE game_id = :existing_game_id";
+    let existing_game_id = gameAlreadyExists[0].match_id;
+    let getCurrentRound = "SELECT MAX(round_id) as round_id FROM `round` WHERE match_id = :existing_game_id";
     let round: any = await database.query(getCurrentRound, {existing_game_id});
+    //console.log("round", round)
+    //console.log("ha", {gameExists: true, round_id: round[0][0].round_id})
     return {gameExists: true, round_id: round[0][0].round_id};
   }
   return {gameExists: false, round_id: null};
@@ -170,16 +191,26 @@ export async function checkForExistingGame(player_1_id: number, player_2_id: num
 export async function getRoundState(playerId: number, oppId: number, roundId: number) {
   try {
     let getPlayersMoves = `
-  SELECT card_id, trench_position FROM move WHERE player_id = :playerId AND round_id = :roundId;
+    SELECT m.card_id, trench_position, name, power
+    FROM move AS m
+    JOIN card on m.card_id = card.card_id
+    WHERE player_id = :playerId 
+    AND round_id = :roundId;
   `;
     let getOppMoves = `
-  SELECT card_id, trench_position FROM move WHERE player_id = :oppId AND round_id = :roundId;
+    SELECT m.card_id, trench_position, name, power
+    FROM move AS m
+    JOIN card on m.card_id = card.card_id
+    WHERE player_id = :oppId 
+    AND round_id = :roundId;
   `;
 
     const playersMoves: any = database.query(getPlayersMoves, {playerId, roundId});
     const oppMoves: any = database.query(getOppMoves, {oppId, roundId});
 
-    return {success: true, data: {playersMoves: playersMoves[0], oppMoves: oppMoves[0]}};
+    console.log("move", {playersMoves: playersMoves[0], oppMoves: oppMoves[0], round_id: roundId})
+
+    return {success: true, data: {playersMoves: playersMoves[0], oppMoves: oppMoves[0], round_id: roundId}};
   } catch (err) {
     console.log(`Error getting round state: ${err}`);
     return {success: false, data: err};
@@ -188,8 +219,8 @@ export async function getRoundState(playerId: number, oppId: number, roundId: nu
 
 export async function createPlayer(data: any) {
   const saltRounds = 10;
-  bcrypt.genSalt(saltRounds, function (err, salt) {
-    bcrypt.hash(data.password, salt, function (err, hash) {
+  bcrypt.genSalt(saltRounds, function (err: any, salt: any) {
+    bcrypt.hash(data.password, salt, function (err: any, hash: any) {
       const createPlayerQuery = `
         INSERT INTO player (username, email, password_hash)
         VALUES (:username, :email, :password)
@@ -286,7 +317,9 @@ export async function removePlayerById(playerId: number) {
 
 //! These are functions that are not getting exported - could move to separate file
 function randomizeDeck(cards: Card[]) {
-  return cards.filter((card) => card.unit_type_id === 1 || card.unit_type_id === 2);
+  const hand = cards.filter((card) => card.unit_type_id === 1 || card.unit_type_id === 2);
+  console.log("randomize", hand);
+  return hand;
   //   const deck = [];
   //   const nonHeroCards = cards.filter((card) => card.unit_type_id === 1 || card.unit_type_id === 2);
   //   for (let i = 0; i < 7; i++) {

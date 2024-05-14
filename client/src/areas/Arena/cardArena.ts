@@ -1,5 +1,3 @@
-import { updateHillScores } from "./Hill";
-
 export function moveCardToTrench(card: HTMLElement) {
 	const trench = document.querySelector("#playerTrench")!;
 	const cardHolders = trench.querySelectorAll(".cardHolder");
@@ -10,11 +8,11 @@ export function moveCardToTrench(card: HTMLElement) {
 	if (emptyHolder) {
 		const currentCardHolder = card.closest(".cardHolder");
 		emptyHolder.appendChild(card);
+		emptyHolder.prepend();
 
 		if (currentCardHolder && !trench.contains(currentCardHolder)) {
 			currentCardHolder.parentNode?.removeChild(currentCardHolder);
 		}
-		updateHillScores();
 	}
 }
 
@@ -38,74 +36,56 @@ export function viewSingleCard(card: HTMLElement) {
 	});
 }
 
-export async function getHandData() {
-	const response = await fetch("/api/playerhand", {
-		method: "POST",
-	});
+export async function getCardData() {
+	const response = await fetch("/api/playerhand");
 	const data = await response.json();
-	const hand = data.hand[0];
-	return hand;
+	createPlayerHand(data);
 }
 
 export function createCard(data: any) {
-	const card = document.createElement("div");
-	card.id = `card-${data.id}`;
-	card.classList.add("card");
-	card.draggable = true;
-
+	const card: HTMLDivElement = document.createElement("div");
 	card.classList.add("card");
 
-	card.setAttribute("data-power", String(data.power));
-
-	const cardInside = document.createElement("div");
+	const cardInside: HTMLDivElement = document.createElement("div");
 	cardInside.classList.add("card-inside");
 
-	const cardFront = document.createElement("div");
+	const cardFront: HTMLDivElement = document.createElement("div");
 	cardFront.classList.add("card-front");
 	cardFront.style.backgroundImage = "url('/assets/Water/EmptyCardFront.svg')";
 
-	const cardFrontText = document.createElement("ul");
+	const cardFrontText: HTMLUListElement = document.createElement("ul");
 	const cardName = document.createElement("li");
 	cardName.textContent = data.name;
-	const cardPower = document.createElement("li");
-	cardPower.textContent = `${data.power}`;
 	const cardDescription = document.createElement("li");
 	cardDescription.textContent = data.description;
 
-	cardFrontText.append(cardPower, cardName, cardDescription);
+	cardFrontText.appendChild(cardName);
+	cardFrontText.appendChild(cardDescription);
 	cardFront.appendChild(cardFrontText);
 
-	const cardBack = document.createElement("div");
+	const cardBack: HTMLDivElement = document.createElement("div");
+	// cardBack.style.backgroundImage = `url("/assets/Fire/Fire_Back_1.svg")`;
+	// cardBack.style.backgroundSize = "cover";
+	// cardBack.style.backgroundPosition = "center";
 	cardBack.classList.add("card-back");
 
-	cardInside.append(cardFront, cardBack);
-	card.append(cardInside);
+	cardInside.appendChild(cardFront);
+	card.appendChild(cardInside);
 
-	card.addEventListener("click", () => viewSingleCard(card));
-	card.addEventListener("dragstart", dragstartHandler);
+	card.addEventListener("click", () => {
+		viewSingleCard(card);
+	});
 
 	return card;
 }
 
-export async function createPlayerHand() {
-	const data = await getHandData();
-
-	const justCards = Object.keys(data)
-		.filter((key) => {
-			if (key.includes("card")) {
-				return key;
-			}
-			return false;
-		})
-		.map((key) => ({ [key]: data[key] }));
-
-	justCards.forEach((card) => {
-		const cardId: string = Object.values(card)[0].toString();
-		const hand = document.querySelector(".playerHand")!;
-		const cardHolder = document.createElement("div");
+export function createPlayerHand(data: any) {
+	const hand: HTMLDivElement = document.querySelector(".playerHand")!;
+	data.map((cardData: any) => {
+		const cardHolder: HTMLDivElement = document.createElement("div");
 		cardHolder.classList.add("cardHolder");
-		const cardElement = createCard(cardId);
-		cardHolder.appendChild(cardElement);
+		const card = createCard(cardData);
+		cardHolder.appendChild(card);
 		hand.appendChild(cardHolder);
 	});
 }
