@@ -37,6 +37,7 @@ export function setupDropZones() {
       console.log("Drop event triggered"); // Debugging drop activity
       if (isDragEvent(event) && event.dataTransfer) {
         const cardId = event.dataTransfer.getData("text/plain");
+        console.log(event.target);
         console.log(cardId);
         const playerHand = document.querySelector("#playerHandContainer");
         const card = playerHand?.querySelector(`#${cardId}`) as HTMLElement;
@@ -103,7 +104,7 @@ export async function getHandData(gamestate: any) {
 
 export function createCard(data: any) {
   const card: HTMLDivElement = document.createElement("div");
-  card.id = `card-${data.id}`;
+  card.id = `card-${data.card_id}`;
   card.classList.add("card");
   card.draggable = true;
   card.setAttribute("data-power", String(data.power));
