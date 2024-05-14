@@ -1,4 +1,5 @@
-import { createPlayerHand } from "../Arena/cardArena";
+import { getHandData } from "../Arena/cardArena";
+import { startgame } from "../Arena/game";
 import { createArenaPage } from "../Arena/mainArena";
 import { removeHomepage } from "./homepage";
 
@@ -19,9 +20,11 @@ export async function loginAsPlayer1() {
 		}),
 	});
 	const userResponse = await user.json();
-	console.log(userResponse);
 	if (userResponse.success) {
-		removeHomepage();
+		const roundState = await startgame();
+		console.log("roundstate: ", roundState);
+		await loginSuccess();
+		await getHandData(roundState.data);
 		return;
 	}
 }
@@ -39,7 +42,10 @@ export async function loginAsPlayer2() {
 	});
 	const userResponse = await user.json();
 	if (userResponse.success) {
-		removeHomepage();
+		const roundState = await startgame();
+		console.log("roundstate: ", roundState);
+		await getHandData(roundState.data);
+		await loginSuccess();
 		return;
 	}
 }

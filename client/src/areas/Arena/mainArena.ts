@@ -1,6 +1,5 @@
 import { logout } from "../Homepage/choosePlayer";
 import { createHomepage } from "../Homepage/homepage";
-import { createPlayerHand } from "./cardArena";
 
 export async function createArenaPage() {
 	const body = document.querySelector("body") as HTMLBodyElement;

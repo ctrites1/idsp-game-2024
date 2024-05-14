@@ -120,16 +120,14 @@ async function createServer() {
 			choice: req.body.player_deck_choice,
 		};
 
-		let deckId = 0;
-
 		console.log("player ", params.player);
 		const hand: NewHandResponse = await getCurrentHand(
 			params.player,
 			params.round
 		);
 		if (hand.hand?.length === 0) {
-			deckId++;
 			const newHand = await createInitialHand(params.choice, params.player);
+			console.log(newHand);
 			if (!newHand || !newHand.hand || newHand.hand.length === 0) {
 				console.error("Failed to create new hand or no cards found.");
 				return [];
@@ -157,6 +155,13 @@ async function createServer() {
 			});
 			return;
 		}
+		let player2Id;
+		if (req.session.playerId === 3) {
+			player2Id = 4;
+		} else {
+			player2Id = 3;
+		}
+
 		const players = {
 			player1: req.session.playerId,
 			player2: player2Id,
@@ -181,6 +186,14 @@ async function createServer() {
 			});
 			return;
 		}
+
+		let player2Id;
+		if (req.session.playerId === 3) {
+			player2Id = 4;
+		} else {
+			player2Id = 3;
+		}
+
 		const players = {
 			player: req.session.playerId,
 			opponent: player2Id,

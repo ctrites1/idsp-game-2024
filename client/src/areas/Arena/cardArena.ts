@@ -36,11 +36,21 @@ export function viewSingleCard(card: HTMLElement) {
 	});
 }
 
-export async function getCardData() {
+export async function getHandData(gamestate: any) {
 	const response = await fetch("/api/playerhand", {
 		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			round_id: gamestate.round_id,
+			player_deck_choice: 1,
+			app_id: gamestate.oppId,
+		}),
+		credentials: "include", // Ensures cookies are sent with the req
 	});
 	const data = await response.json();
+	console.log("Hand: ", data);
 	createPlayerHand(data);
 }
 
@@ -83,7 +93,7 @@ export function createCard(data: any) {
 
 export function createPlayerHand(data: any) {
 	const hand: HTMLDivElement = document.querySelector(".playerHand")!;
-	data.map((cardData: any) => {
+	data.hand.map((cardData: any) => {
 		const cardHolder: HTMLDivElement = document.createElement("div");
 		cardHolder.classList.add("cardHolder");
 		const card = createCard(cardData);
