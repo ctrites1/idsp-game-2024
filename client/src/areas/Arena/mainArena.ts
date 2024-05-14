@@ -76,7 +76,6 @@ export async function createArenaPage() {
         </footer>
     `;
 	body.innerHTML = content;
-	await createPlayerHand();
 
 	//* For demo, should refactor later - maybe not use class for footer for easier function calls?
 	const surrenderButton = document.querySelector(

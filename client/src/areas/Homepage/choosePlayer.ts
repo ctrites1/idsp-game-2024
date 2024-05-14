@@ -1,7 +1,9 @@
+import { createPlayerHand } from "../Arena/cardArena";
 import { createArenaPage } from "../Arena/mainArena";
 import { removeHomepage } from "./homepage";
 
 export async function loginSuccess() {
+	await createPlayerHand();
 	await removeHomepage();
 	await createArenaPage();
 }

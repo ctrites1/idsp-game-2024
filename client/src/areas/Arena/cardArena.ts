@@ -1,6 +1,4 @@
-import { Card } from "../../../../server/database";
 import { updateHillScores } from "./Hill";
-import { Hand } from "../../../../server/types/Hand";
 
 export function moveCardToTrench(card: HTMLElement) {
 	const trench = document.querySelector("#playerTrench")!;
@@ -103,7 +101,6 @@ export async function createPlayerHand() {
 
 	justCards.forEach((card) => {
 		const cardId: string = Object.values(card)[0].toString();
-		console.log(cardId);
 		const hand = document.querySelector(".playerHand")!;
 		const cardHolder = document.createElement("div");
 		cardHolder.classList.add("cardHolder");
