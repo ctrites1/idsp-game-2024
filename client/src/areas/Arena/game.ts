@@ -1,5 +1,5 @@
-import {createCard} from "./cardArena";
-import {addCardToOppTrench} from "./trenchArena";
+import { createCard, dragstartHandler } from "./cardArena";
+import { addCardToOppTrench } from "./trenchArena";
 export let playerState = [];
 
 export async function startgame() {
@@ -20,6 +20,8 @@ export async function startgame() {
     playerState = cg;
     cg.data.oppMoves.map((m: any) => {
       const oppCard = createCard(m);
+      oppCard.removeEventListener("dragstart", dragstartHandler);
+      oppCard.draggable = false;
       addCardToOppTrench(oppCard);
     });
     return cg;
