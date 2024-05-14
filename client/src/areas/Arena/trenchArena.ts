@@ -49,20 +49,19 @@ export async function logMove() {
     }
   });
 
-  console.log("R_ID", roundId);
-  console.log("C_ID", cardId);
   if (roundId && cardId) {
-    // await fetch("/api/logmove", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     roundId,
-    //     cardId,
-    //     trenchPos: counter,
-    //   }),
-    // });
+    console.log("FETCHING");
+    await fetch("/api/logmove", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        roundId: Number(roundId),
+        cardId: Number(cardId.substring(5, 7)),
+        trenchPos: counter,
+      }),
+    });
   } else {
     console.log("No move to be logged");
   }

@@ -60,7 +60,6 @@ async function createServer() {
   // test route to make sure api calls working
   app.get("/api/hello", async (req: Request, res: Response) => {
     const playerId = req.session?.playerId;
-    console.log(playerId);
     res.json({ hello: "world" });
   });
 
@@ -120,20 +119,17 @@ async function createServer() {
       choice: req.body.player_deck_choice,
     };
 
-    console.log("player ", params.player);
     const hand: NewHandResponse = await getCurrentHand(
       params.player,
       params.round
     );
     if (hand.hand?.length === 0) {
       const newHand = await createInitialHand(params.choice, params.player);
-      console.log(newHand);
       if (!newHand || !newHand.hand || newHand.hand.length === 0) {
         console.error("Failed to create new hand or no cards found.");
         return [];
       }
       res.json(newHand);
-      console.log("your new hand ", newHand);
       return;
     }
 
@@ -143,7 +139,6 @@ async function createServer() {
     }
 
     res.json(hand);
-    console.log("your new hand ", hand);
     return;
   });
 
@@ -234,7 +229,7 @@ async function createServer() {
     });
   });
 
-  app.post("api/logmove", async (req: Request, res: Response) => {
+  app.post("/api/logmove", async (req: Request, res: Response) => {
     if (!req.session?.playerId) {
       res.json({
         success: false,
@@ -242,7 +237,7 @@ async function createServer() {
       });
       return;
     }
-    console.log(req.body);
+
     const move = {
       roundId: req.body.roundId,
       cardId: req.body.cardId,

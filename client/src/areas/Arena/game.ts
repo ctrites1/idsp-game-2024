@@ -30,7 +30,9 @@ export async function startgame() {
       playerCard.draggable = false;
       moveCardToTrench(playerCard);
     });
-    const endTurnButton = document.querySelector("endTurn-Button");
+    const endTurnButton = document.querySelector(".endTurn-button");
+    console.log(endTurnButton);
+    console.log(cg.data.round_id);
     endTurnButton?.setAttribute("round-played", cg.data.round_id);
     return cg;
   }
