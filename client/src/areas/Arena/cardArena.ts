@@ -78,10 +78,18 @@ export function removeCardFromHand(card: HTMLElement) {
 
 export function viewSingleCard(card: HTMLElement) {
   const bigCard = card.cloneNode(true) as HTMLDivElement;
-
   const poppedCard: HTMLDivElement = document.querySelector(".singleCardView")!;
-  poppedCard?.appendChild(bigCard);
+  poppedCard.innerHTML = "";
+  poppedCard.appendChild(bigCard);
   poppedCard.style.display = "flex";
+
+  // Added event listener for closing the view when clicking outside the card
+  poppedCard.addEventListener("click", function (event) {
+    if (event.target === poppedCard) {
+      poppedCard.style.display = "none";
+      poppedCard.removeChild(bigCard);
+    }
+  });
 }
 
 export async function getHandData(gamestate: any) {
@@ -98,7 +106,6 @@ export async function getHandData(gamestate: any) {
     credentials: "include", // Ensures cookies are sent with the req
   });
   const data = await response.json();
-  console.log("Hand: ", data);
   createPlayerHand(data);
 }
 
