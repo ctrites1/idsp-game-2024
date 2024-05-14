@@ -171,11 +171,19 @@ async function createServer() {
 			players.player2
 		);
 		if (currentGame.gameExists) {
-			res.json({ gameStarted: false, round_id: currentGame.round_id });
+			res.json({
+				gameStarted: false,
+				round_id: currentGame.round_id,
+				oppId: players.player2,
+			});
 			return;
 		}
 		const newRoundID = await startGame(players.player1, players.player2);
-		res.json({ gameStarted: true, round_id: newRoundID });
+		res.json({
+			gameStarted: true,
+			round_id: newRoundID,
+			oppId: players.player2,
+		});
 	});
 
 	app.post("/api/currentgame", async (req: Request, res: Response) => {
@@ -212,10 +220,18 @@ async function createServer() {
 			currentGame.round_id
 		);
 		if (!roundState?.success) {
-			res.json({ gameState: false, data: roundState.data });
+			res.json({
+				gameState: false,
+				data: roundState.data,
+				oppID: players.opponent,
+			});
 			return;
 		}
-		res.json({ gameState: true, data: roundState.data });
+		res.json({
+			gameState: true,
+			data: roundState.data,
+			oppID: players.opponent,
+		});
 	});
 
 	app.post("api/logmove", async (req: Request, res: Response) => {

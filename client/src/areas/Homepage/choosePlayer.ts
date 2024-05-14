@@ -42,10 +42,10 @@ export async function loginAsPlayer2() {
 	});
 	const userResponse = await user.json();
 	if (userResponse.success) {
+		await loginSuccess();
 		const roundState = await startgame();
 		console.log("roundstate: ", roundState);
 		await getHandData(roundState.data);
-		await loginSuccess();
 		return;
 	}
 }

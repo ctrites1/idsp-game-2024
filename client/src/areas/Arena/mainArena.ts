@@ -1,5 +1,6 @@
 import { logout } from "../Homepage/choosePlayer";
 import { createHomepage } from "../Homepage/homepage";
+import { setupDropZones } from "./cardArena";
 
 export async function createArenaPage() {
 	const body = document.querySelector("body") as HTMLBodyElement;
@@ -93,4 +94,6 @@ export async function createArenaPage() {
 		await logout();
 		await createHomepage();
 	});
+
+	setupDropZones();
 }
