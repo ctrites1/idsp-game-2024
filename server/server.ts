@@ -242,6 +242,7 @@ async function createServer() {
       });
       return;
     }
+    console.log(req.body);
     const move = {
       roundId: req.body.roundId,
       cardId: req.body.cardId,

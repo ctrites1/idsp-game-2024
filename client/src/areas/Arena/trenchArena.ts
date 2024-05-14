@@ -35,3 +35,35 @@ export function clearTrench() {
 
   clearHillScores();
 }
+
+export async function logMove() {
+  const endTurnButton = document.querySelector(".endTurn-button");
+  const cardId = endTurnButton?.getAttribute("card-played");
+  const roundId = endTurnButton?.getAttribute("round-played");
+  const trench = document.querySelector("#playerTrench")!;
+  const cardHolders = trench.querySelectorAll(".cardHolder");
+  let counter = 0;
+  Array.from(cardHolders).map((h) => {
+    if (h.hasChildNodes()) {
+      counter++;
+    }
+  });
+
+  console.log("R_ID", roundId);
+  console.log("C_ID", cardId);
+  if (roundId && cardId) {
+    // await fetch("/api/logmove", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     roundId,
+    //     cardId,
+    //     trenchPos: counter,
+    //   }),
+    // });
+  } else {
+    console.log("No move to be logged");
+  }
+}

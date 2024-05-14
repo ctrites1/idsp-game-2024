@@ -23,7 +23,6 @@ export async function loginAsPlayer1() {
   if (userResponse.success) {
     await loginSuccess();
     const roundState = await startgame();
-    console.log("roundstate: ", roundState);
     await getHandData(roundState.data);
     return;
   }
@@ -44,7 +43,6 @@ export async function loginAsPlayer2() {
   if (userResponse.success) {
     await loginSuccess();
     const roundState = await startgame();
-    console.log("roundstate: ", roundState);
     await getHandData(roundState.data);
     return;
   }
