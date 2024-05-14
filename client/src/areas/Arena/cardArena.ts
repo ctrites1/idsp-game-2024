@@ -37,7 +37,6 @@ export function setupDropZones() {
 			console.log("Drop event triggered"); // Debugging drop activity
 			if (isDragEvent(event) && event.dataTransfer) {
 				const cardId = event.dataTransfer.getData("text/plain");
-				console.log(cardId);
 				const card = document.getElementById(cardId);
 				// endTurnButton.setAttribute("cardId", cardId)
 				if (card && !holder.hasChildNodes()) {
@@ -96,7 +95,6 @@ export async function getHandData(gamestate: any) {
 		credentials: "include", // Ensures cookies are sent with the req
 	});
 	const data = await response.json();
-	console.log("Hand: ", data);
 	createPlayerHand(data);
 }
 
