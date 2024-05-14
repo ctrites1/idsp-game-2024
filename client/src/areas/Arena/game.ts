@@ -1,5 +1,6 @@
 import {createCard} from "./cardArena";
 import {addCardToOppTrench} from "./trenchArena";
+export let playerState = [];
 
 export async function startgame() {
   const game = await fetch("/api/startgame", {
@@ -16,6 +17,7 @@ export async function startgame() {
   console.log("start game", response);
   if (!response.gameStarted && response.round_id) {
     const cg = await currentgame();
+    playerState = cg;
     cg.data.oppMoves.map((m: any) => {
       const oppCard = createCard(m);
       addCardToOppTrench(oppCard);

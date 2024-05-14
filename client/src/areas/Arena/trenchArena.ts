@@ -1,4 +1,4 @@
-import { clearHillScores, updateHillScores } from "./Hill";
+import {clearHillScores, updateHillScores} from "./Hill";
 
 export function addCardToOppTrench(element: HTMLDivElement) {
   const trench = document.querySelector("#oppTrench")!;
