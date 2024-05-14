@@ -14,10 +14,8 @@ export async function startgame() {
     }),
   });
   const response = await game.json();
-  console.log("start game", response);
   if (!response.gameStarted && response.round_id) {
     const cg = await currentgame();
-    console.log("CGGG", cg);
     cg.data.oppMoves.map((m: any) => {
       const oppCard = createCard(m);
       oppCard.removeEventListener("dragstart", dragstartHandler);
@@ -31,8 +29,6 @@ export async function startgame() {
       moveCardToTrench(playerCard);
     });
     const endTurnButton = document.querySelector(".endTurn-button");
-    console.log(endTurnButton);
-    console.log(cg.data.round_id);
     endTurnButton?.setAttribute("round-played", cg.data.round_id);
     return cg;
   }
