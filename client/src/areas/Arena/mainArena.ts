@@ -4,8 +4,8 @@ import { setupDropZones } from "./cardArena";
 import { logMove } from "./trenchArena";
 
 export async function createArenaPage() {
-  const body = document.querySelector("body") as HTMLBodyElement;
-  const content: string = `
+	const body = document.querySelector("body") as HTMLBodyElement;
+	const content: string = `
         <header><div class="header-btns">
             <button type="button" class="home-button">
             </button>
@@ -16,10 +16,9 @@ export async function createArenaPage() {
             </div>
             <div class="oppInfo">
                     <div class="oppName">
-                        Player 2
                     </div>
                     <div class="oppPic">
-                        <img id="oppDisplayPic" src="/assets/update/oppPic.png">
+                        <img id="oppDisplayPic">
                     </div>
                 </div>
 
@@ -57,10 +56,9 @@ export async function createArenaPage() {
             <div class="playInfo">
                 <div class="playerInfo">
                     <div class="playerPic">
-                        <img id="displayPic" src="/assets/update/displayPic.png">
+                        <img id="displayPic">
                     </div>
                     <div class="playerName">
-                        Player 1
                     </div>
                 </div>
                 <div class="turn-indicator">Turn 1/3
@@ -76,31 +74,31 @@ export async function createArenaPage() {
                 </div>
         </footer>
     `;
-  body.innerHTML = content;
+	body.innerHTML = content;
 
-  //* For demo, should refactor later - maybe not use class for footer for easier function calls?
-  const surrenderButton = document.querySelector(
-    ".surrender-button"
-  ) as HTMLButtonElement;
-  surrenderButton.addEventListener("click", () => {
-    console.log("Surrender clicked");
-    location.reload();
-    // TODO: Logic to handle log viewing to be added here
-  });
+	//* For demo, should refactor later - maybe not use class for footer for easier function calls?
+	const surrenderButton = document.querySelector(
+		".surrender-button"
+	) as HTMLButtonElement;
+	surrenderButton.addEventListener("click", () => {
+		console.log("Surrender clicked");
+		location.reload();
+		// TODO: Logic to handle log viewing to be added here
+	});
 
-  const homeButton = document.querySelector(
-    ".home-button"
-  ) as HTMLButtonElement;
-  homeButton?.addEventListener("click", async () => {
-    await logout();
-    await createHomepage();
-  });
+	const homeButton = document.querySelector(
+		".home-button"
+	) as HTMLButtonElement;
+	homeButton?.addEventListener("click", async () => {
+		await logout();
+		await createHomepage();
+	});
 
-  const endTurnButton = document.querySelector(
-    ".endTurn-button"
-  ) as HTMLButtonElement;
-  endTurnButton?.addEventListener("click", logMove);
-  // TODO: Block user from playing anything after turn has ended
+	const endTurnButton = document.querySelector(
+		".endTurn-button"
+	) as HTMLButtonElement;
+	endTurnButton?.addEventListener("click", logMove);
+	// TODO: Block user from playing anything after turn has ended
 
-  setupDropZones();
+	setupDropZones();
 }
