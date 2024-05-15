@@ -1,68 +1,70 @@
 import { clearHillScores, updateHillScores } from "./Hill";
+import { updateGameState } from "../../../../server/databaseAccess";
 
 export function addCardToOppTrench(card: HTMLDivElement) {
-  const trench = document.querySelector("#oppTrench")!;
-  const cardHolders = trench.querySelectorAll(".cardHolder");
-  let counter = 0;
-  const trenchPos = Array.from(cardHolders).map((h) => {
-    if (h.hasChildNodes()) {
-      counter++;
-      return counter;
-    }
-  });
-  const emptyHolder = Array.from(cardHolders).find(
-    (holder) => !holder.hasChildNodes()
-  );
+	const trench = document.querySelector("#oppTrench")!;
+	const cardHolders = trench.querySelectorAll(".cardHolder");
+	let counter = 0;
+	const trenchPos = Array.from(cardHolders).map((h) => {
+		if (h.hasChildNodes()) {
+			counter++;
+			return counter;
+		}
+	});
+	const emptyHolder = Array.from(cardHolders).find(
+		(holder) => !holder.hasChildNodes()
+	);
 
-  if (emptyHolder) {
-    const currentCardHolder = card.closest(".cardHolder");
-    emptyHolder.appendChild(card);
-    emptyHolder.setAttribute(`data-trench`, String(trenchPos));
+	if (emptyHolder) {
+		const currentCardHolder = card.closest(".cardHolder");
+		emptyHolder.appendChild(card);
+		emptyHolder.setAttribute(`data-trench`, String(trenchPos));
 
-    if (currentCardHolder && !trench.contains(currentCardHolder)) {
-      currentCardHolder.parentNode?.removeChild(currentCardHolder);
-    }
-    updateHillScores();
-  }
+		if (currentCardHolder && !trench.contains(currentCardHolder)) {
+			currentCardHolder.parentNode?.removeChild(currentCardHolder);
+		}
+		updateHillScores();
+	}
 }
 
 export function clearTrench() {
-  const trench = document.querySelector("#playerTrench")!;
-  const cardHolders = trench.querySelectorAll(".cardHolder");
-  Array.from(cardHolders).map((holder) => {
-    holder.innerHTML = "";
-  });
+	const trench = document.querySelector("#playerTrench")!;
+	const cardHolders = trench.querySelectorAll(".cardHolder");
+	Array.from(cardHolders).map((holder) => {
+		holder.innerHTML = "";
+	});
 
-  clearHillScores();
+	clearHillScores();
 }
 
 export async function logMove() {
-  const endTurnButton = document.querySelector(".endTurn-button");
-  const cardId = endTurnButton?.getAttribute("card-played");
-  const roundId = endTurnButton?.getAttribute("round-played");
-  const trench = document.querySelector("#playerTrench")!;
-  const cardHolders = trench.querySelectorAll(".cardHolder");
-  let counter = 0;
-  Array.from(cardHolders).map((h) => {
-    if (h.hasChildNodes()) {
-      counter++;
-    }
-  });
+	const endTurnButton = document.querySelector(".endTurn-button");
+	const cardId = endTurnButton?.getAttribute("card-played");
+	const roundId = endTurnButton?.getAttribute("round-played");
+	const trench = document.querySelector("#playerTrench")!;
+	const cardHolders = trench.querySelectorAll(".cardHolder");
+	let counter = 0;
+	Array.from(cardHolders).map((h) => {
+		if (h.hasChildNodes()) {
+			counter++;
+		}
+	});
 
-  if (roundId && cardId) {
-    console.log("FETCHING");
-    await fetch("/api/logmove", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        roundId: Number(roundId),
-        cardId: Number(cardId.substring(5, 7)),
-        trenchPos: counter,
-      }),
-    });
-  } else {
-    console.log("No move to be logged");
-  }
+	if (roundId && cardId) {
+		console.log("FETCHING");
+		await fetch("/api/logmove", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				roundId: Number(roundId),
+				cardId: Number(cardId.substring(5, 7)),
+				trenchPos: counter,
+			}),
+		});
+		// await updateGameState(roundId);
+	} else {
+		console.log("No move to be logged");
+	}
 }

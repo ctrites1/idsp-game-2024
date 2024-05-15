@@ -72,24 +72,6 @@ async function createServer() {
 		}
 		req.session = { playerId: valid.playerId };
 
-		// let deckId = 0;
-
-		// const params = {
-		// 	player: req.session.playerId,
-		// 	round: req.body.round_id,
-		// 	choice: req.body.player_deck_choice,
-		//   };
-		// const hand = await getCurrentHand(params.player, params.round);
-		// if (hand.hand.length === 0) {
-		// 	deckId++;
-		// 	const newHand = await createInitialHand(deckId, params.player);
-		// 	//res.json(newHand);
-		// 	//console.log(newHand);
-		// 	//return;
-		// }
-		//   res.json(hand);
-		//   console.log("your hand ", hand);
-
 		res.json({ success: true, playerId: valid.playerId });
 	});
 

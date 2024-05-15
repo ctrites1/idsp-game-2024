@@ -97,8 +97,9 @@ export async function createArenaPage() {
 	const endTurnButton = document.querySelector(
 		".endTurn-button"
 	) as HTMLButtonElement;
-	endTurnButton?.addEventListener("click", logMove);
-	// TODO: Block user from playing anything after turn has ended
+	endTurnButton?.addEventListener("click", async () => {
+		await logMove();
+	});
 
 	setupDropZones();
 }
