@@ -8,6 +8,23 @@ export async function loginSuccess() {
   await createArenaPage();
 }
 
+async function addPlayerDetailsToArena(
+  username: string,
+  profileImgSrc: string,
+  opponent: string,
+  oppProfileImgSrc: string
+) {
+  const oppName = document.querySelector(".oppName") as HTMLDivElement;
+  oppName.textContent = opponent;
+  const oppPic = document.querySelector("#oppDisplayPic") as HTMLImageElement;
+  oppPic.src = oppProfileImgSrc;
+
+  const playerName = document.querySelector(".playerName") as HTMLDivElement;
+  playerName.textContent = username;
+  const playerPic = document.querySelector("#displayPic") as HTMLImageElement;
+  playerPic.src = profileImgSrc;
+}
+
 export async function loginAsPlayer1() {
   const user = await fetch("/api/login", {
     method: "POST",
@@ -23,7 +40,15 @@ export async function loginAsPlayer1() {
   if (userResponse.success) {
     await loginSuccess();
     const roundState = await startgame();
+    const currentPlayer = roundState.data.playersMoves[0].username;
+    const currentOpponent = roundState.data.oppMoves[0].username;
     await getHandData(roundState.data);
+    await addPlayerDetailsToArena(
+      currentPlayer,
+      "/assets/update/displayPic.png",
+      currentOpponent,
+      "/assets/update/oppPic.png"
+    );
     return;
   }
 }
@@ -43,7 +68,15 @@ export async function loginAsPlayer2() {
   if (userResponse.success) {
     await loginSuccess();
     const roundState = await startgame();
+    const currentPlayer = roundState.data.playersMoves[0].username;
+    const currentOpponent = roundState.data.oppMoves[0].username;
     await getHandData(roundState.data);
+    await addPlayerDetailsToArena(
+      currentPlayer,
+      "/assets/update/oppPic.png",
+      currentOpponent,
+      "/assets/update/displayPic.png"
+    );
     return;
   }
 }
