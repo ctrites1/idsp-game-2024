@@ -214,7 +214,7 @@ export async function getRoundState(
 ) {
   try {
     let getPlayersMoves = `
-    SELECT m.card_id, trench_position, name, power, username
+    SELECT m.card_id, trench_position, name, power, username, m.player_id
 	FROM move AS m
 	JOIN card on m.card_id = card.card_id
 	JOIN player AS p ON m.player_id = p.player_id
@@ -222,7 +222,7 @@ export async function getRoundState(
     AND round_id = :roundId;
   `;
     let getOppMoves = `
-    SELECT m.card_id, trench_position, name, power, username
+    SELECT m.card_id, trench_position, name, power, username, m.player_id
 	FROM move AS m
 	JOIN card on m.card_id = card.card_id
 	JOIN player AS p ON m.player_id = p.player_id

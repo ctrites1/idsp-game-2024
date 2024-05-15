@@ -51,7 +51,7 @@ export async function logMove() {
 
   if (roundId && cardId) {
     console.log("FETCHING");
-    await fetch("/api/logmove", {
+    const newRound = await fetch("/api/logmove", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -62,6 +62,8 @@ export async function logMove() {
         trenchPos: counter,
       }),
     });
+    if (newRound) {
+    }
   } else {
     console.log("No move to be logged");
   }

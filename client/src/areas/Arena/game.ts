@@ -3,46 +3,50 @@ import { addCardToOppTrench } from "./trenchArena";
 export let playerState = [];
 
 export async function startgame() {
-	const game = await fetch("/api/startgame", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({
-			username: "keeles",
-			password: "strongPassword2",
-		}),
-	});
-	const response = await game.json();
-	if (!response.gameStarted && response.round_id) {
-		const cg = await currentgame();
-		cg.data.oppMoves.map((m: any) => {
-			const oppCard = createCard(m);
-			oppCard.removeEventListener("dragstart", dragstartHandler);
-			oppCard.draggable = false;
-			addCardToOppTrench(oppCard);
-		});
-		cg.data.playersMoves.map((m: any) => {
-			const playerCard = createCard(m);
-			playerCard.removeEventListener("dragstart", dragstartHandler);
-			playerCard.draggable = false;
-			moveCardToTrench(playerCard);
-		});
-		const endTurnButton = document.querySelector(".endTurn-button");
-		endTurnButton?.setAttribute("round-played", cg.data.round_id);
-		return cg;
-	}
+  const game = await fetch("/api/startgame", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      username: "keeles",
+      password: "strongPassword2",
+    }),
+  });
+  const response = await game.json();
+  if (!response.gameStarted && response.round_id) {
+    const cg = await currentgame();
+    console.log(cg.data);
+    cg.data.oppMoves.map((m: any) => {
+      const oppCard = createCard(m);
+      oppCard.removeEventListener("dragstart", dragstartHandler);
+      oppCard.draggable = false;
+      addCardToOppTrench(oppCard);
+    });
+    cg.data.playersMoves.map((m: any) => {
+      const playerCard = createCard(m);
+      playerCard.removeEventListener("dragstart", dragstartHandler);
+      playerCard.draggable = false;
+      moveCardToTrench(playerCard);
+    });
+    const endTurnButton = document.querySelector(".endTurn-button");
+    endTurnButton?.setAttribute("round-played", cg.data.round_id);
+    // const playerHill = document.querySelector("#playerHill")
+    // const oppHill = document.querySelector("#oppHill")
+    // playerHill?.setAttribute("player-id", cg.data.)
+    return cg;
+  }
 }
 
 export async function currentgame() {
-	const game = await fetch("/api/currentgame", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-	});
-	const response = await game.json();
-	return response;
+  const game = await fetch("/api/currentgame", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const response = await game.json();
+  return response;
 }
 
 // let currentMove = {
@@ -60,7 +64,7 @@ export async function currentgame() {
 //         console.error("No move to confirm.");
 //         return;
 //     }
-    
+
 //     sendMoveToServer(currentMove)
 //         .then(response => {
 //             if (response.success) {
@@ -99,7 +103,7 @@ export async function currentgame() {
 
 // //     if (cardElement && targetPosition) {
 // //         const clonedCard = cardElement.cloneNode(true);
-// //         clonedCard.id = `clone-${cardId}`; 
+// //         clonedCard.id = `clone-${cardId}`;
 // //         targetPosition.appendChild(clonedCard);
 
 // //         targetPosition.classList.add("highlight-move");
@@ -122,4 +126,3 @@ export async function currentgame() {
 //         console.error("Invalid trench position");
 //     }
 // }
-
