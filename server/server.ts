@@ -257,6 +257,39 @@ async function createServer() {
     res.json({ success: true, data: "Move logged" });
   });
 
+  app.get("/api/current-round", async (req: Request, res: Response) => {
+    try {
+      const playerID = req.session?.playerId;
+      if (!playerID) {
+        res.status(400).json({ error: "Player ID required" });
+        return;
+      }
+      let player2Id;
+      if (req.session?.playerId === 3) {
+        player2Id = 4;
+      } else {
+        player2Id = 3;
+      }
+      const players = {
+        player: req.session?.playerId,
+        opponent: player2Id,
+      };
+      const currentGame = await checkForExistingGame(
+        players.player,
+        players.opponent
+      );
+      const roundData = await getRoundState(
+        players.player,
+        players.opponent,
+        currentGame.round_id
+      );
+      res.json(roundData);
+    } catch (error) {
+      console.error("Failed to fetch round data:", error);
+      res.status(500).json({ message: "Failed to fetch round data" });
+    }
+  });
+
   app.listen(port, () => {
     console.log(`server listening on port ${port}`);
   });

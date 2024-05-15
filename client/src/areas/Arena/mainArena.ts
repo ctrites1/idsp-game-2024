@@ -2,6 +2,7 @@ import { logout } from "../Homepage/choosePlayer";
 import { createHomepage } from "../Homepage/homepage";
 import { setupDropZones } from "./cardArena";
 import { logMove } from "./trenchArena";
+import {updateRoundIndicator} from "./roundCounter";
 
 export async function createArenaPage() {
 	const body = document.querySelector("body") as HTMLBodyElement;
@@ -12,7 +13,7 @@ export async function createArenaPage() {
             <button type="button" class="howTo-button">
             </button>
         </div>
-            <div class="round-indicator">Round 1/3
+            <div class="round-indicator">
             </div>
             <div class="oppInfo">
                     <div class="oppName">

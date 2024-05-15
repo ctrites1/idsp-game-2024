@@ -250,12 +250,13 @@ header #oppDisplayPic {
 .singleCardView > .card {
   overflow: none;
   height: 36em;
-}
-
-.singleCardView > .card,
-.cardViewFooter {
   width: 24em;
 }
+
+/* .singleCardView > .card,
+.cardViewFooter {
+  width: 24em;
+} */
 
 .singleCardView > .card > .card-inside > .card-front > ul > li {
   font-size: 1.5em;
@@ -562,3 +563,6 @@ footer {
   border-radius: 50%;
 }
 
+/* -------------------------------------------------------------------------- */
+/*                                   Animation                                */
+/* -------------------------------------------------------------------------- */
