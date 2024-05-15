@@ -396,13 +396,15 @@ async function countPlayerMoves(roundId: number, playerId: number): Promise<numb
       WHERE round_id = :roundId and player_id = :playerId;
   `;
   try {
-      const [rows]: any[] = await database.query(sql, {roundId, playerId});
+      const rows: any[] = await database.query(sql, {roundId, playerId});
       return rows[0].moveCount;
   } catch (err) {
       console.error("ERROR: Failed to count moves in round", err);
       throw new Error('Failed to count moves in round');
   }
 }
+
+console.log(countPlayerMoves(6, 3));
 
 async function countTotalMoves(roundId: number): Promise<number> {
   const sql = `
@@ -411,7 +413,7 @@ async function countTotalMoves(roundId: number): Promise<number> {
       WHERE round_id = :roundId;
   `;
   try {
-      const [rows]: any[] = await database.query(sql, roundId);
+      const rows: any[] = await database.query(sql, roundId);
       return rows[0].totalMoveCount;
   } catch (err) {
       console.error("ERROR: Failed to count total moves in match", err);

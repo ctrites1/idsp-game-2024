@@ -44,3 +44,12 @@ export function clearHillScores(): void {
 	oppHill.textContent = "0";
 	playerHill.textContent = "0";
 }
+
+export function playerScore(): {} {
+	const oppHill = parseInt(document.getElementById("oppHill")?.textContent as string);
+	const playerHill = parseInt(document.getElementById("playerHill")?.textContent as string);
+
+	const scores = {opponentScore: oppHill, playerScore: playerHill};
+
+	return scores;
+}
