@@ -1,5 +1,5 @@
 import { getHandData } from "../Arena/cardArena";
-import { startgame } from "../Arena/game";
+import { startgame } from "./../Arena/game";
 import { createArenaPage } from "../Arena/mainArena";
 import { removeHomepage } from "./homepage";
 

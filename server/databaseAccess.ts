@@ -362,3 +362,70 @@ function randomizeDeck(cards: Card[]) {
 	//   }
 	//   return deck;
 }
+
+export async function loadGameState(roundId: number) {
+  const latestMove = `SELECT m.move_id, m.round_id, m.card_id, m.trench_position, m.player_id
+  FROM move as m
+  join round as r on m.round_id = r.round_id 
+  Where m.round_id = :roundId
+  ORDER BY m.move_time DESC 
+  LIMIT 1;`;
+  const latMove:any = await database.query(latestMove, roundId);
+  if (!latMove.length) {
+      console.error('No moves found for this match.');
+      return null;
+  }
+
+  console.log("last move", latMove);
+
+  const lastMove = latMove[0][0];
+  return {
+    success: true,
+    data: {
+      round_id: lastMove.round_id,
+      playerTurn: lastMove.player_id === 3 ? 4 : 3,
+      
+    } 
+  };
+}
+
+async function countPlayerMoves(roundId: number, playerId: number): Promise<number> {
+  const sql = `
+      SELECT COUNT(*) AS moveCount
+      FROM move
+      WHERE round_id = :roundId and player_id = :playerId;
+  `;
+  try {
+      const [rows]: any[] = await database.query(sql, {roundId, playerId});
+      return rows[0].moveCount;
+  } catch (err) {
+      console.error("ERROR: Failed to count moves in round", err);
+      throw new Error('Failed to count moves in round');
+  }
+}
+
+async function countTotalMoves(roundId: number): Promise<number> {
+  const sql = `
+      SELECT COUNT(*) AS totalMoveCount
+      FROM move
+      WHERE round_id = :roundId;
+  `;
+  try {
+      const [rows]: any[] = await database.query(sql, roundId);
+      return rows[0].totalMoveCount;
+  } catch (err) {
+      console.error("ERROR: Failed to count total moves in match", err);
+      throw new Error('Failed to count total moves in match');
+  }
+}
+
+export async function updateGameState(playerId: number, roundId: number) {
+  try {
+      const movesThisRound = await countPlayerMoves(roundId, playerId);
+      const totalMoves = await countTotalMoves(roundId);
+
+      console.log({ movesThisRound, totalMoves });
+  } catch (err) {
+      console.error("Failed to update game state:", err);
+  }
+}
