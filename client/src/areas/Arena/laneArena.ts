@@ -9,7 +9,7 @@ const turnState: turnState = {
 };
 
 export function updateTurnCounter(): void {
-	turnState.maxTurns += 1;
+	turnState.currentTurn += 1;
 	displayTurnCounter();
 }
 
