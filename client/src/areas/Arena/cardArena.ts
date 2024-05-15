@@ -164,7 +164,15 @@ export function createCard(data: any) {
 
 export function createPlayerHand(data: any) {
   const hand: HTMLDivElement = document.querySelector(".playerHand")!;
+  const trench: HTMLDivElement = document.querySelector("#playerTrench")!;
+  const cards = trench.querySelectorAll(".card")!;
+  const cardsPlayed = Array.from(cards).map((c) => {
+    return Number(c.id.substring(5, 7));
+  });
   data.hand.map((cardData: any) => {
+    if (cardsPlayed.includes(cardData.card_id)) {
+      return;
+    }
     const cardHolder: HTMLDivElement = document.createElement("div");
     cardHolder.classList.add("cardHolder");
     const card = createCard(cardData);
