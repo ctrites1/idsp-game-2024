@@ -1,5 +1,4 @@
 import { clearHillScores, updateHillScores } from "./Hill";
-import { updateGameState } from "../../../../server/databaseAccess";
 
 export function addCardToOppTrench(card: HTMLDivElement) {
 	const trench = document.querySelector("#oppTrench")!;
@@ -37,6 +36,19 @@ export function clearTrench() {
 	clearHillScores();
 }
 
+export async function totalMoves() {
+	const endTurnButton = document.querySelector(".endTurn-button");
+	const roundId = endTurnButton?.getAttribute("round-played");
+	const reqMoves = await fetch("/api/countTotalMoves", {
+		method: "POST",
+		body: JSON.stringify({
+			roundId: Number(roundId),
+		}),
+	});
+	const totalMoves = await reqMoves.json();
+	console.log("Moves: ", totalMoves); // TEST
+}
+
 export async function logMove() {
 	const endTurnButton = document.querySelector(".endTurn-button");
 	const cardId = endTurnButton?.getAttribute("card-played");
@@ -63,7 +75,6 @@ export async function logMove() {
 				trenchPos: counter,
 			}),
 		});
-		// await updateGameState(roundId);
 	} else {
 		console.log("No move to be logged");
 	}

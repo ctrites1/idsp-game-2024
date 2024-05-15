@@ -12,6 +12,7 @@ import {
 	getCurrentHand,
 	test,
 	validateUser,
+	countTotalMoves,
 } from "../server/databaseAccess";
 import bodyParser from "body-parser";
 import cookieSession from "cookie-session";
@@ -237,6 +238,18 @@ async function createServer() {
 			return;
 		}
 		res.json({ success: true, data: "Move logged" });
+	});
+
+	app.post("/api/countTotalMoves", async (req: Request, res: Response) => {
+		try {
+			const totalMoves = await countTotalMoves(Number(req.body.roundId));
+			console.log(totalMoves);
+			if (!totalMoves) {
+				res.json({ success: false, data: "Could not retrieve count of moves" });
+			}
+		} catch (error) {
+			res.status(500).send(error);
+		}
 	});
 
 	app.listen(port, () => {

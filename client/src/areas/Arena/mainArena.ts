@@ -1,7 +1,7 @@
 import { logout } from "../Homepage/choosePlayer";
 import { createHomepage } from "../Homepage/homepage";
 import { setupDropZones } from "./cardArena";
-import { logMove } from "./trenchArena";
+import { logMove, totalMoves } from "./trenchArena";
 
 export async function createArenaPage() {
 	const body = document.querySelector("body") as HTMLBodyElement;
@@ -99,6 +99,7 @@ export async function createArenaPage() {
 	) as HTMLButtonElement;
 	endTurnButton?.addEventListener("click", async () => {
 		await logMove();
+		await totalMoves();
 	});
 
 	setupDropZones();
