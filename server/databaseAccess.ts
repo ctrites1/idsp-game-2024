@@ -2,7 +2,11 @@ import { database } from "./databaseConnection";
 import bcrypt from "bcrypt";
 import { Card } from "./types/Card";
 
-export async function createInitialHand(deckID: number, playerId: number) {
+export async function createInitialHand(
+  deckID: number,
+  playerId: number,
+  roundId: number
+) {
   try {
     const deckChoice = deckID;
     let getDeck = `
@@ -11,8 +15,6 @@ export async function createInitialHand(deckID: number, playerId: number) {
     `;
     const deck: any = await database.query(getDeck, { deckChoice });
     const hand = randomizeDeck(deck[0]);
-
-    const roundId = 1;
 
     let logHand = `
     INSERT INTO hand 
@@ -58,6 +60,7 @@ export async function getCurrentHand(playerId: number, roundId: number) {
       roundId,
     };
     const hand: any = await database.query(getHand, handParams);
+    console.log(hand);
     if (hand.length === 0) {
       throw new Error("No hand exists for this player in the current round");
     }
@@ -370,10 +373,10 @@ export async function loadGameState(roundId: number) {
   Where m.round_id = :roundId
   ORDER BY m.move_time DESC 
   LIMIT 1;`;
-  const latMove:any = await database.query(latestMove, roundId);
+  const latMove: any = await database.query(latestMove, roundId);
   if (!latMove.length) {
-      console.error('No moves found for this match.');
-      return null;
+    console.error("No moves found for this match.");
+    return null;
   }
 
   console.log("last move", latMove);
@@ -384,23 +387,25 @@ export async function loadGameState(roundId: number) {
     data: {
       round_id: lastMove.round_id,
       playerTurn: lastMove.player_id === 3 ? 4 : 3,
-      
-    } 
+    },
   };
 }
 
-async function countPlayerMoves(roundId: number, playerId: number): Promise<number> {
+async function countPlayerMoves(
+  roundId: number,
+  playerId: number
+): Promise<number> {
   const sql = `
       SELECT COUNT(*) AS moveCount
       FROM move
       WHERE round_id = :roundId and player_id = :playerId;
   `;
   try {
-      const [rows]: any[] = await database.query(sql, {roundId, playerId});
-      return rows[0].moveCount;
+    const [rows]: any[] = await database.query(sql, { roundId, playerId });
+    return rows[0].moveCount;
   } catch (err) {
-      console.error("ERROR: Failed to count moves in round", err);
-      throw new Error('Failed to count moves in round');
+    console.error("ERROR: Failed to count moves in round", err);
+    throw new Error("Failed to count moves in round");
   }
 }
 
@@ -411,21 +416,21 @@ async function countTotalMoves(roundId: number): Promise<number> {
       WHERE round_id = :roundId;
   `;
   try {
-      const [rows]: any[] = await database.query(sql, roundId);
-      return rows[0].totalMoveCount;
+    const [rows]: any[] = await database.query(sql, roundId);
+    return rows[0].totalMoveCount;
   } catch (err) {
-      console.error("ERROR: Failed to count total moves in match", err);
-      throw new Error('Failed to count total moves in match');
+    console.error("ERROR: Failed to count total moves in match", err);
+    throw new Error("Failed to count total moves in match");
   }
 }
 
 export async function updateGameState(playerId: number, roundId: number) {
   try {
-      const movesThisRound = await countPlayerMoves(roundId, playerId);
-      const totalMoves = await countTotalMoves(roundId);
+    const movesThisRound = await countPlayerMoves(roundId, playerId);
+    const totalMoves = await countTotalMoves(roundId);
 
-      console.log({ movesThisRound, totalMoves });
+    console.log({ movesThisRound, totalMoves });
   } catch (err) {
-      console.error("Failed to update game state:", err);
+    console.error("Failed to update game state:", err);
   }
 }
