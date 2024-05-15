@@ -44,3 +44,82 @@ export async function currentgame() {
   const response = await game.json();
   return response;
 }
+
+// let currentMove = {
+//     cardId: null,
+//     trenchPosition: null
+// };
+
+// function stageMove(cardId: any, trenchPosition: any) {
+//     currentMove = { cardId, trenchPosition };
+//     updateUIMove(cardId, trenchPosition);
+// }
+
+// function confirmMove(currentMove: any) {
+//     if (!currentMove) {
+//         console.error("No move to confirm.");
+//         return;
+//     }
+    
+//     sendMoveToServer(currentMove)
+//         .then(response => {
+//             if (response.success) {
+//                 console.log("Move confirmed and logged.");
+//                 currentMove = null; // Clear the staged move
+//             } else {
+//                 console.error("Failed to log move:", response.message);
+//             }
+//         })
+//         .catch(error => {
+//             console.error("Error sending move to server:", error);
+//         });
+// }
+
+// function undoMove() {
+//     currentMove = {
+//         cardId: null,
+//         trenchPosition: null
+//     };
+//     revertUIMove(currentMove.cardId, currentMove.trenchPosition);
+// }
+
+// async function sendMoveToServer(move: any) {
+//     return fetch('/api/logMove', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify(move)
+//     }).then(response => response.json());
+// }
+
+// // function updateUIMove(cardId: any, trenchPosition: any) {
+// //     const cardElement = document.getElementById(`card-${cardId}`);
+// //     const targetPosition = document.getElementById(`trench-position-${trenchPosition}`);
+
+// //     if (cardElement && targetPosition) {
+// //         const clonedCard = cardElement.cloneNode(true);
+// //         clonedCard.id = `clone-${cardId}`; 
+// //         targetPosition.appendChild(clonedCard);
+
+// //         targetPosition.classList.add("highlight-move");
+// //     } else {
+// //         console.error("Invalid card ID or trench position");
+// //     }
+// // }
+
+// function revertUIMove(cardId: any, trenchPosition: any) {
+//     const targetPosition = document.getElementById(`trench-position-${trenchPosition}`);
+
+//     if (targetPosition) {
+//         const clonedCard = document.getElementById(`clone-${cardId}`);
+//         if (clonedCard) {
+//             targetPosition.removeChild(clonedCard);
+//         }
+
+//         targetPosition.classList.remove("highlight-move");
+//     } else {
+//         console.error("Invalid trench position");
+//     }
+// }
+
