@@ -1,68 +1,113 @@
-// type extended = MouseEvent {
-//     clientX: number;
-//     clientY: number;
-//   };
-  
-  let fallDirection = 1;
-  document
-    .querySelectorAll<HTMLInputElement>('input[name="trailside"]')
-    .forEach(input => {
-      input.addEventListener('change', e => {
-        fallDirection = parseInt((e.target as HTMLInputElement).value, 10);
-      });
-    });
-  
-  let x1 = 0, y1 = 0;
-  
-  const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0),
-        dist_to_draw = 50,
-        delay = 1000,
-        fsize = ['1.1rem', '1.4rem', '.8rem', '1.7rem'],
-        colors = ['#E23636', '#F9F3EE', '#E1F8DC', '#B8AFE6', '#AEE1CD', '#5EB0E5'];
-  
-  const rand = (min: number, max: number): number => 
-      Math.floor(Math.random() * (max - min + 1)) + min;
-  
-  const selRand = <T>(options: T[]): T => 
-      options[rand(0, options.length - 1)];
-  
-  const distanceTo = (x1: number, y1: number, x2: number, y2: number): number => 
-      Math.sqrt((Math.pow(x2 - x1, 2)) + (Math.pow(y2 - y1, 2)));
-  
-  const shouldDraw = (x: number, y: number): boolean => 
-      distanceTo(x1, y1, x, y) >= dist_to_draw;
-  
-  const addStr = (x: number, y: number): void => {
-      const str = document.createElement("div");
-      str.innerHTML = '&#10022;';
-      str.className = 'star';
-      str.style.top = `${y + rand(-20, 20)}px`;
-      str.style.left = `${x}px`;
-      str.style.color = selRand(colors);
-      str.style.fontSize = selRand(fsize);
-      document.body.appendChild(str);
-  
-      const fs = 10 + 5 * parseFloat(getComputedStyle(str).fontSize);
-      str.animate({
-          transform: [
-            `${rand(-5, 5)}px ${((y + fs) > vh ? vh - y : fs) * fallDirection * 0.3}px`,
-            `${rand(-20, 20)}px ${((y + fs) > vh ? vh - y : fs) * fallDirection}px`
-          ],
-          opacity: [1, 0]
-        }, {
-          duration: delay,
-          fill: 'forwards'
-      });
-  
-      setTimeout(() => str.remove(), delay);
+const sparkle = document.querySelector<HTMLElement>(".sparkle");
+
+let currentStarCount = 0;
+
+const MAX_STARS = 60;
+const STAR_INTERVAL = 16;
+
+const MAX_STAR_LIFE = 3;
+const MIN_STAR_LIFE = 1;
+
+const MAX_STAR_SIZE = 70;
+const MIN_STAR_SIZE = 30;
+
+const MIN_STAR_TRAVEL_X = 100;
+const MIN_STAR_TRAVEL_Y = 100;
+
+class Star {
+  size: number;
+  x: number;
+  y: number;
+  xDir: number;
+  yDir: number;
+  xMaxTravel: number;
+  yMaxTravel: number;
+  xTravelDist: number;
+  yTravelDist: number;
+  xEnd: number;
+  yEnd: number;
+  life: number;
+  star: HTMLDivElement;
+
+  constructor() {
+    if (!sparkle) throw new Error("Sparkle element not found");
+
+    this.size = this.random(MAX_STAR_SIZE, MIN_STAR_SIZE);
+
+    this.x = this.random(
+      sparkle.offsetWidth * 0.75,
+      sparkle.offsetWidth * 0.25
+    );
+    this.y = sparkle.offsetHeight / 2 - this.size / 2;
+
+    this.xDir = this.randomMinus();
+    this.yDir = this.randomMinus();
+
+    this.xMaxTravel =
+      this.xDir === -1 ? this.x : sparkle.offsetWidth - this.x - this.size;
+    this.yMaxTravel = sparkle.offsetHeight / 2 - this.size;
+
+    this.xTravelDist = this.random(this.xMaxTravel, MIN_STAR_TRAVEL_X);
+    this.yTravelDist = this.random(this.yMaxTravel, MIN_STAR_TRAVEL_Y);
+
+    this.xEnd = this.x + this.xTravelDist * this.xDir;
+    this.yEnd = this.y + this.yTravelDist * this.yDir;
+
+    this.life = this.random(MAX_STAR_LIFE, MIN_STAR_LIFE);
+
+    this.star = document.createElement("div");
+    this.star.classList.add("star");
+
+    this.star.style.setProperty("--start-left", this.x + "px");
+    this.star.style.setProperty("--start-top", this.y + "px");
+
+    this.star.style.setProperty("--end-left", this.xEnd + "px");
+    this.star.style.setProperty("--end-top", this.yEnd + "px");
+
+    this.star.style.setProperty("--star-life", this.life + "s");
+    this.star.style.setProperty("--star-life-num", this.life.toString());
+
+    this.star.style.setProperty("--star-size", this.size + "px");
+    this.star.style.setProperty("--star-color", this.randomRainbowColor());
   }
-  
-  window.addEventListener("mousemove", (e: MouseEvent) => {
-    const { clientX, clientY } = e;
-    if (shouldDraw(clientX, clientY)) {
-      addStr(clientX, clientY);
-      x1 = clientX;
-      y1 = clientY;
-    }
-  });
-  
+
+  draw() {
+    if (!sparkle) throw new Error("Sparkle element not found");
+    sparkle.appendChild(this.star);
+  }
+
+  pop() {
+    if (!sparkle) throw new Error("Sparkle element not found");
+    sparkle.removeChild(this.star);
+  }
+
+  random(max: number, min: number): number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  randomRainbowColor(): string {
+    return `hsla(${this.random(360, 0)}, 100%, 50%, 1)`;
+  }
+
+  randomMinus(): number {
+    return Math.random() > 0.5 ? 1 : -1;
+  }
+}
+
+setInterval(() => {
+  if (currentStarCount >= MAX_STARS) {
+    return;
+  }
+
+  currentStarCount++;
+
+  const newStar = new Star();
+
+  newStar.draw();
+
+  setTimeout(() => {
+    currentStarCount--;
+
+    newStar.pop();
+  }, newStar.life * 1000);
+}, STAR_INTERVAL);
