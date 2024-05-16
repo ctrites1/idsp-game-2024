@@ -424,7 +424,7 @@ export async function countTotalMoves(roundId: number, matchId: number) {
 		}, 0);
 		// check total moves id it's 6 start new round, send newRound: false or true
 		if (totalMoves === 6) {
-			const roundId = startNewRound(matchId);
+			const roundId = await startNewRound(matchId);
 			return {
 				success: true,
 				newRound: true,
