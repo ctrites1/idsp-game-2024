@@ -168,6 +168,7 @@ async function createServer() {
 			round_id: newRoundID,
 			oppId: players.player2,
 			playerId: players.player1,
+			round: 1,
 		});
 	});
 
@@ -179,7 +180,6 @@ async function createServer() {
 			});
 			return;
 		}
-
 		let player2Id;
 		if (req.session.playerId === 3) {
 			player2Id = 4;
@@ -211,6 +211,7 @@ async function createServer() {
 				gameState: false,
 				data: roundState.data,
 				oppID: players.opponent,
+				round: currentGame.round,
 			});
 			return;
 		}
@@ -218,6 +219,7 @@ async function createServer() {
 			gameState: true,
 			data: roundState.data,
 			oppID: players.opponent,
+			round: currentGame.round,
 		});
 	});
 
@@ -229,12 +231,12 @@ async function createServer() {
 			});
 			return;
 		}
-
 		const move = {
 			roundId: req.body.roundId,
 			cardId: req.body.cardId,
 			trenchPos: req.body.trenchPos,
 			playerId: req.session.playerId,
+			winnerId: req.body.winner_id,
 		};
 		const moveLogged = await logMove(
 			move.roundId,
@@ -243,23 +245,31 @@ async function createServer() {
 			move.playerId
 		);
 		if (!moveLogged.success) {
-			res.json({ success: false, data: "Error logging move" });
+			res.json({ success: false });
 			return;
 		}
-		res.json({ success: true, data: "Move logged" });
+		const isRoundOver = await countTotalMoves(move.roundId, move.winnerId);
+		if (isRoundOver?.gameOver) {
+			res.json({ success: true, gameOver: true, data: isRoundOver.data });
+			return;
+		}
+		if (isRoundOver?.newRound) {
+			res.json({ success: true, roundOver: true, data: isRoundOver.data });
+			return;
+		}
+		res.json({ success: true });
 	});
 
-	app.post("/api/countTotalMoves", async (req: Request, res: Response) => {
-		try {
-			const roundId = Number(req.body.roundId);
-			const data = await countTotalMoves(roundId);
-			console.log("roundId", roundId);
-			console.log("data", data);
-			res.json({ success: true, data: data });
-		} catch (error) {
-			res.status(500).send(error);
-		}
-	});
+	// app.post("/api/countTotalMoves", async (req: Request, res: Response) => {
+	//   console.log("reqbody: ", req.body);
+	//   try {
+	//     const roundId = req.body.roundId;
+	//     const data = await countTotalMoves(roundId, winnerId);
+	//     res.json({ success: true, data: data });
+	//   } catch (error) {
+	//     res.status(500).send(error);
+	//   }
+	// });
 
 	app.listen(port, () => {
 		console.log(`server listening on port ${port}`);

@@ -1,4 +1,4 @@
-import { clearHillScores, updateHillScores } from "./Hill";
+import { clearHillScores, playersScore, updateHillScores } from "./Hill";
 
 export function addCardToOppTrench(card: HTMLDivElement) {
 	const trench = document.querySelector("#oppTrench")!;
@@ -36,32 +36,6 @@ export function clearTrench() {
 	clearHillScores();
 }
 
-export async function totalMoves() {
-	const endTurnButton = document.querySelector(".endTurn-button");
-	const roundId = endTurnButton?.getAttribute("round-played");
-	const reqMoves = await fetch("/api/countTotalMoves", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({
-			roundId: roundId,
-		}),
-	});
-	const totalMoves = await reqMoves.json();
-	console.log("totalMoves: ", totalMoves);
-	return totalMoves;
-}
-
-export async function isRoundOver() {
-	/* 
-	If total player moves is 3 and total opp moves is 3, round should end.
-		- Round should be logged in the db
-		- New round should be created
-	If total player moves is < 3, round shouldn't end 
-	*/
-}
-
 export async function logMove() {
 	const endTurnButton = document.querySelector(".endTurn-button");
 	const cardId = endTurnButton?.getAttribute("card-played");
@@ -75,6 +49,9 @@ export async function logMove() {
 		}
 	});
 
+	const winnerId = playersScore();
+	console.log(winnerId);
+
 	if (roundId && cardId) {
 		console.log("FETCHING");
 		await fetch("/api/logmove", {
@@ -86,6 +63,7 @@ export async function logMove() {
 				roundId: Number(roundId),
 				cardId: Number(cardId.substring(5, 7)),
 				trenchPos: counter,
+				winner_id: Number(winnerId),
 			}),
 		});
 	} else {
