@@ -14,7 +14,7 @@
 - Rules/Tutorial
 - Power font on cards is confusing
 - When opponent made his move, notify player
-- Change cursor in drap and drop
+- Change cursor in drag and drop
 
 **Suggestions**
 
