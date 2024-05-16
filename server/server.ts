@@ -248,9 +248,9 @@ async function createServer() {
     console.log("reqbody: ", req.body);
     try {
       const roundId = req.body.roundId;
-
+      const matchId = req.body.matchId;
       console.log(req.body);
-      const data = await countTotalMoves(roundId);
+      const data = await countTotalMoves(roundId, matchId);
       res.json({ success: true, data: data });
     } catch (error) {
       res.status(500).send(error);

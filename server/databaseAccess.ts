@@ -424,14 +424,38 @@ export async function countTotalMoves(roundId: number, matchId: number) {
     }, 0);
     // check total moves id it's 6 start new round, send newRound: false or true
     if (totalMoves === 6) {
-      const roundId = startNewRound(matchId);
-      return {
-        success: true,
-        newRound: true,
-        data: {
-          round_id: roundId,
-        },
-      };
+      const newRoundId = await startNewRound(matchId);
+      if (newRoundId) {
+        const players = await getPlayersInMatch(matchId);
+        const player1Hand = await createUpdatedHand(
+          players?.player1,
+          roundId,
+          newRoundId
+        );
+        const player2Hand = await createUpdatedHand(
+          players?.player2,
+          roundId,
+          newRoundId
+        );
+        if (player1Hand.success && player2Hand.success) {
+          return {
+            success: true,
+            newRound: true,
+            data: {
+              round_id: newRoundId,
+            },
+          };
+        } else {
+          return {
+            success: false,
+            newRound: true,
+            data: {
+              round_id: newRoundId,
+              error: "Could not create new hands for players",
+            },
+          };
+        }
+      }
     }
     const data = { playerMove: rows[0], totalTurns: totalMoves };
     return {
@@ -469,4 +493,18 @@ export async function startNewRound(matchId: number) {
   const round_id = round[0].created_round;
 
   return round_id;
+}
+
+async function getPlayersInMatch(match_id: number) {
+  try {
+    let playerQuery =
+      "SELECT player_1_id, player_2_id FROM `match` WHERE match_id = :match_id;";
+    const players: any = await database.query(playerQuery, { match_id });
+    const player1 = players[0][0].player_1_id;
+    const player2 = players[0][0].player_2_id;
+    return { player1, player2 };
+  } catch (err) {
+    console.log(err);
+    console.log("ERROR: Cannot get players in this match");
+  }
 }
