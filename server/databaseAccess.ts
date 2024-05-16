@@ -222,9 +222,9 @@ export async function getRoundState(
   `;
     let getOppMoves = `
     SELECT m.card_id, trench_position, name, power, username
-	FROM move AS m
-	JOIN card on m.card_id = card.card_id
-	JOIN player AS p ON m.player_id = p.player_id
+	  FROM move AS m
+	  JOIN card on m.card_id = card.card_id
+	  JOIN player AS p ON m.player_id = p.player_id
     WHERE m.player_id = :oppId 
     AND round_id = :roundId;
   `;
