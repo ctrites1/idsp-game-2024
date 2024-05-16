@@ -251,7 +251,7 @@ async function createServer() {
 		console.log("reqbody: ", req.body);
 		try {
 			const roundId = req.body.roundId;
-
+			const matchId = req.body.matchId;
 			console.log(req.body);
 			const data = await countTotalMoves(roundId);
 			res.json({ success: true, data: data });
