@@ -1,6 +1,7 @@
 import { logout } from "../Homepage/choosePlayer";
 import { createHomepage } from "../Homepage/homepage";
-import { getCardData } from "./Card";
+import { setupDropZones } from "./cardArena";
+import { logMove, totalMoves } from "./trenchArena";
 
 export async function createArenaPage() {
   const body = document.querySelector("body") as HTMLBodyElement;
@@ -86,23 +87,33 @@ export async function createArenaPage() {
             </div>
         </div>
     `;
-  body.innerHTML = content;
-  await getCardData();
-  //* For demo, should refactor later - maybe not use class for footer for easier function calls?
-  const surrenderButton = document.querySelector(
-    ".surrender-button"
-  ) as HTMLButtonElement;
-  surrenderButton.addEventListener("click", () => {
-    console.log("Surrender clicked");
-    location.reload();
-    // TODO: Logic to handle log viewing to be added here
-  });
+	body.innerHTML = content;
 
-  const homeButton = document.querySelector(
-    ".home-button"
-  ) as HTMLButtonElement;
-  homeButton?.addEventListener("click", async () => {
-    await logout();
-    await createHomepage();
-  });
+	//* For demo, should refactor later - maybe not use class for footer for easier function calls?
+	const surrenderButton = document.querySelector(
+		".surrender-button"
+	) as HTMLButtonElement;
+	surrenderButton.addEventListener("click", () => {
+		console.log("Surrender clicked");
+		location.reload();
+		// TODO: Logic to handle log viewing to be added here
+	});
+
+	const homeButton = document.querySelector(
+		".home-button"
+	) as HTMLButtonElement;
+	homeButton?.addEventListener("click", async () => {
+		await logout();
+		await createHomepage();
+	});
+
+	const endTurnButton = document.querySelector(
+		".endTurn-button"
+	) as HTMLButtonElement;
+	endTurnButton?.addEventListener("click", async () => {
+		await logMove();
+		await totalMoves();
+	});
+
+	setupDropZones();
 }

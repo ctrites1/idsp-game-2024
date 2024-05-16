@@ -2,9 +2,9 @@
 
 ## Tentative Tech Stack
 
-- mySQL database
+- mySQL database (no ORM)
 - Node express server with Typescript
-- Front-end written in Javascript, maybe TSX
+- Front-end, Typescript
 - CSS
 
 ## TDD Modules

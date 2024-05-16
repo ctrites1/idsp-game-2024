@@ -149,3 +149,4 @@ export function setupDropZones() {
 document.addEventListener("DOMContentLoaded", () => {
 	setupDropZones();
 });
+
