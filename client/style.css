@@ -29,7 +29,7 @@ body {
   height: 100vh;
   justify-content: space-between;
   justify-items: center;
-  background-image: url("/assets/Backgrounds/Background2.png");
+  /* background-image: url("/assets/Backgrounds/Background2.png"); */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -163,7 +163,7 @@ header #oppDisplayPic {
 
 .cardHolder {
   width: 4.5rem;
-  height: 6.8rem;
+  height: 6.7rem;
   transition: transform 0.2s;
 }
 
@@ -267,14 +267,14 @@ header #oppDisplayPic {
 }
 
 .cardViewFooter {
-	display: flex;
-	justify-content: space-evenly;
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .cardViewFooter > button {
-	height: 3em;
-	background-color: #1a1a1a;
-	border-radius: 5px;
+  height: 3em;
+  background-color: #1a1a1a;
+  border-radius: 5px;
 }
 
 button {
@@ -339,7 +339,7 @@ button:focus-visible {
   width: 100vw;
   height: 100vh;
   z-index: 10;
-  background-image: url("/assets/Backgrounds/Background3.png");
+  background-image: url("/assets/Backgrounds/Background2.png");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -373,7 +373,6 @@ button:focus-visible {
   text-transform: uppercase;
   border: none;
   outline: none;
-  background-color: darkblue;
   background-image: url("/assets/update/Turn_indicator.svg");
   background-repeat: no-repeat;
   background-position: center;
@@ -386,20 +385,21 @@ button:focus-visible {
 }
 
 body > div.pseudo-homepage > div > button.player-select.player2-btn:hover {
-	border: 1px solid;
-	box-shadow: inset 0 0 20px rgba(255, 255, 255, .5), 0 0 20px rgba(255, 255, 255, .2);
-	outline-color: rgba(255, 255, 255, 0);
-	outline-offset: 15px;
-	text-shadow: 1px 1px 2px #427388; 
+  border: 1px solid;
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5),
+    0 0 20px rgba(255, 255, 255, 0.2);
+  outline-color: rgba(255, 255, 255, 0);
+  outline-offset: 15px;
+  text-shadow: 1px 1px 2px #427388;
 }
 
-
 body > div.pseudo-homepage > div > button.player-select.player1-btn:hover {
-	border: 1px solid;
-	box-shadow: inset 0 0 20px rgba(255, 255, 255, .5), 0 0 20px rgba(255, 255, 255, .2);
-	outline-color: rgba(255, 255, 255, 0);
-	outline-offset: 15px;
-	text-shadow: 1px 1px 2px #427388; 
+  border: 1px solid;
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5),
+    0 0 20px rgba(255, 255, 255, 0.2);
+  outline-color: rgba(255, 255, 255, 0);
+  outline-offset: 15px;
+  text-shadow: 1px 1px 2px #427388;
 }
 
 .homepage-logo {
@@ -476,19 +476,6 @@ body > div.pseudo-homepage > div > button.player-select.player1-btn:hover {
 /* transform: scale(1.05);
 	filter: drop-shadow(0rem 0.8125rem 1.6875rem rgba(50, 50, 93, 0.25))
 		drop-shadow(0rem 0.5rem 1rem rgba(0, 0, 0, 0.3)); */
-*/ .player-select > img {
-  border: solid white 0.25rem;
-  border-radius: 50%;
-  padding: 6rem;
-  object-fit: cover;
-  background: linear-gradient(
-      217deg,
-      rgba(255, 0, 0, 0.8),
-      rgba(255, 0, 0, 0) 70.71%
-    ),
-    linear-gradient(127deg, rgba(0, 255, 0, 0.8), rgba(0, 255, 0, 0) 70.71%),
-    linear-gradient(336deg, rgba(0, 0, 255, 0.8), rgba(0, 0, 255, 0) 70.71%);
-}
 
 /* -------------------------------------------------------------------------- */
 /*                                   Footer                                   */
@@ -553,8 +540,21 @@ footer {
   border: none;
   cursor: pointer;
   display: block;
-  filter: drop-shadow(0 0 0 transparent);
-  transition: filter 0.3s ease-in-out;
+  clip-path: polygon(50% -127%, 100% 50%, 50% 227%, 0% 50%);
+  transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0);
+  border: 0 solid;
+  text-shadow: 1px 1px 2px #427388;
+  border: none;
+  outline: none;
+}
+
+.action-buttons button:hover {
+	border: 1px solid;
+	box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5),
+	  0 0 20px rgba(255, 255, 255, 0.2);
+	outline-color: rgba(255, 255, 255, 0);
+	outline-offset: 15px;
 }
 
 .turn-indicator {
@@ -609,100 +609,155 @@ footer {
 /* -------------------------------------------------------------------------- */
 
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
-    background-color: gold;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 600px;
-    text-align: center;
-    animation-name: modalOpen;
-    animation-duration: 0.5s;
+  background-color: gold;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 600px;
+  text-align: center;
+  animation-name: modalOpen;
+  animation-duration: 0.5s;
 }
 
 @keyframes modalOpen {
-    from { opacity: 0; transform: scale(0.7); }
-    to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .close-button {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
 }
 
 .close-button:hover,
 .close-button:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 #modal-text {
-    font-size: 2em;
-    animation-name: textPop;
-    animation-duration: 1s;
+  font-size: 2em;
+  animation-name: textPop;
+  animation-duration: 1s;
 }
 
 @keyframes textPop {
-    0% { opacity: 0; transform: scale(0.5); }
-    100% { opacity: 1; transform: scale(1); }
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
-
 
 /* -------------------------------------------------------------------------- */
 /*                                  Stars                                     */
 /* -------------------------------------------------------------------------- */
 
-
 html {
-	height: 100%;
-	background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
-	overflow: hidden;
+  height: 100%;
+  background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+  overflow: hidden;
+}
+
+#stars,
+#stars:after {
+  z-index: -1;
+  width: 1px;
+  height: 1px;
+  background: transparent;
+  box-shadow: 231px 1248px #fff, 1191px 1274px #fff, 1430px 1673px #fff,
+    993px 1605px #fff, 156px 908px #fff, 1238px 1145px #fff, 789px 1527px #fff,
+    1099px 1376px #fff, 720px 876px #fff, 824px 150px #fff, 998px 601px #fff,
+    145px 1362px #fff, 753px 1111px #fff, 810px 1098px #fff, 597px 145px #fff,
+    892px 111px #fff, 334px 780px #fff, 701px 459px #fff, 320px 324px #fff,
+    799px 996px #fff, 112px 878px #fff, 441px 706px #fff, 998px 879px #fff,
+    527px 457px #fff, 183px 562px #fff, 114px 323px #fff, 382px 765px #fff,
+    979px 998px #fff, 703px 133px #fff, 698px 198px #fff;
+  animation: animStar 50s linear infinite;
+}
+
+#stars2,
+#stars2:after {
+  z-index: -1;
+  width: 2px;
+  height: 2px;
+  background: transparent;
+  box-shadow: 843px 200px #fff, 819px 862px #fff, 394px 592px #fff,
+    628px 345px #fff, 234px 1298px #fff, 348px 1374px #fff, 829px 1563px #fff,
+    564px 1800px #fff, 400px 456px #fff, 528px 712px #fff, 120px 600px #fff,
+    875px 398px #fff, 983px 322px #fff, 483px 120px #fff, 731px 920px #fff,
+    470px 563px #fff, 510px 448px #fff, 321px 700px #fff, 450px 148px #fff,
+    193px 540px #fff, 173px 90px #fff, 794px 398px #fff, 203px 467px #fff,
+    548px 717px #fff, 140px 830px #fff, 149px 197px #fff, 378px 289px #fff,
+    197px 676px #fff, 250px 912px #fff, 30px 34px #fff;
+  animation: animStar 100s linear infinite;
+}
+
+#stars3,
+#stars3:after {
+  z-index: -1;
+  width: 3px;
+  height: 3px;
+  background: transparent;
+  box-shadow: 104px 561px #fff, 289px 914px #fff, 840px 336px #fff,
+    654px 906px #fff, 893px 278px #fff, 480px 123px #fff, 759px 458px #fff,
+    194px 827px #fff, 130px 823px #fff, 493px 600px #fff, 269px 435px #fff,
+    907px 245px #fff, 775px 623px #fff, 299px 390px #fff, 382px 500px #fff,
+    752px 240px #fff, 263px 32px #fff, 20px 10px #fff, 187px 483px #fff,
+    204px 445px #fff, 135px 637px #fff, 783px 739px #fff, 930px 29px #fff,
+    45px 998px #fff, 298px 830px #fff, 990px 423px #fff, 734px 895px #fff,
+    200px 998px #fff, 834px 939px #fff, 54px 498px #fff;
+  animation: animStar 150s linear infinite;
+}
+
+@keyframes animStar {
+  from {
+    transform: translateY(0px);
   }
-  
-  #stars, #stars:after {
-	width: 1px;
-	height: 1px;
-	background: transparent;
-	box-shadow: 231px 1248px #FFF, 1191px 1274px #FFF, 1430px 1673px #FFF, /* ...additional 697 shadows... */ 1993px 1605px #FFF;
-	animation: animStar 50s linear infinite;
+  to {
+    transform: translateY(-2000px);
   }
-  
-  #stars2, #stars2:after {
-	width: 2px;
-	height: 2px;
-	background: transparent;
-	box-shadow: 1843px 200px #FFF, 819px 1862px #FFF, 394px 592px #FFF, /* ...additional 197 shadows... */ 1628px 345px #FFF;
-	animation: animStar 100s linear infinite;
+}
+
+@keyframes animStar {
+  from {
+    transform: translateY(0px);
   }
-  
-  #stars3, #stars3:after {
-	width: 3px;
-	height: 3px;
-	background: transparent;
-	box-shadow: 1104px 561px #FFF, 1289px 914px #FFF, 1840px 1336px #FFF, /* ...additional 97 shadows... */ 654px 1906px #FFF;
-	animation: animStar 150s linear infinite;
+  to {
+    transform: translateY(-2000px);
   }
-  
-  @keyframes animStar {
-	from {
-	  transform: translateY(0px);
-	}
-	to {
-	  transform: translateY(-2000px);
-	}
+}
+
+@keyframes animStar {
+  from {
+    transform: translateY(0px);
   }
+  to {
+    transform: translateY(-2000px);
+  }
+}
