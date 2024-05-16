@@ -31,6 +31,13 @@ export async function startgame() {
 			playerCard.draggable = false;
 			moveCardToTrench(playerCard);
 		});
+
+        const oppHill = document.getElementById("oppHill");
+	    const playerHill = document.getElementById("playerHill");
+
+        oppHill?.setAttribute("player-id", String(response.oppId));
+        playerHill?.setAttribute("player-id", String(response.playerId));
+
 		const endTurnButton = document.querySelector(".endTurn-button");
 		endTurnButton?.setAttribute("round-played", cg.data.round_id);
 		return cg;
