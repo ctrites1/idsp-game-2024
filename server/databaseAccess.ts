@@ -430,7 +430,7 @@ export async function loadGameState(roundId: number) {
 
 // console.log(countPlayerMoves(6, 3));
 
-export async function countTotalMoves(roundId: number) {
+export async function countTotalMoves(roundId: number, winnerId: number) {
   const sql = `
     SELECT COUNT(*) AS moveCount, m.player_id, r.match_id
     FROM move as m
@@ -447,7 +447,7 @@ export async function countTotalMoves(roundId: number) {
     }, 0);
     // check total moves id it's 6 start new round, send newRound: false or true
     if (totalMoves === 6) {
-      const newRoundId = await startNewRound(matchId);
+      const newRoundId = await startNewRound(matchId, winnerId, roundId);
       if (newRoundId?.roundStarted && newRoundId.roundId) {
         const players = await getPlayersInMatch(matchId);
         const player1Hand = await createUpdatedHand(
@@ -499,8 +499,20 @@ export async function countTotalMoves(roundId: number) {
 //   }
 // }
 
-export async function startNewRound(matchId: number) {
+export async function startNewRound(
+  matchId: number,
+  winnerId: number,
+  roundId: number
+) {
   try {
+    const updateWinner =
+      "UPDATE `round` SET winner_id = :winner_id WHERE round_id = :round_id;";
+
+    const winnerUpdated = await database.query(updateWinner, {
+      winner_id: winnerId,
+      round_id: roundId,
+    });
+
     const countRounds =
       "SELECT COUNT(*) AS rounds FROM `round` WHERE match_id = :match_id;";
 

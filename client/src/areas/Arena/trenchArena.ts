@@ -50,6 +50,7 @@ export async function logMove() {
   });
 
   const winnerId = playersScore();
+  console.log(winnerId);
 
   if (roundId && cardId) {
     console.log("FETCHING");
@@ -62,7 +63,7 @@ export async function logMove() {
         roundId: Number(roundId),
         cardId: Number(cardId.substring(5, 7)),
         trenchPos: counter,
-        winner_id: winnerId,
+        winner_id: Number(winnerId),
       }),
     });
   } else {

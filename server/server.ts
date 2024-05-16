@@ -238,7 +238,7 @@ async function createServer() {
       cardId: req.body.cardId,
       trenchPos: req.body.trenchPos,
       playerId: req.session.playerId,
-      winnerId: req.body.winnerId,
+      winnerId: req.body.winner_id,
     };
     const moveLogged = await logMove(
       move.roundId,
@@ -250,7 +250,7 @@ async function createServer() {
       res.json({ success: false });
       return;
     }
-    const isRoundOver = await countTotalMoves(move.roundId);
+    const isRoundOver = await countTotalMoves(move.roundId, move.winnerId);
     if (isRoundOver?.gameOver) {
       res.json({ success: true, gameOver: true, data: isRoundOver.data });
       return;
@@ -262,16 +262,16 @@ async function createServer() {
     res.json({ success: true });
   });
 
-  app.post("/api/countTotalMoves", async (req: Request, res: Response) => {
-    console.log("reqbody: ", req.body);
-    try {
-      const roundId = req.body.roundId;
-      const data = await countTotalMoves(roundId);
-      res.json({ success: true, data: data });
-    } catch (error) {
-      res.status(500).send(error);
-    }
-  });
+  // app.post("/api/countTotalMoves", async (req: Request, res: Response) => {
+  //   console.log("reqbody: ", req.body);
+  //   try {
+  //     const roundId = req.body.roundId;
+  //     const data = await countTotalMoves(roundId, winnerId);
+  //     res.json({ success: true, data: data });
+  //   } catch (error) {
+  //     res.status(500).send(error);
+  //   }
+  // });
 
   app.listen(port, () => {
     console.log(`server listening on port ${port}`);
