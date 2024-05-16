@@ -339,15 +339,25 @@ button:focus-visible {
   width: 100vw;
   height: 100vh;
   z-index: 10;
-  background-image: url("/assets/Backgrounds/Background2.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
   position: fixed;
   left: 0;
   top: 0;
   justify-content: space-evenly;
   align-content: center;
+}
+
+.blur {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("/assets/Backgrounds/Background2.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  filter: blur(10px);
+  z-index: 1;
 }
 
 .pseudo-homepage > .player-selection-container {
@@ -382,6 +392,7 @@ button:focus-visible {
   transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
   box-shadow: inset 0 0 20px rgba(255, 255, 255, 0);
   border: 0 solid;
+  z-index: 2;
 }
 
 body > div.pseudo-homepage > div > button.player-select.player2-btn:hover {
@@ -391,6 +402,7 @@ body > div.pseudo-homepage > div > button.player-select.player2-btn:hover {
   outline-color: rgba(255, 255, 255, 0);
   outline-offset: 15px;
   text-shadow: 1px 1px 2px #427388;
+  z-index: 2;
 }
 
 body > div.pseudo-homepage > div > button.player-select.player1-btn:hover {
@@ -400,6 +412,7 @@ body > div.pseudo-homepage > div > button.player-select.player1-btn:hover {
   outline-color: rgba(255, 255, 255, 0);
   outline-offset: 15px;
   text-shadow: 1px 1px 2px #427388;
+  z-index: 2;
 }
 
 .homepage-logo {
@@ -408,6 +421,7 @@ body > div.pseudo-homepage > div > button.player-select.player1-btn:hover {
   align-content: center;
   width: 60rem;
   height: 70%;
+  z-index: 2;
 }
 
 /* .player-select::before {
@@ -550,11 +564,11 @@ footer {
 }
 
 .action-buttons button:hover {
-	border: 1px solid;
-	box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5),
-	  0 0 20px rgba(255, 255, 255, 0.2);
-	outline-color: rgba(255, 255, 255, 0);
-	outline-offset: 15px;
+  border: 1px solid;
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5),
+    0 0 20px rgba(255, 255, 255, 0.2);
+  outline-color: rgba(255, 255, 255, 0);
+  outline-offset: 15px;
 }
 
 .turn-indicator {
@@ -714,7 +728,8 @@ html {
     470px 563px #fff, 510px 448px #fff, 321px 700px #fff, 450px 148px #fff,
     193px 540px #fff, 173px 90px #fff, 794px 398px #fff, 203px 467px #fff,
     548px 717px #fff, 140px 830px #fff, 149px 197px #fff, 378px 289px #fff,
-    197px 676px #fff, 250px 912px #fff, 30px 34px #fff;
+    197px 676px #fff, 250px 912px #fff, 30px 34px #fff, 4px 5px #fff,
+    7px 10px #fff;
   animation: animStar 100s linear infinite;
 }
 
@@ -759,5 +774,77 @@ html {
   }
   to {
     transform: translateY(-2000px);
+  }
+}
+
+/* --------------------------------------------------------------------------- */
+/*                                  Winner                                     */
+/* --------------------------------------------------------------------------- */
+
+.sparkle {
+  width: 600px;
+  height: var(--text-height);
+  font-size: 50px;
+  text-align: center;
+  line-height: var(--text-height);
+  color: white;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  z-index: 100;
+  position: relative;
+  text-shadow: 0px 0px 10px black;
+}
+
+
+.star {
+  --star-size: 50px;
+  --star-life: 5s;
+  
+  --start-left: 0px;
+  --start-top: 0px;
+  
+  --end-left: 0px;
+  --end-top: 0px;
+  
+  --star-color: #f1c40f;
+  
+  width: var(--star-size);
+  height: var(--star-size);
+  left: var(--end-left);
+  top: var(--end-top);
+  background: var(--star-color);
+  position: absolute;
+  mix-blend-mode: lighten;
+  animation: slide var(--star-life) ease-in forwards;
+}
+
+.star:after {
+  display: block;
+  content: "";
+  width: var(--star-size);
+  height: var(--star-size);
+  background-color: var(--bg);
+  border-radius: 100%;
+  position: relative;
+  top: calc(var(--star-size) / 2 * -1);
+  left: calc(var(--star-size) / 2 * -1);
+  box-shadow: var(--star-size) var(--star-size) var(--bg),
+    var(--star-size) 0px var(--bg),
+    0px var(--star-size) var(--bg);
+}
+
+@keyframes slide {
+  0%{
+    left: var(--start-left);
+    top: var(--start-top);
+    transform: rotate(0deg);
+    opacity: 0;
+  }
+  100%{
+    left: var(--end-left);
+    top: var(--end-top);
+    transform: rotate(calc(180deg * var(--star-life-num))) scale(0.5);
+    opacity: 1;
   }
 }

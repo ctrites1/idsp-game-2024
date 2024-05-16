@@ -67,7 +67,7 @@ export async function createArenaPage() {
                     <div class="playerName">
                     </div>
                 </div>
-                <div class="turn-indicator">Turn 1/3
+                <div class="turn-indicator">
                 </div>
             </div>
                 <div class="playerHand" id="playerHandContainer">
@@ -79,16 +79,6 @@ export async function createArenaPage() {
                     <button class="log-button" type="button">Log</button>
                 </div>
         </footer>
-
-
-
-        <!-- Modal -->
-        <div id="modal" class="modal">
-            <div class="modal-content">
-                <span class="close-button">&times;</span>
-                <p id="modal-text"></p>
-            </div>
-        </div>
     `;
 	body.innerHTML = content;
 

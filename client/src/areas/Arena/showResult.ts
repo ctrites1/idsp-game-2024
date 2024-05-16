@@ -7,25 +7,12 @@ function showResult(result: 'win' | 'lose'): void {
         modal.style.display = "block";
         if (result === 'win') {
             modalText.textContent = "You Win!";
-            modalText.style.color = "dark green";
         } else {
             modalText.textContent = "You Lose!";
-            modalText.style.color = "dark red";
         }
     } else {
         console.error('Modal or modal text element not found');
     }
-}
-
-if (closeButton) {
-    closeButton.addEventListener("click", () => {
-        if (modal) {
-            modal.style.display = "none";
-        }
-        nextRound();
-    });
-} else {
-    console.error('Close button not found');
 }
 
 window.addEventListener("click", (event: MouseEvent) => {

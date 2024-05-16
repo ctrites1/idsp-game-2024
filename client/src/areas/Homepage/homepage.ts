@@ -42,6 +42,10 @@ export async function createHomepage() {
 	homepage.appendChild(logoImg);
 	homepage.appendChild(playerBtnDiv);
 
+	const blurDiv: HTMLDivElement = document.createElement("div");
+	blurDiv.className ="blur";
+	homepage.appendChild(blurDiv);
+
 	body.appendChild(homepage);
 }
 

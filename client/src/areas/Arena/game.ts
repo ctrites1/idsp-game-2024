@@ -1,6 +1,7 @@
 import { createCard, dragstartHandler, moveCardToTrench } from "./cardArena";
 import { addCardToOppTrench } from "./trenchArena";
 import { updateRoundIndicator } from "./roundCounter";
+import { updateTurnCounter } from "./laneArena";
 export let playerState = [];
 
 export async function startgame() {
