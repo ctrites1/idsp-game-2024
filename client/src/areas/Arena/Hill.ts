@@ -45,14 +45,22 @@ export function clearHillScores(): void {
 	playerHill.textContent = "0";
 }
 
-export function playersScore(): {} {
+export function playersScore() {
 	const oppHill = document.getElementById("oppHill")
 	const playerHill = document.getElementById("playerHill")
 	const oppHillScore = parseInt(oppHill?.textContent as string);
 	const playerHillScore = parseInt(playerHill?.textContent as string);
 	const oppId = oppHill?.getAttribute("player-id")
 	const playerId = playerHill?.getAttribute("player-id")
-	const scores = {opponentScore: {score: oppHillScore, playerId: oppId}, playerScore: { score: playerHillScore, playerId: playerId}};
+	//const scores = {opponentScore: {score: oppHillScore, playerId: oppId}, playerScore: { score: playerHillScore, playerId: playerId}};
 
-	return scores;
+	if (oppHillScore && playerHillScore){
+		if(oppHillScore === playerHillScore) {
+			return null
+		} else if (oppHillScore > playerHillScore) {
+			return oppId
+		} else {
+			return playerId
+		}
+	}
 }

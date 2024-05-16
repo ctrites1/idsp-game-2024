@@ -1,4 +1,4 @@
-import { clearHillScores, updateHillScores } from "./Hill";
+import { clearHillScores, playersScore, updateHillScores } from "./Hill";
 
 export function addCardToOppTrench(card: HTMLDivElement) {
   const trench = document.querySelector("#oppTrench")!;
@@ -65,6 +65,8 @@ export async function logMove() {
     }
   });
 
+  const winnerId = playersScore();
+
   if (roundId && cardId) {
     console.log("FETCHING");
     await fetch("/api/logmove", {
@@ -76,6 +78,7 @@ export async function logMove() {
         roundId: Number(roundId),
         cardId: Number(cardId.substring(5, 7)),
         trenchPos: counter,
+        winner_id: winnerId,
       }),
     });
   } else {
