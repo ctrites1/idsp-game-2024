@@ -49,6 +49,7 @@ export async function totalMoves() {
     }),
   });
   const totalMoves = await reqMoves.json();
+  console.log("total", totalMoves);
 }
 
 export async function logMove() {
