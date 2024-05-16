@@ -144,7 +144,7 @@ async function createServer() {
     } else {
       player2Id = 3;
     }
-	
+
     const players = {
       player1: req.session.playerId,
       player2: player2Id,
@@ -158,7 +158,7 @@ async function createServer() {
         gameStarted: false,
         round_id: currentGame.round_id,
         oppId: players.player2,
-		playerId: players.player1
+        playerId: players.player1,
       });
       return;
     }
@@ -168,6 +168,7 @@ async function createServer() {
       round_id: newRoundID,
       oppId: players.player2,
       playerId: players.player1,
+      round: 1,
     });
   });
 
@@ -211,6 +212,7 @@ async function createServer() {
         gameState: false,
         data: roundState.data,
         oppID: players.opponent,
+        round: currentGame.round,
       });
       return;
     }
@@ -218,6 +220,7 @@ async function createServer() {
       gameState: true,
       data: roundState.data,
       oppID: players.opponent,
+      round: currentGame.round,
     });
   });
 
@@ -243,18 +246,25 @@ async function createServer() {
       move.playerId
     );
     if (!moveLogged.success) {
-      res.json({ success: false, data: "Error logging move" });
+      res.json({ success: false });
       return;
     }
-    res.json({ success: true, data: "Move logged" });
+    const isRoundOver = await countTotalMoves(move.roundId);
+    if (isRoundOver?.gameOver) {
+      res.json({ success: true, gameOver: true, data: isRoundOver.data });
+      return;
+    }
+    if (isRoundOver?.newRound) {
+      res.json({ success: true, roundOver: true, data: isRoundOver.data });
+      return;
+    }
+    res.json({ success: true });
   });
 
   app.post("/api/countTotalMoves", async (req: Request, res: Response) => {
     console.log("reqbody: ", req.body);
     try {
       const roundId = req.body.roundId;
-      const matchId = req.body.matchId;
-      console.log(req.body);
       const data = await countTotalMoves(roundId);
       res.json({ success: true, data: data });
     } catch (error) {

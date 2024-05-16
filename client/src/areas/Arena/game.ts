@@ -18,7 +18,7 @@ export async function startgame() {
   const response = await game.json();
   if (!response.gameStarted && response.round_id) {
     const cg = await currentgame();
-    updateRoundIndicator(cg.data.round_id);
+    updateRoundIndicator(cg.round);
     cg.data.oppMoves.map((m: any) => {
       const oppCard = createCard(m);
       oppCard.removeEventListener("dragstart", dragstartHandler);
