@@ -410,7 +410,7 @@ export async function loadGameState(roundId: number) {
 
 // console.log(countPlayerMoves(6, 3));
 
-async function countTotalMoves(roundId: number, matchId: number) {
+export async function countTotalMoves(roundId: number, matchId: number) {
   const sql = `
     SELECT COUNT(*) AS moveCount, player_id
     FROM move
