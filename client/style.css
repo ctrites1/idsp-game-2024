@@ -29,7 +29,7 @@ body {
   height: 100vh;
   justify-content: space-between;
   justify-items: center;
-  background-image: url("/assets/Backgrounds/Background2.png");
+  /* background-image: url("/assets/Backgrounds/Background2.png"); */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -618,3 +618,106 @@ footer {
   margin: 6px 6px 0px 6px;
   border-radius: 50%;
 }
+
+/* -------------------------------------------------------------------------- */
+/*                                  Modal                                     */
+/* -------------------------------------------------------------------------- */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: gold;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    text-align: center;
+    animation-name: modalOpen;
+    animation-duration: 0.5s;
+}
+
+@keyframes modalOpen {
+    from { opacity: 0; transform: scale(0.7); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#modal-text {
+    font-size: 2em;
+    animation-name: textPop;
+    animation-duration: 1s;
+}
+
+@keyframes textPop {
+    0% { opacity: 0; transform: scale(0.5); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+
+/* -------------------------------------------------------------------------- */
+/*                                  Stars                                     */
+/* -------------------------------------------------------------------------- */
+
+
+html {
+	height: 100%;
+	background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+	overflow: hidden;
+  }
+  
+  #stars, #stars:after {
+	width: 1px;
+	height: 1px;
+	background: transparent;
+	box-shadow: 231px 1248px #FFF, 1191px 1274px #FFF, 1430px 1673px #FFF, /* ...additional 697 shadows... */ 1993px 1605px #FFF;
+	animation: animStar 50s linear infinite;
+  }
+  
+  #stars2, #stars2:after {
+	width: 2px;
+	height: 2px;
+	background: transparent;
+	box-shadow: 1843px 200px #FFF, 819px 1862px #FFF, 394px 592px #FFF, /* ...additional 197 shadows... */ 1628px 345px #FFF;
+	animation: animStar 100s linear infinite;
+  }
+  
+  #stars3, #stars3:after {
+	width: 3px;
+	height: 3px;
+	background: transparent;
+	box-shadow: 1104px 561px #FFF, 1289px 914px #FFF, 1840px 1336px #FFF, /* ...additional 97 shadows... */ 654px 1906px #FFF;
+	animation: animStar 150s linear infinite;
+  }
+  
+  @keyframes animStar {
+	from {
+	  transform: translateY(0px);
+	}
+	to {
+	  transform: translateY(-2000px);
+	}
+  }

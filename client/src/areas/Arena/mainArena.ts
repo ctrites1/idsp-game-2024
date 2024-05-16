@@ -3,22 +3,21 @@ import { createHomepage } from "../Homepage/homepage";
 import { getCardData } from "./Card";
 
 export async function createArenaPage() {
-	const body = document.querySelector("body") as HTMLBodyElement;
-	const content: string = `
+  const body = document.querySelector("body") as HTMLBodyElement;
+  const content: string = `
         <header><div class="header-btns">
             <button type="button" class="home-button">
             </button>
             <button type="button" class="howTo-button">
             </button>
         </div>
-            <div class="round-indicator">Round 1/3
+            <div class="round-indicator">
             </div>
             <div class="oppInfo">
                     <div class="oppName">
-                        Player 2
                     </div>
                     <div class="oppPic">
-                        <img id="oppDisplayPic" src="/assets/update/oppPic.png">
+                        <img id="oppDisplayPic">
                     </div>
                 </div>
 
@@ -56,10 +55,9 @@ export async function createArenaPage() {
             <div class="playInfo">
                 <div class="playerInfo">
                     <div class="playerPic">
-                        <img id="displayPic" src="/assets/update/displayPic.png">
+                        <img id="displayPic">
                     </div>
                     <div class="playerName">
-                        Player 1
                     </div>
                 </div>
                 <div class="turn-indicator">Turn 1/3
@@ -74,24 +72,37 @@ export async function createArenaPage() {
                     <button class="log-button" type="button">Log</button>
                 </div>
         </footer>
-    `;
-	body.innerHTML = content;
-	await getCardData();
-	//* For demo, should refactor later - maybe not use class for footer for easier function calls?
-	const surrenderButton = document.querySelector(
-		".surrender-button"
-	) as HTMLButtonElement;
-	surrenderButton.addEventListener("click", () => {
-		console.log("Surrender clicked");
-		location.reload();
-		// TODO: Logic to handle log viewing to be added here
-	});
 
-	const homeButton = document.querySelector(
-		".home-button"
-	) as HTMLButtonElement;
-	homeButton?.addEventListener("click", async () => {
-		await logout();
-		await createHomepage();
-	});
+<!-- Stars -->
+<div id="stars"></div>
+<div id="stars2"></div>
+<div id="stars3"></div>
+
+        <!-- Modal -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <p id="modal-text"></p>
+            </div>
+        </div>
+    `;
+  body.innerHTML = content;
+  await getCardData();
+  //* For demo, should refactor later - maybe not use class for footer for easier function calls?
+  const surrenderButton = document.querySelector(
+    ".surrender-button"
+  ) as HTMLButtonElement;
+  surrenderButton.addEventListener("click", () => {
+    console.log("Surrender clicked");
+    location.reload();
+    // TODO: Logic to handle log viewing to be added here
+  });
+
+  const homeButton = document.querySelector(
+    ".home-button"
+  ) as HTMLButtonElement;
+  homeButton?.addEventListener("click", async () => {
+    await logout();
+    await createHomepage();
+  });
 }
