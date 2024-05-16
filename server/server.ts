@@ -199,11 +199,13 @@ async function createServer() {
 			res.json({ gameExists: false });
 			return;
 		}
-		const roundState = await getRoundState(
+		const roundState: any = await getRoundState(
 			players.player,
 			players.opponent,
 			currentGame.round_id
 		);
+		roundState.data.player_1_username = currentGame.player_1_username;
+		roundState.data.player_2_username = currentGame.player_2_username;
 		if (!roundState?.success) {
 			res.json({
 				gameState: false,
