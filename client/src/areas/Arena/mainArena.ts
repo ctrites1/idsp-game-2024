@@ -1,7 +1,7 @@
 import { logout } from "../Homepage/choosePlayer";
 import { createHomepage } from "../Homepage/homepage";
 import { setupDropZones } from "./cardArena";
-import { logMove, totalMoves } from "./trenchArena";
+import { logMove } from "./trenchArena";
 import { updateRoundIndicator } from "./roundCounter";
 
 export async function createArenaPage() {
@@ -116,7 +116,6 @@ export async function createArenaPage() {
   ) as HTMLButtonElement;
   endTurnButton?.addEventListener("click", async () => {
     await logMove();
-    await totalMoves();
   });
 
   setupDropZones();

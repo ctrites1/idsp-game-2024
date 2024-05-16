@@ -36,22 +36,6 @@ export function clearTrench() {
   clearHillScores();
 }
 
-export async function totalMoves() {
-  const endTurnButton = document.querySelector(".endTurn-button");
-  const roundId = endTurnButton?.getAttribute("round-played");
-  const reqMoves = await fetch("/api/countTotalMoves", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      roundId: roundId,
-    }),
-  });
-  const totalMoves = await reqMoves.json();
-  console.log("total", totalMoves);
-}
-
 export async function logMove() {
   const endTurnButton = document.querySelector(".endTurn-button");
   const cardId = endTurnButton?.getAttribute("card-played");
