@@ -22,14 +22,14 @@ html {
 /*                                    Arena                                   */
 /* -------------------------------------------------------------------------- */
 body {
-  margin: 0;
+  margin: 0rem;
   display: flex;
   flex-direction: column;
   width: 100vw;
   height: 100vh;
   justify-content: space-between;
   justify-items: center;
-  /* background-image: url("/assets/Backgrounds/Background2.png"); */
+  background-image: url("/assets/Backgrounds/Background2.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -37,29 +37,31 @@ body {
 }
 
 header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-	height: 3rem;
-	background-color: #1a1a1a;
+  display: flex;
+  justify-content: space-between;
+  align-items: top;
+  width: 100%;
+  height: 3rem;
+  background-color: #1a1a1a;
 }
 
 .round-indicator {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	color: white;
-	font-size: 1.2rem;
-	font-size: 2rem;
-	font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-	background-image: url("/assets/update/Round_indicator.svg");
-	background-repeat: no-repeat;
-	background-position: center;
-	width: 30vh;
-	height: 8vh;
-	margin-top: 0.5rem;
-	margin-left: 7.8rem;
+  position: absolute;
+  z-index: 2;
+  left: 50vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 1.2rem;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  background-image: url("/assets/update/Round_indicator.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 20rem;
+  height: 8vh;
+  margin-top: 0.5rem;
+  margin-left: -10rem;
 }
 
 header button {
@@ -78,40 +80,34 @@ header .howTo-button {
 }
 
 header .oppInfo {
-	background-image: url("./public/assets/update/Opponent_Tag.svg");
-	background-repeat: no-repeat;
-	height: 8rem;
-	width: 17rem;
-	margin-top: 0.5rem;
-	margin-right: 0.5rem;
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-end;
+  background-image: url("/assets/update/Opponent_Tag.svg");
+  background-repeat: no-repeat;
+  height: 8rem;
+  width: 17rem;
+  margin-top: 0.5rem;
+  margin-right: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 }
 
 header .oppInfo .oppName {
-	font-size: large;
-	font-family: fantasy;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-top: -1.4rem;
-	margin-right: 0.5rem;
-}
-
-body > header > div.oppInfo > div.oppPic {
-	height: 100%;
-	width: 100%;
-	border-radius: 50%;
+  font-size: large;
+  font-family: fantasy;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -2rem;
+  margin-right: 1rem;
 }
 
 header #oppDisplayPic {
-	display: flex;
-	width: 100%;
-	height: 100%;
-	/* margin: 6px 6px 0px 6px; */
-	border-radius: 50%;
-	object-fit: contain;
+  display: flex;
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 50%;
+  margin-right: 0.4rem;
+  margin-top: 0.4rem;
 }
 
 .arena {
@@ -140,30 +136,24 @@ header #oppDisplayPic {
 }
 
 .hill img {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 300px;
-	width: 100%;
-	margin: 30px 0px 30px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10rem;
+  width: 100%;
+  margin: 2rem 0rem;
 }
 
 .trench {
-	display: grid;
-	grid-template-columns: auto auto auto;
-	grid-column-start: 1;
-	grid-column-end: 3;
-	justify-content: space-evenly;
-	z-index: 2;
-	margin: 2rem 0rem;
-	/* background-color: #1a1a1a89;
-	border-radius: 10px; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 
 .trench .cardHolder {
-	background-color: #1a1a1a89;
-	border-radius: 10px;
-	margin: 0rem 1rem;
+  background-color: #1a1a1a89;
+  border-radius: 0.2rem;
+  margin: 0rem 1rem;
 }
 
 .trench .cardHolder:hover {
@@ -172,16 +162,16 @@ header #oppDisplayPic {
 }
 
 .cardHolder {
-	width: 101px;
-	height: 150px;
-	transition: transform 0.2s;
+  width: 4.5rem;
+  height: 6.8rem;
+  transition: transform 0.2s;
 }
 
 .card {
   width: 100%;
   height: 100%;
   background-color: transparent;
-  perspective: 1000px;
+  perspective: 100rem;
 }
 
 .card-inside {
@@ -203,15 +193,15 @@ header #oppDisplayPic {
 
 .card-front,
 .card-back {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	backface-visibility: hidden;
-	border-radius: 8px;
-	justify-content: center;
-	align-content: center;
-	font-size: large;
-	font-family: "Papyrus", fantasy;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 0.2rem;
+  justify-content: center;
+  align-content: center;
+  font-size: large;
+  font-family: "Papyrus", fantasy;
 }
 
 .card-front > ul {
@@ -219,10 +209,10 @@ header #oppDisplayPic {
 }
 
 .card-front > ul > li {
-	list-style-type: none;
-	color: black;
-	font-size: small;
-	padding: 15px;
+  list-style-type: none;
+  color: black;
+  font-size: small;
+  padding: 3rem;
 }
 
 .trench > .cardHolder > .card > .card-inside > .card-front > ul {
@@ -260,12 +250,13 @@ header #oppDisplayPic {
 .singleCardView > .card {
   overflow: none;
   height: 36em;
-}
-
-.singleCardView > .card,
-.cardViewFooter {
   width: 24em;
 }
+
+/* .singleCardView > .card,
+.cardViewFooter {
+  width: 24em;
+} */
 
 .singleCardView > .card > .card-inside > .card-front > ul > li {
   font-size: 1.5em;
@@ -287,19 +278,18 @@ header #oppDisplayPic {
 }
 
 button {
-	background-size: cover;
-	border: none;
-	cursor: pointer;
-	border: 1px solid transparent;
-	padding: 0.6em 1em;
-	font-size: 1em;
-	font-weight: 500;
-	outline: none;
-	font-family: inherit;
-	background-color: transparent;
-	cursor: pointer;
-	transition: border-color 0.25s;
-	margin: 5px;
+  background-size: cover;
+  border: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  padding: 0.6em 1em;
+  font-size: 1em;
+  font-weight: 500;
+  outline: none;
+  font-family: inherit;
+  background-color: transparent;
+  cursor: pointer;
+  transition: border-color 0.25s;
 }
 
 button:focus,
@@ -308,36 +298,35 @@ button:focus-visible {
 }
 
 .scoreDisplay {
-	display: flex;
-	color: var(--scoreColor);
-	font-size: 30px;
-	font-weight: bold;
-	text-shadow: 3px 0px 7px var(--shadow), -3px 0px 7px var(--shadow),
-		0px 4px 7px var(--shadow);
-	position: absolute;
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
-	top: 50%;
-	transform: translateY(-50%);
-	color: var(--scoreColor);
-	font-size: 2rem;
-	font-weight: bold;
-	text-shadow: 3px 0px 7px var(--shadow), -3px 0px 7px var(--shadow),
-		0px 4px 7px var(--shadow);
+  display: flex;
+  color: var(--scoreColor);
+  font-weight: bold;
+  text-shadow: 3px 0px 7px var(--shadow), -3px 0px 7px var(--shadow),
+    0px 4px 7px var(--shadow);
+  position: absolute;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--scoreColor);
+  font-size: 2rem;
+  font-weight: bold;
+  text-shadow: 3px 0px 7px var(--shadow), -3px 0px 7px var(--shadow),
+    0px 4px 7px var(--shadow);
 }
 
 #oppHill {
-	position: relative;
-	bottom: 56px;
-	font-size: 3rem;
+  position: relative;
+  bottom: 2rem;
+  font-size: 1.5rem;
 }
 
 #playerHill {
-	position: relative;
-	top: 40px;
-	font-size: 3rem;
+  position: relative;
+  top: 1.5rem;
+  font-size: 1.5rem;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -345,19 +334,20 @@ button:focus-visible {
 /* -------------------------------------------------------------------------- */
 
 .pseudo-homepage {
-	display: grid;
-	place-items: center;
-	width: 100vw;
-	height: 100vh;
-	background-image: url("/assets/Backgrounds/Background3.png");
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
-	position: fixed;
-	left: 0;
-	top: 0;
-	justify-content: space-evenly;
-	align-content: center;
+  display: grid;
+  place-items: center;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10;
+  background-image: url("/assets/Backgrounds/Background3.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  justify-content: space-evenly;
+  align-content: center;
 }
 
 .pseudo-homepage > .player-selection-container {
@@ -505,13 +495,13 @@ body > div.pseudo-homepage > div > button.player-select.player1-btn:hover {
 /* -------------------------------------------------------------------------- */
 
 footer {
-	display: flex;
-	flex-direction: row;
-	height: 20rem;
-	width: 100%;
-	background-color: #1a1a1ac4;
-	justify-content: center;
-	align-items: center;
+  display: flex;
+  flex-direction: row;
+  height: 15rem;
+  width: 100%;
+  background-color: #1a1a1ac4;
+  justify-content: center;
+  align-items: center;
 }
 
 .playerHand {
@@ -527,8 +517,8 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 257px;
-  width: 173px;
+  height: 15rem;
+  width: 10rem;
   overflow: hidden;
   transition: 0.2s;
 }
@@ -544,11 +534,6 @@ footer {
 
 #playerHandContainer .cardHolder:hover ~ .cardHolder {
   transform: translateX(3rem);
-}
-
-#playerHandContainer.cardHolder.img {
-  height: 200px;
-  width: 150px;
 }
 
 .action-buttons {

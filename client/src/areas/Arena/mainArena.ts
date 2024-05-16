@@ -2,6 +2,7 @@ import { logout } from "../Homepage/choosePlayer";
 import { createHomepage } from "../Homepage/homepage";
 import { setupDropZones } from "./cardArena";
 import { logMove, totalMoves } from "./trenchArena";
+import {updateRoundIndicator} from "./roundCounter";
 
 export async function createArenaPage() {
   const body = document.querySelector("body") as HTMLBodyElement;
