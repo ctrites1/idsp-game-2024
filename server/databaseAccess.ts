@@ -180,7 +180,7 @@ export async function checkForExistingGame(
 	player_2_id: number
 ) {
 	let checkForPlayer1Matches =
-		"SELECT m.match_id, player_1_id, player_2_id, is_completed, round_id FROM `match` AS m JOIN `round` AS r ON m.match_id = r.match_id WHERE player_1_id = :player_1_id OR player_2_id = :player_1_id ORDER BY round_id desc LIMIT 1;";
+		"SELECT m.match_id, player_1_id, player_2_id, is_completed, round_id, p1.username AS player_1_username, p2.username AS player_2_username FROM `match` AS m JOIN `round` AS r ON m.match_id = r.match_id JOIN player AS p1 ON m.player_1_id = p1.player_id JOIN player AS p2 ON m.player_2_id = p2.player_id WHERE player_1_id = :player_1_id OR player_2_id = :player_1_id ORDER BY round_id desc LIMIT 1;";
 
 	const player1Games: any = await database.query(checkForPlayer1Matches, {
 		player_1_id,
@@ -418,52 +418,52 @@ export async function countTotalMoves(roundId: number) {
     WHERE r.round_id = :roundId
     GROUP BY player_id;
   `;
-  try {
-    const rows: any[] = await database.query(sql, { roundId });
-    const matchId = rows[0][0].match_id;
+	try {
+		const rows: any[] = await database.query(sql, { roundId });
+		const matchId = rows[0][0].match_id;
 
-    const totalMoves: any = rows[0].reduce((acc: any, cur: any) => {
-      return acc + cur.moveCount;
-    }, 0);
-    // check total moves id it's 6 start new round, send newRound: false or true
-    if (totalMoves === 6) {
-      const newRoundId = await startNewRound(matchId);
-      if (newRoundId) {
-        const players = await getPlayersInMatch(matchId);
-        const player1Hand = await createUpdatedHand(
-          players?.player1,
-          roundId,
-          newRoundId
-        );
-        const player2Hand = await createUpdatedHand(
-          players?.player2,
-          roundId,
-          newRoundId
-        );
-        if (player1Hand.success && player2Hand.success) {
-          return {
-            success: true,
-            newRound: true,
-            data: {
-              round_id: newRoundId,
-            },
-          };
-        } else {
-          return {
-            success: false,
-            newRound: true,
-            data: {
-              round_id: newRoundId,
-              error: "Could not create new hands for players",
-            },
-          };
-        }
-      }
-    }
-  } catch (err) {
-    console.error("ERROR: Failed to count total moves in match", err);
-    throw new Error("Failed to count total moves in match");
-  }
+		const totalMoves: any = rows[0].reduce((acc: any, cur: any) => {
+			return acc + cur.moveCount;
+		}, 0);
+		// check total moves id it's 6 start new round, send newRound: false or true
+		if (totalMoves === 6) {
+			const newRoundId = await startNewRound(matchId);
+			if (newRoundId) {
+				const players = await getPlayersInMatch(matchId);
+				const player1Hand = await createUpdatedHand(
+					players?.player1,
+					roundId,
+					newRoundId
+				);
+				const player2Hand = await createUpdatedHand(
+					players?.player2,
+					roundId,
+					newRoundId
+				);
+				if (player1Hand.success && player2Hand.success) {
+					return {
+						success: true,
+						newRound: true,
+						data: {
+							round_id: newRoundId,
+						},
+					};
+				} else {
+					return {
+						success: false,
+						newRound: true,
+						data: {
+							round_id: newRoundId,
+							error: "Could not create new hands for players",
+						},
+					};
+				}
+			}
+		}
+	} catch (err) {
+		console.error("ERROR: Failed to count total moves in match", err);
+		throw new Error("Failed to count total moves in match");
+	}
 }
 
 //export async function updateGameState(playerId: number, roundId: number) {
@@ -483,26 +483,26 @@ export async function startNewRound(matchId: number) {
     VALUES (:matchId)
   `;
 
-  const newRound = await database.query(sql, { matchId });
+	const newRound = await database.query(sql, { matchId });
 
-  let getRound = "SELECT MAX(round_id) AS 'created_round' FROM `round`;";
-  const round: any = await database.query(getRound);
-  const round_id = round[0].created_round;
-  console.log(round_id.round_id);
+	let getRound = "SELECT MAX(round_id) AS 'created_round' FROM `round`;";
+	const round: any = await database.query(getRound);
+	const round_id = round[0].created_round;
+	console.log(round_id.round_id);
 
-  return round_id.round_id;
+	return round_id.round_id;
 }
 
 async function getPlayersInMatch(match_id: number) {
-  try {
-    let playerQuery =
-      "SELECT player_1_id, player_2_id FROM `match` WHERE match_id = :match_id;";
-    const players: any = await database.query(playerQuery, { match_id });
-    const player1 = players[0][0].player_1_id;
-    const player2 = players[0][0].player_2_id;
-    return { player1, player2 };
-  } catch (err) {
-    console.log(err);
-    console.log("ERROR: Cannot get players in this match");
-  }
+	try {
+		let playerQuery =
+			"SELECT player_1_id, player_2_id FROM `match` WHERE match_id = :match_id;";
+		const players: any = await database.query(playerQuery, { match_id });
+		const player1 = players[0][0].player_1_id;
+		const player2 = players[0][0].player_2_id;
+		return { player1, player2 };
+	} catch (err) {
+		console.log(err);
+		console.log("ERROR: Cannot get players in this match");
+	}
 }

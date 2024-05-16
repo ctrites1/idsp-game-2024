@@ -16,9 +16,6 @@ export async function startgame() {
 	});
 	// can get player id and opponent to set attribute for hills
 	const response = await game.json();
-	/* 
-	gameStarted: false, oppId: 3, playerId: 4, round_id: 7 
-	*/
 	if (!response.gameStarted && response.round_id) {
 		const cg = await currentgame();
 		updateRoundIndicator(cg.data.round_id);
