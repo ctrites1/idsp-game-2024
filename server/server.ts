@@ -251,9 +251,10 @@ async function createServer() {
 
 	app.post("/api/countTotalMoves", async (req: Request, res: Response) => {
 		try {
-			const roundId = req.body.roundId;
-			const matchId = req.body.matchId;
+			const roundId = Number(req.body.roundId);
 			const data = await countTotalMoves(roundId);
+			console.log("roundId", roundId);
+			console.log("data", data);
 			res.json({ success: true, data: data });
 		} catch (error) {
 			res.status(500).send(error);

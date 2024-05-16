@@ -521,6 +521,6 @@ export async function countTotalRounds(matchId: number) {
 
 	const rows: any[] = await database.query(sql, { matchId });
 	const totalRounds = rows[0][0].roundCount;
-
+	console.log("totalROunds: ", totalRounds);
 	return totalRounds;
 }
