@@ -512,3 +512,17 @@ async function getPlayersInMatch(match_id: number) {
     console.log("ERROR: Cannot get players in this match");
   }
 }
+
+
+export async function countTotalRounds(matchId: number) {
+  const sql = `
+    SELECT COUNT(*) AS roundCount
+    FROM match
+    WHERE match_id = :matchId;
+  `;
+
+  const rows: any[] = await database.query(sql, {matchId});
+  const totalRounds = rows[0][0].roundCount;
+
+  return totalRounds;
+}
