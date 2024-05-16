@@ -194,6 +194,7 @@ export async function checkForExistingGame(
       return game;
     }
   });
+  console.log("AAAHHHHH", gameAlreadyExists[0]);
 
   if (gameAlreadyExists.length > 0) {
     let existing_game_id = gameAlreadyExists[0].match_id;
@@ -204,7 +205,12 @@ export async function checkForExistingGame(
     });
     //console.log("round", round)
     //console.log("ha", {gameExists: true, round_id: round[0][0].round_id})
-    return { gameExists: true, round_id: round[0][0].round_id };
+    return {
+      gameExists: true,
+      round_id: round[0][0].round_id,
+      player_1_username: gameAlreadyExists[0].player_1_username,
+      player_2_username: gameAlreadyExists[0].player_2_username,
+    };
   }
   return { gameExists: false, round_id: null };
 }
@@ -217,9 +223,9 @@ export async function getRoundState(
   try {
     let getPlayersMoves = `
     SELECT m.card_id, trench_position, name, power, username, m.player_id
-	FROM move AS m
-	JOIN card on m.card_id = card.card_id
-	JOIN player AS p ON m.player_id = p.player_id
+	  FROM move AS m
+	  JOIN card on m.card_id = card.card_id
+	  JOIN player AS p ON m.player_id = p.player_id
     WHERE m.player_id = :playerId 
     AND round_id = :roundId;
   `;
