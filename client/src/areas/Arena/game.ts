@@ -14,8 +14,11 @@ export async function startgame() {
 			password: "strongPassword2",
 		}),
 	});
-    // can get player id and opponent to set attribute for hills
+	// can get player id and opponent to set attribute for hills
 	const response = await game.json();
+	/* 
+	gameStarted: false, oppId: 3, playerId: 4, round_id: 7 
+	*/
 	if (!response.gameStarted && response.round_id) {
 		const cg = await currentgame();
 		updateRoundIndicator(cg.data.round_id);
@@ -32,11 +35,11 @@ export async function startgame() {
 			moveCardToTrench(playerCard);
 		});
 
-        const oppHill = document.getElementById("oppHill");
-	    const playerHill = document.getElementById("playerHill");
+		const oppHill = document.getElementById("oppHill");
+		const playerHill = document.getElementById("playerHill");
 
-        oppHill?.setAttribute("player-id", String(response.oppId));
-        playerHill?.setAttribute("player-id", String(response.playerId));
+		oppHill?.setAttribute("player-id", String(response.oppId));
+		playerHill?.setAttribute("player-id", String(response.playerId));
 
 		const endTurnButton = document.querySelector(".endTurn-button");
 		endTurnButton?.setAttribute("round-played", cg.data.round_id);
@@ -45,14 +48,14 @@ export async function startgame() {
 }
 
 export async function currentgame() {
-  const game = await fetch("/api/currentgame", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const response = await game.json();
-  return response;
+	const game = await fetch("/api/currentgame", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
+	const response = await game.json();
+	return response;
 }
 
 // let currentMove = {
