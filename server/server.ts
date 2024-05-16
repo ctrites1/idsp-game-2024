@@ -235,6 +235,7 @@ async function createServer() {
       cardId: req.body.cardId,
       trenchPos: req.body.trenchPos,
       playerId: req.session.playerId,
+	  winnerId: req.body.winnerId,
     };
     const moveLogged = await logMove(
       move.roundId,
@@ -246,6 +247,7 @@ async function createServer() {
       res.json({ success: false, data: "Error logging move" });
       return;
     }
+	const isRoundOver = await countTotalMoves(move.roundId)
     res.json({ success: true, data: "Move logged" });
   });
 
