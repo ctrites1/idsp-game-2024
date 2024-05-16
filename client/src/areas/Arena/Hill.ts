@@ -52,7 +52,7 @@ export function playersScore(): {} {
 	const playerHillScore = parseInt(playerHill?.textContent as string);
 	const oppId = oppHill?.getAttribute("player-id")
 	const playerId = playerHill?.getAttribute("player-id")
-	const scores = {opponentScore: oppHill, playerScore: playerHill};
+	const scores = {opponentScore: {score: oppHillScore, playerId: oppId}, playerScore: { score: playerHillScore, playerId: playerId}};
 
 	return scores;
 }

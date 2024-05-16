@@ -18,6 +18,7 @@ import bodyParser from "body-parser";
 import cookieSession from "cookie-session";
 import cors from "cors";
 import { Card } from "./types/Card";
+import { match } from "assert";
 
 export default interface CardIn {
   card_id: number;
@@ -165,6 +166,7 @@ async function createServer() {
       gameStarted: true,
       round_id: newRoundID,
       oppId: players.player2,
+	  playerId: players.player1,
     });
   });
 
