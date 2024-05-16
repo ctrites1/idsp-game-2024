@@ -39,7 +39,6 @@ export function clearTrench() {
 export async function totalMoves() {
 	const endTurnButton = document.querySelector(".endTurn-button");
 	const roundId = endTurnButton?.getAttribute("round-played");
-	console.log(roundId);
 	const reqMoves = await fetch("/api/countTotalMoves", {
 		method: "POST",
 		headers: {
@@ -50,7 +49,6 @@ export async function totalMoves() {
 		}),
 	});
 	const totalMoves = await reqMoves.json();
-	console.log("Moves: ", totalMoves); // TEST
 }
 
 export async function logMove() {
