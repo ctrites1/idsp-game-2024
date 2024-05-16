@@ -14,6 +14,7 @@ async function addPlayerDetailsToArena(
   opponent: string,
   oppProfileImgSrc: string
 ) {
+  // can use username to set attribute for hills
   const oppName = document.querySelector(".oppName") as HTMLDivElement;
   oppName.textContent = opponent;
   const oppPic = document.querySelector("#oppDisplayPic") as HTMLImageElement;
@@ -40,8 +41,8 @@ export async function loginAsPlayer1() {
   if (userResponse.success) {
     await loginSuccess();
     const roundState = await startgame();
-    const currentPlayer = roundState.data.playersMoves[0].username;
-    const currentOpponent = roundState.data.oppMoves[0].username;
+    const currentPlayer = roundState.data.player_2_username;
+    const currentOpponent = roundState.data.player_1_username;
     await getHandData(roundState.data);
     await addPlayerDetailsToArena(
       currentPlayer,
@@ -68,8 +69,8 @@ export async function loginAsPlayer2() {
   if (userResponse.success) {
     await loginSuccess();
     const roundState = await startgame();
-    const currentPlayer = roundState.data.playersMoves[0].username;
-    const currentOpponent = roundState.data.oppMoves[0].username;
+    const currentPlayer = roundState.data.player_1_username;
+    const currentOpponent = roundState.data.player_2_username;
     await getHandData(roundState.data);
     await addPlayerDetailsToArena(
       currentPlayer,
