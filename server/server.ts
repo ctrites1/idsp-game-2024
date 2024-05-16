@@ -222,6 +222,8 @@ async function createServer() {
       });
       return;
     }
+
+	// return player id
     res.json({
       gameState: true,
       data: roundState.data,

@@ -126,9 +126,11 @@ export async function logMove(
     VALUES
     (:round_id, :card_id, :trench_position, :player_id);
   `;
+  // count moves
+  // if move = 6 -> new round
   try {
     await database.query(logMove, params);
-    return { success: true };
+    return { success: true, newRound: false };
   } catch (err) {
     console.log("ERROR: Move not logged");
     return { success: false };
@@ -389,45 +391,78 @@ export async function loadGameState(roundId: number) {
   };
 }
 
-async function countPlayerMoves(roundId: number, playerId: number): Promise<number> {
-  const sql = `
-      SELECT COUNT(*) AS moveCount
-      FROM move
-      WHERE round_id = :roundId and player_id = :playerId;
-  `;
-  try {
-      const rows: any[] = await database.query(sql, {roundId, playerId});
-      return rows[0].moveCount;
-  } catch (err) {
-      console.error("ERROR: Failed to count moves in round", err);
-      throw new Error('Failed to count moves in round');
-  }
-}
+// async function countPlayerMoves(roundId: number, playerId: number): Promise<number> {
+//   const sql = `
+//       SELECT COUNT(*) AS moveCount
+//       FROM move
+//       WHERE round_id = :roundId and player_id = :playerId;
+//   `;
+//   try {
+//       const rows: any[] = await database.query(sql, {roundId, playerId});
+//       return rows[0].moveCount;
+//   } catch (err) {
+//       console.error("ERROR: Failed to count moves in round", err);
+//       throw new Error('Failed to count moves in round');
+//   }
+// }
 
-console.log(countPlayerMoves(6, 3));
+// console.log(countPlayerMoves(6, 3));
 
-async function countTotalMoves(roundId: number): Promise<number> {
+async function countTotalMoves(roundId: number, matchId: number) {
   const sql = `
-      SELECT COUNT(*) AS totalMoveCount
-      FROM move
-      WHERE round_id = :roundId;
+    SELECT COUNT(*) AS moveCount, player_id
+    FROM move
+    WHERE round_id = :roundId
+    GROUP BY player_id;
   `;
   try {
       const rows: any[] = await database.query(sql, roundId);
-      return rows[0].totalMoveCount;
+      const totalMoves: any = rows[0][0].reduce((acc:any, cur: any) => {return acc+cur.moveCount}, 0)
+      // check total moves id it's 6 start new round, send newRound: false or true
+      if (totalMoves === 6) {
+        const roundId = startNewRound(matchId);
+        return {
+          success: true,
+          newRound: true,
+          data: {
+            round_id: roundId
+          } 
+        };
+      }
+      const data = { playerMove: rows[0], totalTurns: totalMoves}
+      return {
+        success: true,
+        newRound: false,
+        data: data, 
+      };
   } catch (err) {
       console.error("ERROR: Failed to count total moves in match", err);
       throw new Error('Failed to count total moves in match');
   }
 }
 
-export async function updateGameState(playerId: number, roundId: number) {
-  try {
-      const movesThisRound = await countPlayerMoves(roundId, playerId);
-      const totalMoves = await countTotalMoves(roundId);
+//export async function updateGameState(playerId: number, roundId: number) {
+//   try {
+//       const movesThisRound = await countPlayerMoves(roundId, playerId);
+//       const totalMoves = await countTotalMoves(roundId);
 
-      console.log({ movesThisRound, totalMoves });
-  } catch (err) {
-      console.error("Failed to update game state:", err);
-  }
+//       console.log({ movesThisRound, totalMoves });
+//   } catch (err) {
+//       console.error("Failed to update game state:", err);
+//   }
+// }
+
+export async function startNewRound(matchId: number) {
+  const sql = `
+    INSERT INTO round (match_id)
+    VALUES (:matchId)
+  `;
+
+  const newRound = await database.query(sql, matchId);
+
+  let getRound = "SELECT MAX(round_id) AS 'created_round' FROM `round`;";
+  const round: any = await database.query(getRound);
+  const round_id = round[0].created_round;
+
+  return round_id;
 }

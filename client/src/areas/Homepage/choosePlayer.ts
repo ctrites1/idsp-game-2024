@@ -13,7 +13,8 @@ async function addPlayerDetailsToArena(
   profileImgSrc: string,
   opponent: string,
   oppProfileImgSrc: string
-) {
+) { 
+  // can use username to set attribute for hills
   const oppName = document.querySelector(".oppName") as HTMLDivElement;
   oppName.textContent = opponent;
   const oppPic = document.querySelector("#oppDisplayPic") as HTMLImageElement;

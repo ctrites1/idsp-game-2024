@@ -13,6 +13,7 @@ export async function startgame() {
 			password: "strongPassword2",
 		}),
 	});
+    // can get player id and opponent to set attribute for hills
 	const response = await game.json();
 	if (!response.gameStarted && response.round_id) {
 		const cg = await currentgame();
