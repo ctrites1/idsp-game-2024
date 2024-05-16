@@ -438,6 +438,7 @@ export async function countTotalMoves(roundId: number) {
 		}
 
 		const data = { playerMove: rows[0], totalTurns: totalMoves };
+		console.log("countTotalMoves: ", data);
 		return {
 			success: true,
 			newRound: false,

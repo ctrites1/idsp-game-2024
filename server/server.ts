@@ -158,6 +158,7 @@ async function createServer() {
 				gameStarted: false,
 				round_id: currentGame.round_id,
 				oppId: players.player2,
+				playerId: players.player1,
 			});
 			return;
 		}
