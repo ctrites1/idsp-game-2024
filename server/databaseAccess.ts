@@ -2,27 +2,19 @@ import { database } from "./databaseConnection";
 import bcrypt from "bcrypt";
 import { Card } from "./types/Card";
 
-export async function createInitialHand(deckID: number, playerId: number) {
+export async function createInitialHand(
+	deckID: number,
+	playerId: number,
+	roundId: number
+) {
 	try {
 		const deckChoice = deckID;
 		let getDeck = `
-export async function createInitialHand(
-  deckID: number,
-  playerId: number,
-  roundId: number
-) {
-  try {
-    const deckChoice = deckID;
-    let getDeck = `
     SELECT card_id, name, power, unit_type_id FROM card
     WHERE element_id = :deckChoice;
     `;
 		const deck: any = await database.query(getDeck, { deckChoice });
 		const hand = randomizeDeck(deck[0]);
-
-		const roundId = 1;
-    const deck: any = await database.query(getDeck, { deckChoice });
-    const hand = randomizeDeck(deck[0]);
 
 		let logHand = `
     INSERT INTO hand 
@@ -68,6 +60,7 @@ export async function getCurrentHand(playerId: number, roundId: number) {
 			roundId,
 		};
 		const hand: any = await database.query(getHand, handParams);
+		console.log(hand);
 		if (hand.length === 0) {
 			throw new Error("No hand exists for this player in the current round");
 		}
@@ -76,20 +69,6 @@ export async function getCurrentHand(playerId: number, roundId: number) {
 		console.log(`Error getting current hand: ${err}`);
 		return { success: false, hand: null };
 	}
-    let handParams = {
-      playerId,
-      roundId,
-    };
-    const hand: any = await database.query(getHand, handParams);
-    console.log(hand);
-    if (hand.length === 0) {
-      throw new Error("No hand exists for this player in the current round");
-    }
-    return { success: true, hand: hand[0] };
-  } catch (err) {
-    console.log(`Error getting current hand: ${err}`);
-    return { success: false, hand: null };
-  }
 }
 
 async function createUpdatedHand(
@@ -235,7 +214,7 @@ export async function getRoundState(
 ) {
 	try {
 		let getPlayersMoves = `
-    SELECT m.card_id, trench_position, name, power, username
+    SELECT m.card_id, trench_position, name, power, username, m.player_id
 	FROM move AS m
 	JOIN card on m.card_id = card.card_id
 	JOIN player AS p ON m.player_id = p.player_id
@@ -243,7 +222,7 @@ export async function getRoundState(
     AND round_id = :roundId;
   `;
 		let getOppMoves = `
-    SELECT m.card_id, trench_position, name, power, username
+    SELECT m.card_id, trench_position, name, power, username, m.player_id
 	FROM move AS m
 	JOIN card on m.card_id = card.card_id
 	JOIN player AS p ON m.player_id = p.player_id
@@ -399,11 +378,6 @@ export async function loadGameState(roundId: number) {
 		console.error("No moves found for this match.");
 		return null;
 	}
-  const latMove: any = await database.query(latestMove, roundId);
-  if (!latMove.length) {
-    console.error("No moves found for this match.");
-    return null;
-  }
 
 	console.log("last move", latMove);
 
@@ -415,76 +389,26 @@ export async function loadGameState(roundId: number) {
 			playerTurn: lastMove.player_id === 3 ? 4 : 3,
 		},
 	};
-  const lastMove = latMove[0][0];
-  return {
-    success: true,
-    data: {
-      round_id: lastMove.round_id,
-      playerTurn: lastMove.player_id === 3 ? 4 : 3,
-    },
-  };
 }
 
-async function countPlayerMoves(
-	roundId: number,
-	playerId: number
-): Promise<number> {
-	const sql = `
-async function countPlayerMoves(
-  roundId: number,
-  playerId: number
-): Promise<number> {
-  const sql = `
-      SELECT COUNT(*) AS moveCount
-      FROM move
-      WHERE round_id = :roundId and player_id = :playerId;
-  `;
-	try {
-		const [rows]: any[] = await database.query(sql, { roundId, playerId });
-		return rows[0].moveCount;
-	} catch (err) {
-		console.error("ERROR: Failed to count moves in round", err);
-		throw new Error("Failed to count moves in round");
-	}
-  try {
-    const [rows]: any[] = await database.query(sql, { roundId, playerId });
-    return rows[0].moveCount;
-  } catch (err) {
-    console.error("ERROR: Failed to count moves in round", err);
-    throw new Error("Failed to count moves in round");
-  }
-}
-
-export async function countTotalMoves(roundId: number): Promise<number> {
+export async function countTotalMoves(roundId: number) {
+	console.log(roundId);
 	const sql = `
     SELECT COUNT(*) AS moveCount, player_id
     FROM move
     WHERE round_id = :roundId
     GROUP BY player_id;
   `;
-  try {
-    const [rows]: any[] = await database.query(sql, roundId);
-    return rows[0].totalMoveCount;
-  } catch (err) {
-    console.error("ERROR: Failed to count total moves in match", err);
-    throw new Error("Failed to count total moves in match");
-  }
-}
-
-export async function updateGameState(playerId: number, roundId: number) {
 	try {
-		const movesThisRound = await countPlayerMoves(roundId, playerId);
-		const totalMoves = await countTotalMoves(roundId);
-  try {
-    const movesThisRound = await countPlayerMoves(roundId, playerId);
-    const totalMoves = await countTotalMoves(roundId);
-
-		console.log({ movesThisRound, totalMoves });
+		const rows: any[] = await database.query(sql, { roundId });
+		const totalMoves: any = rows[0].reduce((acc: any, cur: any) => {
+			return acc + cur.moveCount;
+		}, 0);
+		const data = { playerMove: rows[0], totalTurns: totalMoves };
+		console.log(rows, totalMoves);
+		return data;
 	} catch (err) {
-		console.error("Failed to update game state:", err);
+		console.error("ERROR: Failed to count total moves in match", err);
+		throw new Error("Failed to count total moves in match");
 	}
-    console.log({ movesThisRound, totalMoves });
-  } catch (err) {
-    console.error("Failed to update game state:", err);
-  }
 }

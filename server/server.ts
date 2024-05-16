@@ -107,7 +107,11 @@ async function createServer() {
 			params.round
 		);
 		if (hand.hand?.length === 0) {
-			const newHand = await createInitialHand(params.choice, params.player);
+			const newHand = await createInitialHand(
+				params.choice,
+				params.player,
+				params.round
+			);
 			if (!newHand || !newHand.hand || newHand.hand.length === 0) {
 				console.error("Failed to create new hand or no cards found.");
 				return [];
@@ -241,12 +245,13 @@ async function createServer() {
 	});
 
 	app.post("/api/countTotalMoves", async (req: Request, res: Response) => {
+		console.log("reqbody: ", req.body);
 		try {
-			const totalMoves = await countTotalMoves(Number(req.body.roundId));
-			console.log(totalMoves);
-			if (!totalMoves) {
-				res.json({ success: false, data: "Could not retrieve count of moves" });
-			}
+			const roundId = req.body.roundId;
+
+			console.log(req.body);
+			const data = await countTotalMoves(roundId);
+			res.json({ success: true, data: data });
 		} catch (error) {
 			res.status(500).send(error);
 		}
