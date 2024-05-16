@@ -473,3 +473,16 @@ export async function startNewRound(matchId: number) {
 
   return round_id.round_id;
 }
+
+export async function countTotalRounds(matchId: number) {
+  const sql = `
+    SELECT COUNT(*) AS roundCount
+    FROM match
+    WHERE match_id = :matchId;
+  `;
+
+  const rows: any[] = await database.query(sql, {matchId});
+  const totalRounds = rows[0][0].roundCount;
+
+  return totalRounds;
+}
