@@ -144,7 +144,7 @@ async function createServer() {
     } else {
       player2Id = 3;
     }
-
+	
     const players = {
       player1: req.session.playerId,
       player2: player2Id,
@@ -158,6 +158,7 @@ async function createServer() {
         gameStarted: false,
         round_id: currentGame.round_id,
         oppId: players.player2,
+		playerId: players.player1
       });
       return;
     }
