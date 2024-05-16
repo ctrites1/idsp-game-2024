@@ -180,7 +180,7 @@ export async function checkForExistingGame(
   player_2_id: number
 ) {
   let checkForPlayer1Matches =
-    "SELECT m.match_id, player_1_id, player_2_id, is_completed, round_id FROM `match` AS m JOIN `round` AS r ON m.match_id = r.match_id WHERE player_1_id = :player_1_id OR player_2_id = :player_1_id ORDER BY round_id desc LIMIT 1;";
+    "SELECT m.match_id, player_1_id, player_2_id, is_completed, round_id, p1.username AS player_1_username, p2.username AS player_2_username FROM `match` AS m JOIN `round` AS r ON m.match_id = r.match_id JOIN player AS p1 ON m.player_1_id = p1.player_id JOIN player AS p2 ON m.player_2_id = p2.player_id WHERE player_1_id = :player_1_id OR player_2_id = :player_1_id ORDER BY round_id desc LIMIT 1;";
 
   const player1Games: any = await database.query(checkForPlayer1Matches, {
     player_1_id,
