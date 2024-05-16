@@ -194,7 +194,6 @@ export async function checkForExistingGame(
       return game;
     }
   });
-  console.log("AAAHHHHH", gameAlreadyExists[0]);
 
   if (gameAlreadyExists.length > 0) {
     let existing_game_id = gameAlreadyExists[0].match_id;
