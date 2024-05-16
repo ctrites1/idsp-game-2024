@@ -36,14 +36,14 @@ export async function startgame() {
 }
 
 export async function currentgame() {
-	const game = await fetch("/api/currentgame", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-	});
-	const response = await game.json();
-	return response;
+  const game = await fetch("/api/currentgame", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const response = await game.json();
+  return response;
 }
 
 // let currentMove = {
@@ -61,7 +61,7 @@ export async function currentgame() {
 //         console.error("No move to confirm.");
 //         return;
 //     }
-    
+
 //     sendMoveToServer(currentMove)
 //         .then(response => {
 //             if (response.success) {
@@ -100,7 +100,7 @@ export async function currentgame() {
 
 // //     if (cardElement && targetPosition) {
 // //         const clonedCard = cardElement.cloneNode(true);
-// //         clonedCard.id = `clone-${cardId}`; 
+// //         clonedCard.id = `clone-${cardId}`;
 // //         targetPosition.appendChild(clonedCard);
 
 // //         targetPosition.classList.add("highlight-move");
@@ -123,4 +123,3 @@ export async function currentgame() {
 //         console.error("Invalid trench position");
 //     }
 // }
-

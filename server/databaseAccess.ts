@@ -2,7 +2,11 @@ import { database } from "./databaseConnection";
 import bcrypt from "bcrypt";
 import { Card } from "./types/Card";
 
-export async function createInitialHand(deckID: number, playerId: number) {
+export async function createInitialHand(
+  deckID: number,
+  playerId: number,
+  roundId: number
+) {
   try {
     const deckChoice = deckID;
     let getDeck = `
@@ -11,8 +15,6 @@ export async function createInitialHand(deckID: number, playerId: number) {
     `;
     const deck: any = await database.query(getDeck, { deckChoice });
     const hand = randomizeDeck(deck[0]);
-
-    const roundId = 1;
 
     let logHand = `
     INSERT INTO hand 
@@ -58,6 +60,7 @@ export async function getCurrentHand(playerId: number, roundId: number) {
       roundId,
     };
     const hand: any = await database.query(getHand, handParams);
+    console.log(hand);
     if (hand.length === 0) {
       throw new Error("No hand exists for this player in the current round");
     }
@@ -213,7 +216,7 @@ export async function getRoundState(
 ) {
   try {
     let getPlayersMoves = `
-    SELECT m.card_id, trench_position, name, power, username
+    SELECT m.card_id, trench_position, name, power, username, m.player_id
 	FROM move AS m
 	JOIN card on m.card_id = card.card_id
 	JOIN player AS p ON m.player_id = p.player_id
@@ -372,10 +375,10 @@ export async function loadGameState(roundId: number) {
   Where m.round_id = :roundId
   ORDER BY m.move_time DESC 
   LIMIT 1;`;
-  const latMove:any = await database.query(latestMove, roundId);
+  const latMove: any = await database.query(latestMove, roundId);
   if (!latMove.length) {
-      console.error('No moves found for this match.');
-      return null;
+    console.error("No moves found for this match.");
+    return null;
   }
 
   console.log("last move", latMove);
@@ -386,8 +389,7 @@ export async function loadGameState(roundId: number) {
     data: {
       round_id: lastMove.round_id,
       playerTurn: lastMove.player_id === 3 ? 4 : 3,
-      
-    } 
+    },
   };
 }
 
@@ -436,8 +438,8 @@ async function countTotalMoves(roundId: number, matchId: number) {
         data: data, 
       };
   } catch (err) {
-      console.error("ERROR: Failed to count total moves in match", err);
-      throw new Error('Failed to count total moves in match');
+    console.error("ERROR: Failed to count total moves in match", err);
+    throw new Error("Failed to count total moves in match");
   }
 }
 
