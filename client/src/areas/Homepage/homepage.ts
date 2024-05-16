@@ -6,6 +6,11 @@ export async function createHomepage() {
 
 	homepage.className = "pseudo-homepage";
 
+	const logoImg: HTMLImageElement = document.createElement("img");
+    logoImg.src = "./assets/Logos/logooo.svg"; 
+    logoImg.alt = "Game Logo";
+    logoImg.className = "homepage-logo";
+
 	const btn1: HTMLButtonElement = document.createElement("button");
 	btn1.className = "player-select player1-btn";
 
@@ -33,6 +38,8 @@ export async function createHomepage() {
 
 	playerBtnDiv.appendChild(btn1);
 	playerBtnDiv.appendChild(btn2);
+
+	homepage.appendChild(logoImg);
 	homepage.appendChild(playerBtnDiv);
 
 	body.appendChild(homepage);
@@ -42,3 +49,4 @@ export async function removeHomepage() {
 	const homepage = document.querySelector(".pseudo-homepage") as HTMLDivElement;
 	homepage.remove();
 }
+ 

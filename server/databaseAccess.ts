@@ -418,25 +418,27 @@ async function countTotalMoves(roundId: number, matchId: number) {
     GROUP BY player_id;
   `;
   try {
-      const rows: any[] = await database.query(sql, roundId);
-      const totalMoves: any = rows[0][0].reduce((acc:any, cur: any) => {return acc+cur.moveCount}, 0)
-      // check total moves id it's 6 start new round, send newRound: false or true
-      if (totalMoves === 6) {
-        const roundId = startNewRound(matchId);
-        return {
-          success: true,
-          newRound: true,
-          data: {
-            round_id: roundId
-          } 
-        };
-      }
-      const data = { playerMove: rows[0], totalTurns: totalMoves}
+    const rows: any[] = await database.query(sql, roundId);
+    const totalMoves: any = rows[0][0].reduce((acc: any, cur: any) => {
+      return acc + cur.moveCount;
+    }, 0);
+    // check total moves id it's 6 start new round, send newRound: false or true
+    if (totalMoves === 6) {
+      const roundId = startNewRound(matchId);
       return {
         success: true,
-        newRound: false,
-        data: data, 
+        newRound: true,
+        data: {
+          round_id: roundId,
+        },
       };
+    }
+    const data = { playerMove: rows[0], totalTurns: totalMoves };
+    return {
+      success: true,
+      newRound: false,
+      data: data,
+    };
   } catch (err) {
     console.error("ERROR: Failed to count total moves in match", err);
     throw new Error("Failed to count total moves in match");

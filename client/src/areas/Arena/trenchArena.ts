@@ -36,6 +36,21 @@ export function clearTrench() {
   clearHillScores();
 }
 
+export async function totalMoves() {
+  const endTurnButton = document.querySelector(".endTurn-button");
+  const roundId = endTurnButton?.getAttribute("round-played");
+  const reqMoves = await fetch("/api/countTotalMoves", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      roundId: roundId,
+    }),
+  });
+  const totalMoves = await reqMoves.json();
+}
+
 export async function logMove() {
   const endTurnButton = document.querySelector(".endTurn-button");
   const cardId = endTurnButton?.getAttribute("card-played");
@@ -51,7 +66,7 @@ export async function logMove() {
 
   if (roundId && cardId) {
     console.log("FETCHING");
-    const newRound = await fetch("/api/logmove", {
+    await fetch("/api/logmove", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -62,8 +77,6 @@ export async function logMove() {
         trenchPos: counter,
       }),
     });
-    if (newRound) {
-    }
   } else {
     console.log("No move to be logged");
   }

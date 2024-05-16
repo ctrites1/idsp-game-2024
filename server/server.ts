@@ -12,6 +12,7 @@ import {
   getCurrentHand,
   test,
   validateUser,
+  countTotalMoves,
 } from "../server/databaseAccess";
 import bodyParser from "body-parser";
 import cookieSession from "cookie-session";
@@ -72,24 +73,6 @@ async function createServer() {
     }
     req.session = { playerId: valid.playerId };
 
-    // let deckId = 0;
-
-    // const params = {
-    // 	player: req.session.playerId,
-    // 	round: req.body.round_id,
-    // 	choice: req.body.player_deck_choice,
-    //   };
-    // const hand = await getCurrentHand(params.player, params.round);
-    // if (hand.hand.length === 0) {
-    // 	deckId++;
-    // 	const newHand = await createInitialHand(deckId, params.player);
-    // 	//res.json(newHand);
-    // 	//console.log(newHand);
-    // 	//return;
-    // }
-    //   res.json(hand);
-    //   console.log("your hand ", hand);
-
     res.json({ success: true, playerId: valid.playerId });
   });
 
@@ -118,6 +101,7 @@ async function createServer() {
       round: req.body.round_id,
       choice: req.body.player_deck_choice,
     };
+
     const hand: NewHandResponse = await getCurrentHand(
       params.player,
       params.round
@@ -225,8 +209,6 @@ async function createServer() {
       });
       return;
     }
-
-	// return player id
     res.json({
       gameState: true,
       data: roundState.data,
@@ -260,6 +242,19 @@ async function createServer() {
       return;
     }
     res.json({ success: true, data: "Move logged" });
+  });
+
+  app.post("/api/countTotalMoves", async (req: Request, res: Response) => {
+    console.log("reqbody: ", req.body);
+    try {
+      const roundId = req.body.roundId;
+
+      console.log(req.body);
+      const data = await countTotalMoves(roundId);
+      res.json({ success: true, data: data });
+    } catch (error) {
+      res.status(500).send(error);
+    }
   });
 
   app.listen(port, () => {

@@ -1,5 +1,9 @@
 import { createHomepage } from "./areas/Homepage/homepage";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  await createHomepage();
+  try {
+    await createHomepage();
+  } catch (error) {
+    console.error("Error during page initialization:", error);
+  }
 });

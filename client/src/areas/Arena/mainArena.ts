@@ -1,18 +1,19 @@
 import { logout } from "../Homepage/choosePlayer";
 import { createHomepage } from "../Homepage/homepage";
 import { setupDropZones } from "./cardArena";
-import { logMove } from "./trenchArena";
+import { logMove, totalMoves } from "./trenchArena";
+import { updateRoundIndicator } from "./roundCounter";
 
 export async function createArenaPage() {
-	const body = document.querySelector("body") as HTMLBodyElement;
-	const content: string = `
+  const body = document.querySelector("body") as HTMLBodyElement;
+  const content: string = `
         <header><div class="header-btns">
             <button type="button" class="home-button">
             </button>
             <button type="button" class="howTo-button">
             </button>
         </div>
-            <div class="round-indicator">Round 1/3
+            <div class="round-indicator">
             </div>
             <div class="oppInfo">
                     <div class="oppName">
@@ -52,6 +53,12 @@ export async function createArenaPage() {
                 <div class="cardViewFooter">
                 </div>
             </div>
+
+            <!-- Stars -->
+            <div id="stars"></div>
+            <div id="stars2"></div>
+            <div id="stars3"></div>
+            
         <footer id="playerFooter">
             <div class="playInfo">
                 <div class="playerInfo">
@@ -73,32 +80,44 @@ export async function createArenaPage() {
                     <button class="log-button" type="button">Log</button>
                 </div>
         </footer>
+
+
+
+        <!-- Modal -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <p id="modal-text"></p>
+            </div>
+        </div>
     `;
-	body.innerHTML = content;
+  body.innerHTML = content;
 
-	//* For demo, should refactor later - maybe not use class for footer for easier function calls?
-	const surrenderButton = document.querySelector(
-		".surrender-button"
-	) as HTMLButtonElement;
-	surrenderButton.addEventListener("click", () => {
-		console.log("Surrender clicked");
-		location.reload();
-		// TODO: Logic to handle log viewing to be added here
-	});
+  //* For demo, should refactor later - maybe not use class for footer for easier function calls?
+  const surrenderButton = document.querySelector(
+    ".surrender-button"
+  ) as HTMLButtonElement;
+  surrenderButton.addEventListener("click", () => {
+    console.log("Surrender clicked");
+    location.reload();
+    // TODO: Logic to handle log viewing to be added here
+  });
 
-	const homeButton = document.querySelector(
-		".home-button"
-	) as HTMLButtonElement;
-	homeButton?.addEventListener("click", async () => {
-		await logout();
-		await createHomepage();
-	});
+  const homeButton = document.querySelector(
+    ".home-button"
+  ) as HTMLButtonElement;
+  homeButton?.addEventListener("click", async () => {
+    await logout();
+    await createHomepage();
+  });
 
-	const endTurnButton = document.querySelector(
-		".endTurn-button"
-	) as HTMLButtonElement;
-	endTurnButton?.addEventListener("click", logMove);
-	// TODO: Block user from playing anything after turn has ended
+  const endTurnButton = document.querySelector(
+    ".endTurn-button"
+  ) as HTMLButtonElement;
+  endTurnButton?.addEventListener("click", async () => {
+    await logMove();
+    await totalMoves();
+  });
 
-	setupDropZones();
+  setupDropZones();
 }
