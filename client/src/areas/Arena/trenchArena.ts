@@ -1,4 +1,4 @@
-import { clearHillScores, playersScore, updateHillScores } from "./Hill";
+import { clearHillScores, playersScore, updateHillScores } from "./hillArena";
 
 export function addCardToOppTrench(card: HTMLDivElement) {
 	const trench = document.querySelector("#oppTrench")!;
@@ -51,6 +51,11 @@ export async function logMove() {
 
 	const winnerId = playersScore();
 	console.log(winnerId);
+
+	const loggedCard = document.querySelector(".just-played");
+	if (loggedCard) {
+		loggedCard.classList.remove("just-played");
+	}
 
 	if (roundId && cardId) {
 		console.log("FETCHING");

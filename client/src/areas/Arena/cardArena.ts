@@ -1,4 +1,4 @@
-import { updateHillScores } from "./Hill";
+import { updateHillScores } from "./hillArena";
 
 /* ------------------------------- Drag & Drop ------------------------------ */
 function isDragEvent(event: Event): event is DragEvent {
@@ -35,19 +35,33 @@ function checkIfCardPlayedThisTurn(cardId: string) {
 }
 
 export function setupDropZones() {
-	const cardHolders = document.querySelectorAll("#playerTrench .cardHolder");
-	console.log(`Found ${cardHolders.length} drop zones.`); // Check how many were found
+	const trenchHolders = document.querySelectorAll("#playerTrench .cardHolder");
+	console.log(`Found ${trenchHolders.length} drop zones.`); // Check how many were found
 
-	cardHolders.forEach((holder) => {
-		console.log("Setting up drop zone"); // Confirm setup
+	trenchHolders.forEach((holder) => {
 		holder.addEventListener("dragover", (event) => {
-			event.preventDefault(); // Necessary to allow for the drop event to fire
-			console.log("Drag over active zone"); // Debugging dragover activity
+			event.preventDefault();
+			console.log("Hovering hover active drop zone");
+		});
+
+		holder.addEventListener("dragenter", (event) => {
+			event.preventDefault();
+			holder.classList.add("drag-hover-glow");
+		});
+
+		holder.addEventListener("dragleave", (event) => {
+			event.preventDefault();
+			holder.classList.remove("drag-hover-glow");
 		});
 
 		holder.addEventListener("drop", (event) => {
 			event.preventDefault();
+			holder.classList.remove("drag-hover-glow");
+		});
 
+		holder.addEventListener("drop", (event) => {
+			event.preventDefault();
+			holder.classList.remove("drag-hover-glow");
 			if (isDragEvent(event) && event.dataTransfer) {
 				const cardId = event.dataTransfer.getData("text/plain");
 				const card = document.querySelector(
@@ -65,9 +79,55 @@ export function setupDropZones() {
 			}
 		});
 	});
+
+	const playerHand = document.querySelector(".playerHand") as HTMLDivElement;
+	playerHand.addEventListener("dragover", (event) => {
+		event.preventDefault();
+		console.log("Hovering hover active drop zone");
+	});
+
+	playerHand.addEventListener("dragenter", (event) => {
+		event.preventDefault();
+		playerHand.classList.add("drag-hover-glow");
+	});
+
+	playerHand.addEventListener("dragleave", (event) => {
+		event.preventDefault();
+		playerHand.classList.remove("drag-hover-glow");
+	});
+
+	playerHand.addEventListener("drop", (event) => {
+		event.preventDefault();
+		playerHand.classList.remove("drag-hover-glow");
+		if (isDragEvent(event) && event.dataTransfer) {
+			const cardId = event.dataTransfer.getData("text/plain");
+			const card = document.querySelector(
+				`#playerTrench #${cardId}`
+			) as HTMLElement;
+			console.log("Card classes: ", card.classList);
+			if (card.classList.contains("just-played")) {
+				moveCardBackToHand(card);
+			}
+		}
+	});
 }
 
 /* ---------------------------------- Cards --------------------------------- */
+
+export function moveCardBackToHand(card: HTMLElement) {
+	const hand = document.querySelector(".playerHand") as HTMLDivElement;
+	const newHolder = document.createElement("div");
+	newHolder.classList.add("cardHolder");
+	newHolder.appendChild(card);
+	card.classList.remove("just-played");
+	hand.appendChild(newHolder);
+	const endTurnBtn = document.querySelector(
+		".endTurn-button"
+	) as HTMLButtonElement;
+	endTurnBtn.removeAttribute("card-played");
+	updateHillScores();
+}
+
 export function moveCardToTrench(card: HTMLElement) {
 	const trench = document.querySelector("#playerTrench")!;
 	const cardHolders = trench.querySelectorAll(".cardHolder");
@@ -84,13 +144,16 @@ export function moveCardToTrench(card: HTMLElement) {
 			currentCardHolder.parentNode?.removeChild(currentCardHolder);
 		}
 		updateHillScores();
+		card.classList.add("just-played");
+		card.draggable = true;
 	}
 }
 
-export function removeCardFromHand(card: HTMLElement) {
-	const holder = card.closest(".cardHolder");
-	holder?.removeChild(card);
-}
+// export function removeCardFromHolder(card: HTMLElement) {
+// 	//	renamed "removeCardFromHand" -> "removeCardFromHolder"
+// 	const holder = card.closest(".cardHolder");
+// 	holder?.removeChild(card);
+// }
 
 export function viewSingleCard(card: HTMLElement) {
 	const bigCard = card.cloneNode(true) as HTMLDivElement;
