@@ -240,6 +240,7 @@ async function createServer() {
       playerId: req.session.playerId,
       winnerId: req.body.winner_id,
     };
+    console.log(move);
     const moveLogged = await logMove(
       move.roundId,
       move.cardId,

@@ -501,10 +501,13 @@ export async function countTotalMoves(roundId: number, winnerId: number) {
 
 export async function startNewRound(
   matchId: number,
-  winnerId: number,
+  winnerId: number | null,
   roundId: number
 ) {
   try {
+    if (winnerId === 0) {
+      winnerId = null;
+    }
     const updateWinner =
       "UPDATE `round` SET winner_id = :winner_id WHERE round_id = :round_id;";
 
