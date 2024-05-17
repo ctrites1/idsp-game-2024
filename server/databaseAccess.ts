@@ -466,6 +466,7 @@ export async function countTotalMoves(roundId: number, winnerId: number) {
 						newRound: true,
 						data: {
 							round_id: newRoundId.roundId,
+              winner_id: winnerId,
 						},
 					};
 				} else {
@@ -474,6 +475,7 @@ export async function countTotalMoves(roundId: number, winnerId: number) {
 						newRound: true,
 						data: {
 							round_id: newRoundId.roundId,
+              winner_id: winnerId,
 							error: "Could not create new hands for players",
 						},
 					};
@@ -514,20 +516,49 @@ export async function startNewRound(
 		});
 
 		const countRounds =
-			"SELECT COUNT(*) AS rounds FROM `round` WHERE match_id = :match_id;";
+			"SELECT winner_id, COUNT(*) AS rounds_won FROM `round` WHERE match_id = :match_id GROUP BY winner_id;";
 
 		const roundTotal: any = await database.query(countRounds, {
 			match_id: matchId,
 		});
-		if (roundTotal[0][0].rounds >= 3) {
+
+    const totalRounds: any = roundTotal[0].reduce((acc: any, cur: any) => {
+			return acc + cur.rounds_won;
+		}, 0);
+
+    let player1Rounds = {id: roundTotal[0].winner_id, score: 0};
+		let player2Rounds = {id: roundTotal[1].winner_id, score: 0};
+
+    let whoisthewinner = null;
+
+		if (roundTotal.length > 0) {
+			player1Rounds = roundTotal[0]?.rounds_won || 0;
+		}
+		if (roundTotal.length > 1) {
+			player2Rounds = roundTotal[1]?.rounds_won || 0;
+		}
+
+    if(player1Rounds.score === player2Rounds.score) {
+      whoisthewinner = null;
+    } else if (player1Rounds.score > player2Rounds.score){
+      whoisthewinner = player1Rounds.id;
+    } else if (player1Rounds.score < player2Rounds.score){
+      whoisthewinner = player2Rounds.id;
+    } else {
+      whoisthewinner = null;
+    }
+
+
+
+		if (totalRounds >= 3) {
 			const gameOver = await endGame(matchId);
 			if (gameOver.gameEnded) {
-				return { roundStarted: false, gameCompleted: true };
+				return { roundStarted: false, gameCompleted: true, winner_id: whoisthewinner };
 			}
 			return {
 				roundStarted: false,
 				gameCompleted: false,
-				round: roundTotal[0][0].rounds,
+				round: totalRounds,
 			};
 		}
 
