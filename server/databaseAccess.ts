@@ -102,6 +102,8 @@ async function createUpdatedHand(
       getLatestHand,
       latestHandParams
     );
+    console.log("CARDSPLAYED", cardsPlayed);
+    console.log("GETLATESTHAND", initialHand);
     //? Don't think this is correct, need to Object.values() to get the cards inside of the hand
     const newHand = initialHand[0].filter(
       (card: Card) => !cardsPlayed[0].includes(card)
@@ -448,8 +450,14 @@ export async function countTotalMoves(roundId: number, winnerId: number) {
     // check total moves id it's 6 start new round, send newRound: false or true
     if (totalMoves === 6) {
       console.log(winnerId);
-      const newRoundId = await startNewRound(matchId, winnerId, roundId);
-      console.log(newRoundId);
+      const newRoundId = await startNewRound(
+        matchId,
+        winnerId,
+        roundId,
+        rows[0][0].player_id,
+        rows[0][1].player_id
+      );
+      console.log("NEWROUNDID", newRoundId);
       if (newRoundId?.roundStarted && newRoundId.roundId) {
         const players = await getPlayersInMatch(matchId);
         const player1Hand = await createUpdatedHand(
@@ -457,11 +465,13 @@ export async function countTotalMoves(roundId: number, winnerId: number) {
           roundId,
           newRoundId.roundId
         );
+        console.log("player1Hand", player1Hand);
         const player2Hand = await createUpdatedHand(
           players?.player2,
           roundId,
           newRoundId.roundId
         );
+        console.log("player2Hand", player2Hand);
         if (player1Hand.success && player2Hand.success) {
           return {
             success: true,
@@ -511,7 +521,9 @@ export async function countTotalMoves(roundId: number, winnerId: number) {
 export async function startNewRound(
   matchId: number,
   winnerId: number | null,
-  roundId: number
+  roundId: number,
+  player1: number,
+  player2: number
 ) {
   try {
     if (winnerId === 0) {
@@ -524,15 +536,12 @@ export async function startNewRound(
       winner_id: winnerId,
       round_id: roundId,
     });
-    console.log("WINNERID", winnerId);
     const countRounds =
       "SELECT winner_id, COUNT(*) AS rounds_won FROM `round` WHERE match_id = :match_id GROUP BY winner_id;";
 
     const roundTotal: any = await database.query(countRounds, {
       match_id: matchId,
     });
-
-    console.log("ROUNDTOTAL", roundTotal);
 
     const totalRounds: any = roundTotal[0].reduce((acc: any, cur: any) => {
       return acc + cur.rounds_won;
@@ -550,8 +559,6 @@ export async function startNewRound(
       if (roundTotal.length > 1) {
         player2Rounds.score = roundTotal[0][1]?.rounds_won || 0;
       }
-      console.log("PLAYER1ROUNDS", player1Rounds);
-      console.log("PLAYER2ROUNDS", player2Rounds);
       if (player1Rounds.score === player2Rounds.score) {
         whoisthewinner = null;
       } else if (player1Rounds.score > player2Rounds.score) {
@@ -561,7 +568,6 @@ export async function startNewRound(
       } else {
         whoisthewinner = null;
       }
-      console.log("WHOISWINNER", whoisthewinner);
       const gameOver = await endGame(matchId);
       if (gameOver.gameEnded) {
         return {
