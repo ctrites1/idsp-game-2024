@@ -102,6 +102,8 @@ async function createUpdatedHand(
       getLatestHand,
       latestHandParams
     );
+    console.log("CARDSPLAYED", cardsPlayed);
+    console.log("GETLATESTHAND", initialHand);
     //? Don't think this is correct, need to Object.values() to get the cards inside of the hand
     const newHand = initialHand[0].filter(
       (card: Card) => !cardsPlayed[0].includes(card)
@@ -447,7 +449,15 @@ export async function countTotalMoves(roundId: number, winnerId: number) {
     }, 0);
     // check total moves id it's 6 start new round, send newRound: false or true
     if (totalMoves === 6) {
-      const newRoundId = await startNewRound(matchId, winnerId, roundId, rows[0][0].player_id, rows[0][1].player_id);
+      console.log(winnerId);
+      const newRoundId = await startNewRound(
+        matchId,
+        winnerId,
+        roundId,
+        rows[0][0].player_id,
+        rows[0][1].player_id
+      );
+      console.log("NEWROUNDID", newRoundId);
       if (newRoundId?.roundStarted && newRoundId.roundId) {
         const players = await getPlayersInMatch(matchId);
         const player1Hand = await createUpdatedHand(
@@ -455,11 +465,13 @@ export async function countTotalMoves(roundId: number, winnerId: number) {
           roundId,
           newRoundId.roundId
         );
+        console.log("player1Hand", player1Hand);
         const player2Hand = await createUpdatedHand(
           players?.player2,
           roundId,
           newRoundId.roundId
         );
+        console.log("player2Hand", player2Hand);
         if (player1Hand.success && player2Hand.success) {
           return {
             success: true,
@@ -508,12 +520,15 @@ export async function countTotalMoves(roundId: number, winnerId: number) {
 
 export async function startNewRound(
   matchId: number,
-  winnerId: number,
+  winnerId: number | null,
   roundId: number,
   player1: number,
-  player2: number,
+  player2: number
 ) {
   try {
+    if (winnerId === 0) {
+      winnerId = null;
+    }
     const updateWinner =
       "UPDATE `round` SET winner_id = :winner_id WHERE round_id = :round_id;";
 
@@ -521,7 +536,6 @@ export async function startNewRound(
       winner_id: winnerId,
       round_id: roundId,
     });
-
     const countRounds =
       "SELECT winner_id, COUNT(*) AS rounds_won FROM `round` WHERE match_id = :match_id GROUP BY winner_id;";
 
@@ -533,31 +547,27 @@ export async function startNewRound(
       return acc + cur.rounds_won;
     }, 0);
 
-    let player1Rounds = { id: roundTotal[0].winner_id, score: 0 };
-    let player2Rounds = { id: roundTotal[1].winner_id, score: 0 };
-
-    let whoisthewinner = null;
-
-    if (roundTotal.length > 0) {
-      player1Rounds.score = roundTotal[0]?.rounds_won || 0;
-    }
-    if (roundTotal.length > 1) {
-      // if there are no second player, I can just skipp it
-      // if second player is null, change it
-      player2Rounds.score = roundTotal[1]?.rounds_won || 0;
-    }
-
-    if (player1Rounds.score === player2Rounds.score) {
-      whoisthewinner = null;
-    } else if (player1Rounds.score > player2Rounds.score) {
-      whoisthewinner = player1Rounds.id;
-    } else if (player1Rounds.score < player2Rounds.score) {
-      whoisthewinner = player2Rounds.id;
-    } else {
-      whoisthewinner = null;
-    }
-
     if (totalRounds >= 3) {
+      let player1Rounds = { id: roundTotal[0][0].winner_id, score: 0 };
+      let player2Rounds = { id: roundTotal[0][1].winner_id, score: 0 };
+
+      let whoisthewinner = null;
+
+      if (roundTotal.length > 0) {
+        player1Rounds.score = roundTotal[0][0]?.rounds_won || 0;
+      }
+      if (roundTotal.length > 1) {
+        player2Rounds.score = roundTotal[0][1]?.rounds_won || 0;
+      }
+      if (player1Rounds.score === player2Rounds.score) {
+        whoisthewinner = null;
+      } else if (player1Rounds.score > player2Rounds.score) {
+        whoisthewinner = player1Rounds.id;
+      } else if (player1Rounds.score < player2Rounds.score) {
+        whoisthewinner = player2Rounds.id;
+      } else {
+        whoisthewinner = null;
+      }
       const gameOver = await endGame(matchId);
       if (gameOver.gameEnded) {
         return {
