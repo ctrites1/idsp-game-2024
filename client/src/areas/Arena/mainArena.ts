@@ -103,8 +103,10 @@ export async function createArenaPage() {
 	const endTurnButton = document.querySelector(
 		".endTurn-button"
 	) as HTMLButtonElement;
+	endTurnButton.disabled = false;
 	endTurnButton?.addEventListener("click", async () => {
 		await logMove();
+		endTurnButton.disabled = true;
 	});
 
 	setupDropZones();
