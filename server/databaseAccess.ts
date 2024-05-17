@@ -522,9 +522,13 @@ export async function startNewRound(
 			match_id: matchId,
 		});
 
+    console.log(" new query", roundTotal)
+
     const totalRounds: any = roundTotal[0].reduce((acc: any, cur: any) => {
 			return acc + cur.rounds_won;
 		}, 0);
+
+    console.log("total", totalRounds)
 
     let player1Rounds = {id: roundTotal[0].winner_id, score: 0};
 		let player2Rounds = {id: roundTotal[1].winner_id, score: 0};
@@ -548,7 +552,7 @@ export async function startNewRound(
       whoisthewinner = null;
     }
 
-
+    console.log("the winner", whoisthewinner);
 
 		if (totalRounds >= 3) {
 			const gameOver = await endGame(matchId);
