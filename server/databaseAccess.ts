@@ -62,7 +62,6 @@ export async function getCurrentHand(playerId: number, roundId: number) {
       roundId,
     };
     const hand: any = await database.query(getHand, handParams);
-    console.log(hand);
     if (hand.length === 0) {
       throw new Error("No hand exists for this player in the current round");
     }
@@ -102,12 +101,33 @@ async function createUpdatedHand(
       getLatestHand,
       latestHandParams
     );
-    console.log("CARDSPLAYED", cardsPlayed);
-    console.log("GETLATESTHAND", initialHand);
-    //? Don't think this is correct, need to Object.values() to get the cards inside of the hand
-    const newHand = initialHand[0].filter(
-      (card: Card) => !cardsPlayed[0].includes(card)
-    );
+    const cardIdsPlayed: number[] = cardsPlayed[0].map((c: any) => c.card_id);
+    const latestHand = initialHand[0][0];
+    const newHand: any = {};
+    Object.keys(latestHand).filter((key: any) => {
+      if (!cardIdsPlayed.includes(latestHand[key])) {
+        newHand[key] = latestHand[key];
+        return;
+      }
+    });
+    let insertNewHand = `
+      INSERT INTO hand 
+      (player_id, round_id, card_1_id, card_2_id, card_3_id, card_4_id, card_5_id, card_6_id, card_7_id)
+      VALUES
+      (:player_id, :round_id, :card_1_id, :card_2_id, :card_3_id, :card_4_id, :card_5_id, :card_6_id, :card_7_id)
+    `;
+    let insertParams = {
+      player_id: playerId,
+      round_id: newRoundId,
+      card_1_id: newHand["card_1_id"] || null,
+      card_2_id: newHand["card_2_id"] || null,
+      card_3_id: newHand["card_3_id"] || null,
+      card_4_id: newHand["card_4_id"] || null,
+      card_5_id: newHand["card_5_id"] || null,
+      card_6_id: newHand["card_6_id"] || null,
+      card_7_id: newHand["card_7_id"] || null,
+    };
+    const returnedHand = await database.query(insertNewHand, insertParams);
     return { success: true, hand: newHand };
   } catch (err) {
     console.log(`Error Updating Hand: ${err}`);
@@ -403,8 +423,6 @@ export async function loadGameState(roundId: number) {
     return null;
   }
 
-  console.log("last move", latMove);
-
   const lastMove = latMove[0][0];
   return {
     success: true,
@@ -433,45 +451,40 @@ export async function loadGameState(roundId: number) {
 // console.log(countPlayerMoves(6, 3));
 
 export async function countTotalMoves(roundId: number, winnerId: number) {
-  const sql = `
-    SELECT COUNT(*) AS moveCount, m.player_id, r.match_id
-    FROM move as m
-    JOIN round as r on m.round_id = r.round_id
-    WHERE r.round_id = :roundId
-    GROUP BY player_id;
-  `;
   try {
-    const rows: any[] = await database.query(sql, { roundId });
-    const matchId = rows[0][0].match_id;
-
+    const getMatch = "SELECT match_id FROM `round` WHERE round_id = :round_id;";
+    //@ts-ignore
+    const matchId: any = await database.query(getMatch, {
+      round_id: roundId,
+    });
+    const sql =
+      "SELECT COUNT(*) AS moveCount, m.player_id, ma.match_id FROM move as m JOIN `round` as r on m.round_id = r.round_id JOIN `match` as ma on r.match_id = ma.match_id WHERE ma.match_id = :match_id GROUP BY player_id;";
+    const rows: any[] = await database.query(sql, {
+      match_id: matchId[0][0].match_id,
+    });
     const totalMoves: any = rows[0].reduce((acc: any, cur: any) => {
       return acc + cur.moveCount;
     }, 0);
-    // check total moves id it's 6 start new round, send newRound: false or true
-    if (totalMoves === 6) {
-      console.log(winnerId);
+    if (totalMoves === 6 || totalMoves === 12 || totalMoves === 14) {
       const newRoundId = await startNewRound(
-        matchId,
+        matchId[0][0].match_id,
         winnerId,
         roundId,
         rows[0][0].player_id,
         rows[0][1].player_id
       );
-      console.log("NEWROUNDID", newRoundId);
       if (newRoundId?.roundStarted && newRoundId.roundId) {
-        const players = await getPlayersInMatch(matchId);
+        const players = await getPlayersInMatch(matchId[0][0].match_id);
         const player1Hand = await createUpdatedHand(
           players?.player1,
           roundId,
           newRoundId.roundId
         );
-        console.log("player1Hand", player1Hand);
         const player2Hand = await createUpdatedHand(
           players?.player2,
           roundId,
           newRoundId.roundId
         );
-        console.log("player2Hand", player2Hand);
         if (player1Hand.success && player2Hand.success) {
           return {
             success: true,
@@ -538,7 +551,6 @@ export async function startNewRound(
     });
     const countRounds =
       "SELECT winner_id, COUNT(*) AS rounds_won FROM `round` WHERE match_id = :match_id GROUP BY winner_id;";
-
     const roundTotal: any = await database.query(countRounds, {
       match_id: matchId,
     });
@@ -592,9 +604,9 @@ export async function startNewRound(
 
     let getRound = "SELECT MAX(round_id) AS 'created_round' FROM `round`;";
     const round: any = await database.query(getRound);
-    const round_id = round[0].created_round;
+    const round_id = round[0][0].created_round;
 
-    return { roundStarted: true, roundId: round_id.round_id };
+    return { roundStarted: true, roundId: round_id };
   } catch (err) {
     console.log(err);
     console.log("ERROR: Error starting new round");
