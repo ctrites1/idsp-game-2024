@@ -447,7 +447,9 @@ export async function countTotalMoves(roundId: number, winnerId: number) {
     }, 0);
     // check total moves id it's 6 start new round, send newRound: false or true
     if (totalMoves === 6) {
+      console.log(winnerId);
       const newRoundId = await startNewRound(matchId, winnerId, roundId);
+      console.log(newRoundId);
       if (newRoundId?.roundStarted && newRoundId.roundId) {
         const players = await getPlayersInMatch(matchId);
         const player1Hand = await createUpdatedHand(
@@ -508,10 +510,13 @@ export async function countTotalMoves(roundId: number, winnerId: number) {
 
 export async function startNewRound(
   matchId: number,
-  winnerId: number,
+  winnerId: number | null,
   roundId: number
 ) {
   try {
+    if (winnerId === 0) {
+      winnerId = null;
+    }
     const updateWinner =
       "UPDATE `round` SET winner_id = :winner_id WHERE round_id = :round_id;";
 
@@ -519,7 +524,7 @@ export async function startNewRound(
       winner_id: winnerId,
       round_id: roundId,
     });
-
+    console.log("WINNERID", winnerId);
     const countRounds =
       "SELECT winner_id, COUNT(*) AS rounds_won FROM `round` WHERE match_id = :match_id GROUP BY winner_id;";
 
@@ -527,33 +532,36 @@ export async function startNewRound(
       match_id: matchId,
     });
 
+    console.log("ROUNDTOTAL", roundTotal);
+
     const totalRounds: any = roundTotal[0].reduce((acc: any, cur: any) => {
       return acc + cur.rounds_won;
     }, 0);
 
-    let player1Rounds = { id: roundTotal[0].winner_id, score: 0 };
-    let player2Rounds = { id: roundTotal[1].winner_id, score: 0 };
-
-    let whoisthewinner = null;
-
-    if (roundTotal.length > 0) {
-      player1Rounds.score = roundTotal[0]?.rounds_won || 0;
-    }
-    if (roundTotal.length > 1) {
-      player2Rounds.score = roundTotal[1]?.rounds_won || 0;
-    }
-
-    if (player1Rounds.score === player2Rounds.score) {
-      whoisthewinner = null;
-    } else if (player1Rounds.score > player2Rounds.score) {
-      whoisthewinner = player1Rounds.id;
-    } else if (player1Rounds.score < player2Rounds.score) {
-      whoisthewinner = player2Rounds.id;
-    } else {
-      whoisthewinner = null;
-    }
-
     if (totalRounds >= 3) {
+      let player1Rounds = { id: roundTotal[0][0].winner_id, score: 0 };
+      let player2Rounds = { id: roundTotal[0][1].winner_id, score: 0 };
+
+      let whoisthewinner = null;
+
+      if (roundTotal.length > 0) {
+        player1Rounds.score = roundTotal[0][0]?.rounds_won || 0;
+      }
+      if (roundTotal.length > 1) {
+        player2Rounds.score = roundTotal[0][1]?.rounds_won || 0;
+      }
+      console.log("PLAYER1ROUNDS", player1Rounds);
+      console.log("PLAYER2ROUNDS", player2Rounds);
+      if (player1Rounds.score === player2Rounds.score) {
+        whoisthewinner = null;
+      } else if (player1Rounds.score > player2Rounds.score) {
+        whoisthewinner = player1Rounds.id;
+      } else if (player1Rounds.score < player2Rounds.score) {
+        whoisthewinner = player2Rounds.id;
+      } else {
+        whoisthewinner = null;
+      }
+      console.log("WHOISWINNER", whoisthewinner);
       const gameOver = await endGame(matchId);
       if (gameOver.gameEnded) {
         return {
