@@ -249,7 +249,6 @@ async function createServer() {
       return;
     }
     const isRoundOver = await countTotalMoves(move.roundId, move.winnerId);
-    console.log("isRoundOver", isRoundOver);
     if (isRoundOver?.gameOver) {
       res.json({
         success: true,
@@ -265,17 +264,6 @@ async function createServer() {
     }
     res.json({ success: true });
   });
-
-  // app.post("/api/countTotalMoves", async (req: Request, res: Response) => {
-  //   console.log("reqbody: ", req.body);
-  //   try {
-  //     const roundId = req.body.roundId;
-  //     const data = await countTotalMoves(roundId, winnerId);
-  //     res.json({ success: true, data: data });
-  //   } catch (error) {
-  //     res.status(500).send(error);
-  //   }
-  // });
 
   app.listen(port, () => {
     console.log(`server listening on port ${port}`);

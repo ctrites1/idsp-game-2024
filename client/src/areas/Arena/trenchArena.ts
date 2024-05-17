@@ -50,10 +50,8 @@ export async function logMove() {
   });
 
   const winnerId = playersScore();
-  console.log(winnerId);
 
   if (roundId && cardId) {
-    console.log("FETCHING");
     const status = await fetch("/api/logmove", {
       method: "POST",
       headers: {
