@@ -13,7 +13,19 @@ export async function createArenaPage() {
             <button type="button" class="howTo-button">
             </button>
         </div>
+        
+        <div class="player-round-log">
+        <div class="player-round-1"></div>
+        <div class="player-round-2"></div>
+        <div class="player-round-3"></div>
+        </div>
+
             <div class="round-indicator">
+            </div>
+            <div class="opp-round-log">
+            <div class="opp-round-1"></div>
+            <div class="opp-round-2"></div>
+            <div class="opp-round-3"></div>
             </div>
             <div class="oppInfo">
                     <div class="oppName">
@@ -89,7 +101,7 @@ export async function createArenaPage() {
   ) as HTMLButtonElement;
   surrenderButton.addEventListener("click", () => {
     console.log("Surrender clicked");
-    location.reload();
+    showResult("lose");
     // TODO: Logic to handle log viewing to be added here
   });
 
