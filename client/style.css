@@ -151,7 +151,7 @@ header #oppDisplayPic {
 }
 
 .trench .cardHolder {
-  background-color: #1a1a1a89;
+  background-color: #37373789;
   border-radius: 0.2rem;
   margin: 0rem 1rem;
 }
@@ -162,9 +162,11 @@ header #oppDisplayPic {
 }
 
 .cardHolder {
-  width: 4.5rem;
-  height: 6.7rem;
+  width: 5.2rem;
+  height: 7.7rem;
   transition: transform 0.2s;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .card {
@@ -212,7 +214,7 @@ header #oppDisplayPic {
   list-style-type: none;
   color: black;
   font-size: small;
-  padding: 3rem;
+  padding: 2rem;
 }
 
 .trench > .cardHolder > .card > .card-inside > .card-front > ul {
@@ -225,7 +227,7 @@ header #oppDisplayPic {
 
 .trench > .cardHolder > .card > .card-inside > .card-front > ul > li {
   font-size: 0.3rem;
-  padding: 0.2rem 0rem;
+  padding: 0.1rem 0rem;
 }
 
 .card-back {
@@ -252,11 +254,6 @@ header #oppDisplayPic {
   height: 36em;
   width: 24em;
 }
-
-/* .singleCardView > .card,
-.cardViewFooter {
-  width: 24em;
-} */
 
 .singleCardView > .card > .card-inside > .card-front > ul > li {
   font-size: 1.5em;
@@ -619,76 +616,6 @@ footer {
 }
 
 /* -------------------------------------------------------------------------- */
-/*                                  Modal                                     */
-/* -------------------------------------------------------------------------- */
-
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4);
-}
-
-.modal-content {
-  background-color: gold;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  max-width: 600px;
-  text-align: center;
-  animation-name: modalOpen;
-  animation-duration: 0.5s;
-}
-
-@keyframes modalOpen {
-  from {
-    opacity: 0;
-    transform: scale(0.7);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.close-button {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close-button:hover,
-.close-button:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-#modal-text {
-  font-size: 2em;
-  animation-name: textPop;
-  animation-duration: 1s;
-}
-
-@keyframes textPop {
-  0% {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* -------------------------------------------------------------------------- */
 /*                                  Stars                                     */
 /* -------------------------------------------------------------------------- */
 
@@ -852,6 +779,108 @@ html {
 
 
 /* ---------------------------------------------------------------------------- */
-/*                                  Winner/loser                                */
+/*                             Round Winner/loser                               */
 /* ---------------------------------------------------------------------------- */
 
+.player-round-log {
+  position:absolute;
+  display:flex;
+  flex-direction: row;
+  margin-top: 3.5rem;
+  left: 32vw;
+}
+
+.player-round-1, .player-round-2, .player-round-3 {
+  border-radius: 50%;
+  border-style:solid;
+  border-color: #888;
+  border-width: 0.2rem;
+  width:1.5rem;
+  height:1.5rem;
+  margin-right:1rem;
+}
+
+.opp-round-log {
+  position:absolute;
+  display:flex;
+  flex-direction: row;
+  margin-top: 3.5rem;
+  left: 60vw;
+}
+
+.opp-round-1, .opp-round-2, .opp-round-3 {
+  border-radius: 50%;
+  border-style:solid;
+  border-color: #888;
+  border-width: 0.2rem;
+  width:1.5rem;
+  height:1.5rem;
+  margin-left:1rem;
+}
+
+/* ---------------------------------------------------------------------------- */
+/*                             Round Winner/loser                               */
+/* ---------------------------------------------------------------------------- */
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  /* background-image:url("/assets/update/modal.svg"); */
+  background: radial-gradient(circle, #1a1a1a 0%, transparent 70%);
+  background-repeat: no-repeat;
+  margin-top: 10%;
+	position: absolute;
+  display: block;
+  justify-content: center;
+  align-items: center;
+	top: 2em;
+  height: 10rem;
+  width: 80rem;
+  font-size: 2em;
+	animation-duration: 10s;
+	animation-timing-function: ease-in-out;
+	animation-iteration-count: infinite;
+}
+
+.modal-content{
+	animation-name: anim-1;
+}
+
+.modal-content p {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+ 
+  color: var(--scoreColor);
+  font-weight: bold;
+  text-shadow: 3px 0px 7px var(--shadow), -3px 0px 7px var(--shadow),
+    0px 4px 7px var(--shadow);
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-around;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--scoreColor);
+  font-size: 5rem;
+  font-weight: bold;
+  text-shadow: 3px 0px 7px var(--shadow), -3px 0px 7px var(--shadow),
+    0px 4px 7px var(--shadow);
+    font-style: italic;
+    font-family:'Times New Roman', Times, serif;
+}
+
+@keyframes anim-1 {
+	0%, 8.3% { left: -100%; opacity: 0; }
+  8.3%,25% { left: 30%; opacity: 1; }
+  33.33%, 100% { left: 110%; opacity: 0; }
+}

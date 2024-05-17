@@ -2,6 +2,7 @@ import { logout } from "../Homepage/choosePlayer";
 import { createHomepage } from "../Homepage/homepage";
 import { setupDropZones } from "./cardArena";
 import { logMove } from "./trenchArena";
+import { showOpponentsTurn } from "./opponentsTurn";
 
 export async function createArenaPage() {
 	const body = document.querySelector("body") as HTMLBodyElement;
@@ -14,9 +15,9 @@ export async function createArenaPage() {
         </div>
         
         <div class="player-round-log">
+        <div class="player-round-3"></div>
         <div class="player-round-1"></div>
         <div class="player-round-2"></div>
-        <div class="player-round-3"></div>
         </div>
 
             <div class="round-indicator">
@@ -100,7 +101,7 @@ export async function createArenaPage() {
   ) as HTMLButtonElement;
   surrenderButton.addEventListener("click", () => {
     console.log("Surrender clicked");
-    showResult("lose");
+    // showResult("lose");
     // TODO: Logic to handle log viewing to be added here
   });
 
@@ -117,6 +118,7 @@ export async function createArenaPage() {
 	) as HTMLButtonElement;
 	endTurnButton?.addEventListener("click", async () => {
 		await logMove();
+        showOpponentsTurn();
 	});
 
 	setupDropZones();

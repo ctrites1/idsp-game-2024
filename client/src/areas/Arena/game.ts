@@ -1,7 +1,7 @@
 import { createCard, dragstartHandler, moveCardToTrench } from "./cardArena";
 import { addCardToOppTrench } from "./trenchArena";
 import { updateRoundIndicator } from "./roundCounter";
-// import { updateTurnCounter } from "./laneArena";
+import { updateTurnCounter } from "./laneArena";
 export let playerState = [];
 
 export async function startgame() {
@@ -20,6 +20,7 @@ export async function startgame() {
 	if (!response.gameStarted && response.round_id) {
 		const cg = await currentgame();
 		updateRoundIndicator(cg.round);
+		updateTurnCounter();
 		cg.data.oppMoves.map((m: any) => {
 			const oppCard = createCard(m);
 			oppCard.removeEventListener("dragstart", dragstartHandler);
