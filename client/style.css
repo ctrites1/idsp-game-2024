@@ -881,6 +881,6 @@ html {
 
 @keyframes anim-1 {
 	0%, 8.3% { left: -100%; opacity: 0; }
-  8.3%,25% { left: 30%; opacity: 1; }
+  8.3%,25% { left: 15%; opacity: 1; }
   33.33%, 100% { left: 110%; opacity: 0; }
 }
