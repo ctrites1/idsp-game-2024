@@ -2,6 +2,7 @@ import { logout } from "../Homepage/choosePlayer";
 import { createHomepage } from "../Homepage/homepage";
 import { setupDropZones } from "./cardArena";
 import { logMove } from "./trenchArena";
+import { showOpponentsTurn } from "./opponentsTurn";
 
 export async function createArenaPage() {
 	const body = document.querySelector("body") as HTMLBodyElement;
@@ -12,7 +13,19 @@ export async function createArenaPage() {
             <button type="button" class="howTo-button">
             </button>
         </div>
+        
+        <div class="player-round-log">
+        <div class="player-round-3"></div>
+        <div class="player-round-1"></div>
+        <div class="player-round-2"></div>
+        </div>
+
             <div class="round-indicator">
+            </div>
+            <div class="opp-round-log">
+            <div class="opp-round-1"></div>
+            <div class="opp-round-2"></div>
+            <div class="opp-round-3"></div>
             </div>
             <div class="oppInfo">
                     <div class="oppName">
@@ -82,15 +95,15 @@ export async function createArenaPage() {
     `;
 	body.innerHTML = content;
 
-	//* For demo, should refactor later - maybe not use class for footer for easier function calls?
-	const surrenderButton = document.querySelector(
-		".surrender-button"
-	) as HTMLButtonElement;
-	surrenderButton.addEventListener("click", () => {
-		console.log("Surrender clicked");
-		location.reload();
-		// TODO: Logic to handle log viewing to be added here
-	});
+  //* For demo, should refactor later - maybe not use class for footer for easier function calls?
+  const surrenderButton = document.querySelector(
+    ".surrender-button"
+  ) as HTMLButtonElement;
+  surrenderButton.addEventListener("click", () => {
+    console.log("Surrender clicked");
+    // showResult("lose");
+    // TODO: Logic to handle log viewing to be added here
+  });
 
 	const homeButton = document.querySelector(
 		".home-button"

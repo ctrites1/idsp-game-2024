@@ -4,8 +4,8 @@ interface turnState {
 }
 
 const turnState: turnState = {
-	currentTurn: 1,
-	maxTurns: 10,
+	currentTurn: 0,
+	maxTurns: 3,
 };
 
 export function updateTurnCounter(): void {
