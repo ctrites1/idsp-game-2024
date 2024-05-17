@@ -95,15 +95,15 @@ export async function createArenaPage() {
     `;
 	body.innerHTML = content;
 
-  //* For demo, should refactor later - maybe not use class for footer for easier function calls?
-  const surrenderButton = document.querySelector(
-    ".surrender-button"
-  ) as HTMLButtonElement;
-  surrenderButton.addEventListener("click", () => {
-    console.log("Surrender clicked");
-    // showResult("lose");
-    // TODO: Logic to handle log viewing to be added here
-  });
+	//* For demo, should refactor later - maybe not use class for footer for easier function calls?
+	const surrenderButton = document.querySelector(
+		".surrender-button"
+	) as HTMLButtonElement;
+	surrenderButton.addEventListener("click", () => {
+		console.log("Surrender clicked");
+		// showResult("lose");
+		// TODO: Logic to handle log viewing to be added here
+	});
 
 	const homeButton = document.querySelector(
 		".home-button"
@@ -119,6 +119,7 @@ export async function createArenaPage() {
 	endTurnButton.disabled = false;
 	endTurnButton?.addEventListener("click", async () => {
 		await logMove();
+		showOpponentsTurn();
 		endTurnButton.disabled = true;
 	});
 
