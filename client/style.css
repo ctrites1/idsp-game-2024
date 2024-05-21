@@ -905,6 +905,28 @@ html {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                              Login & Reg Pages                             */
+/* -------------------------------------------------------------------------- */
+
+.login-form {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+	align-items: center;
+	justify-content: center;
+}
+
+.login-form > form {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+	align-items: center;
+	justify-content: center;
+}
+
+/* -------------------------------------------------------------------------- */
 /*                                  404 Page                                  */
 /* -------------------------------------------------------------------------- */
 

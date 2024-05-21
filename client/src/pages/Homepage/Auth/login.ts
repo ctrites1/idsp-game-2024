@@ -1,5 +1,6 @@
-export async function createLoginPage() {
+export async function showLoginForm() {
 	const body = document.querySelector("body") as HTMLBodyElement;
+
 	const formDiv = document.createElement("div");
 	formDiv.className = "login-form";
 

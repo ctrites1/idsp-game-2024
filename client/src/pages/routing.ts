@@ -1,8 +1,8 @@
 import { createArenaPage } from "./Arena/mainArena";
 import { createHomepage } from "./Homepage/homepage";
 import { create404Page } from "./Error/404";
-import { createLoginPage } from "./Auth/login";
-import { createRegistrationPage } from "./Auth/register";
+import { showLoginForm } from "./Homepage/Auth/login";
+import { createRegistrationPage } from "./Homepage/Auth/register";
 interface Route {
 	title: string;
 	handler: () => Promise<void>;
@@ -23,7 +23,7 @@ export const routes: { [key: string]: Route } = {
 	},
 	"/login": {
 		title: "Login to ACG!",
-		handler: createLoginPage,
+		handler: showLoginForm,
 	},
 	"/register": {
 		title: "Register new Player!",
