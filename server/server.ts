@@ -13,6 +13,7 @@ import {
   test,
   validateUser,
   countTotalMoves,
+  createPlayer,
 } from "../server/databaseAccess";
 import bodyParser from "body-parser";
 import cookieSession from "cookie-session";
@@ -76,6 +77,23 @@ async function createServer() {
 
     res.json({ success: true, playerId: valid.playerId });
   });
+
+  app.post("/api/register", async (req: Request, res: Response) => {
+	const { username, email, password } = req.body;
+
+	try {
+		const result:any = await createPlayer({ username, email, password });
+
+		if (result) {
+			console.log("new user", result.data[0]);
+			req.session = { playerId: result.data[0].player_id };
+		}
+
+		res.json(result);
+	} catch (error) {
+		res.status(500).json({ success: false, message: 'An error occurred during registration.' });
+	}
+  })
 
   app.get("/api/logout", async (req: Request, res: Response) => {
     if (req.session) {

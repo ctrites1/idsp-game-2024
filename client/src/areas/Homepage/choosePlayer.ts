@@ -26,15 +26,46 @@ async function addPlayerDetailsToArena(
 	playerPic.src = profileImgSrc;
 }
 
-export async function loginAsPlayer1() {
+export async function register(username: string, email: string, password: string) {
+  const response = await fetch("/api/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      username: username,
+      password: password,
+      email: email,
+    }),
+  });
+
+  const result = await response.json();
+
+  if (result.success) {
+		await loginSuccess();
+		const roundState = await startgame();
+		const currentPlayer = roundState.data.player_2_username;
+		const currentOpponent = roundState.data.player_1_username;
+		await getHandData(roundState.data);
+		await addPlayerDetailsToArena(
+			currentPlayer,
+			"/assets/update/displayPic.png",
+			currentOpponent,
+			"/assets/update/oppPic.png"
+		);
+		return;
+	}
+}
+
+export async function login(username: string, password: string) {
 	const user = await fetch("/api/login", {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
 		},
 		body: JSON.stringify({
-			username: "keeles",
-			password: "strongPassword2",
+			username: username,
+			password: password,
 		}),
 	});
 	const userResponse = await user.json();
@@ -54,33 +85,33 @@ export async function loginAsPlayer1() {
 	}
 }
 
-export async function loginAsPlayer2() {
-	const user = await fetch("/api/login", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({
-			username: "potat",
-			password: "strongPassword1",
-		}),
-	});
-	const userResponse = await user.json();
-	if (userResponse.success) {
-		await loginSuccess();
-		const roundState = await startgame();
-		const currentPlayer = roundState.data.player_1_username;
-		const currentOpponent = roundState.data.player_2_username;
-		await getHandData(roundState.data);
-		await addPlayerDetailsToArena(
-			currentPlayer,
-			"/assets/update/oppPic.png",
-			currentOpponent,
-			"/assets/update/displayPic.png"
-		);
-		return;
-	}
-}
+// export async function loginAsPlayer2() {
+// 	const user = await fetch("/api/login", {
+// 		method: "POST",
+// 		headers: {
+// 			"Content-Type": "application/json",
+// 		},
+// 		body: JSON.stringify({
+// 			username: "potat",
+// 			password: "strongPassword1",
+// 		}),
+// 	});
+// 	const userResponse = await user.json();
+// 	if (userResponse.success) {
+// 		await loginSuccess();
+// 		const roundState = await startgame();
+// 		const currentPlayer = roundState.data.player_1_username;
+// 		const currentOpponent = roundState.data.player_2_username;
+// 		await getHandData(roundState.data);
+// 		await addPlayerDetailsToArena(
+// 			currentPlayer,
+// 			"/assets/update/oppPic.png",
+// 			currentOpponent,
+// 			"/assets/update/displayPic.png"
+// 		);
+// 		return;
+// 	}
+// }
 
 export async function logout() {
 	const logout = await fetch("/api/logout");

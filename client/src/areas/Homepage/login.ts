@@ -1,3 +1,5 @@
+import { login } from "./choosePlayer";
+
 export async function showLoginForm() {
   const body = document.querySelector("body") as HTMLBodyElement;
   const formDiv = document.createElement("div");
@@ -27,4 +29,9 @@ export async function showLoginForm() {
   loginForm.appendChild(submit);
   formDiv.appendChild(loginForm);
   body.appendChild(formDiv);
+
+  loginForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    await login(username.value, password.value);
+  });
 }

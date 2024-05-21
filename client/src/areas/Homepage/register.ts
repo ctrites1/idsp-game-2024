@@ -1,3 +1,5 @@
+import { register } from "./choosePlayer";
+
 export async function showRegisterForm() {
   const body = document.querySelector("body") as HTMLBodyElement;
   const formDiv = document.createElement("div");
@@ -33,4 +35,9 @@ export async function showRegisterForm() {
   registerForm.appendChild(submit);
   formDiv.appendChild(registerForm);
   body.appendChild(formDiv);
+
+  registerForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    await register(username.value, password.value, email.value);
+  });
 }
