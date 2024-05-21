@@ -13,7 +13,7 @@ export const routes: { [key: string]: Route } = {
 		title: "404 Page Not Found",
 		handler: create404Page,
 	},
-	"/home": {
+	"/": {
 		title: "ACG| A Card Game",
 		handler: createHomepage,
 	},
