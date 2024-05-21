@@ -3,10 +3,11 @@ import { createHomepage } from "../Homepage/homepage";
 import { setupDropZones } from "./cardArena";
 import { logMove } from "./trenchArena";
 import { showOpponentsTurn } from "./opponentsTurn";
+import { socket } from "../../main";
 
 export async function createArenaPage() {
-	const body = document.querySelector("body") as HTMLBodyElement;
-	const content: string = `
+  const body = document.querySelector("body") as HTMLBodyElement;
+  const content: string = `
         <header><div class="header-btns">
             <button type="button" class="home-button">
             </button>
@@ -93,35 +94,36 @@ export async function createArenaPage() {
                 </div>
         </footer>
     `;
-	body.innerHTML = content;
+  body.innerHTML = content;
 
-	//* For demo, should refactor later - maybe not use class for footer for easier function calls?
-	const surrenderButton = document.querySelector(
-		".surrender-button"
-	) as HTMLButtonElement;
-	surrenderButton.addEventListener("click", () => {
-		console.log("Surrender clicked");
-		// showResult("lose");
-		// TODO: Logic to handle log viewing to be added here
-	});
+  //* For demo, should refactor later - maybe not use class for footer for easier function calls?
+  const surrenderButton = document.querySelector(
+    ".surrender-button"
+  ) as HTMLButtonElement;
+  surrenderButton.addEventListener("click", () => {
+    console.log("Surrender clicked");
+    // showResult("lose");
+    // TODO: Logic to handle log viewing to be added here
+  });
 
-	const homeButton = document.querySelector(
-		".home-button"
-	) as HTMLButtonElement;
-	homeButton?.addEventListener("click", async () => {
-		await logout();
-		await createHomepage();
-	});
+  const homeButton = document.querySelector(
+    ".home-button"
+  ) as HTMLButtonElement;
+  homeButton?.addEventListener("click", async () => {
+    await logout();
+    await createHomepage();
+  });
 
-	const endTurnButton = document.querySelector(
-		".endTurn-button"
-	) as HTMLButtonElement;
-	endTurnButton.disabled = false;
-	endTurnButton?.addEventListener("click", async () => {
-		await logMove();
-		showOpponentsTurn();
-		endTurnButton.disabled = true;
-	});
+  const endTurnButton = document.querySelector(
+    ".endTurn-button"
+  ) as HTMLButtonElement;
+  endTurnButton.disabled = false;
+  endTurnButton?.addEventListener("click", async () => {
+    await logMove();
+    socket.send("Hello Bitch!");
+    showOpponentsTurn();
+    endTurnButton.disabled = true;
+  });
 
-	setupDropZones();
+  setupDropZones();
 }

@@ -2,7 +2,6 @@ import express, { Request, Response } from "express";
 import path from "path";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import { cards } from "./database";
 import {
   createInitialHand,
   startGame,
@@ -17,8 +16,8 @@ import {
 import bodyParser from "body-parser";
 import cookieSession from "cookie-session";
 import cors from "cors";
-import { Card } from "./types/Card";
-import { match } from "assert";
+import { Server, Socket } from "socket.io";
+import http from "node:http";
 
 export default interface CardIn {
   card_id: number;
@@ -38,6 +37,7 @@ interface NewHandResponse {
 async function createServer() {
   const app = express();
   const port = 3000;
+  // const server = http.createServer(app);
 
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
@@ -58,6 +58,29 @@ async function createServer() {
       credentials: true,
     })
   );
+
+  const server = http.createServer(app);
+
+  const io = new Server(server, {
+    cors: {
+      origin: "http://localhost:3000",
+      // methods: ["GET", "POST"],
+      credentials: true,
+    },
+  });
+
+  io.listen(server);
+
+  io.on("connection", (socket) => {
+    socket.on("message", (message) => {
+      console.log(`Received: ${message}`);
+      // Broadcast message to all connected clients
+      if (message === "Hello Bitch!") {
+        console.log("telling opponent to update");
+        io.emit("message", "Update Bro");
+      }
+    });
+  });
 
   // test route to make sure api calls working
   app.get("/api/hello", async (req: Request, res: Response) => {
@@ -265,7 +288,7 @@ async function createServer() {
     res.json({ success: true });
   });
 
-  app.listen(port, () => {
+  server.listen(port, () => {
     console.log(`server listening on port ${port}`);
   });
 }
