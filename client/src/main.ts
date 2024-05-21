@@ -1,4 +1,3 @@
-// import { createHomepage } from "./pages/Homepage/homepage";
 import { routes } from "../src/pages/routing";
 
 document.addEventListener("DOMContentLoaded", async () => {

@@ -1,49 +1,66 @@
-import { loginAsPlayer1, loginAsPlayer2 } from "./choosePlayer";
-
 export async function createHomepage() {
 	const body = document.querySelector("body") as HTMLBodyElement;
+	const errorPage = document.querySelector(".Error-404");
+	if (errorPage) {
+		errorPage.remove();
+	}
+
 	const homepage: HTMLDivElement = document.createElement("div");
 
 	homepage.className = "pseudo-homepage";
 
 	const logoImg: HTMLImageElement = document.createElement("img");
-    logoImg.src = "./assets/Logos/logooo.svg"; 
-    logoImg.alt = "Game Logo";
-    logoImg.className = "homepage-logo";
+	logoImg.src = "./assets/Logos/logooo.svg";
+	logoImg.alt = "Game Logo";
+	logoImg.className = "homepage-logo";
 
-	const btn1: HTMLButtonElement = document.createElement("button");
-	btn1.className = "player-select player1-btn";
+	/* ----------------------------- 2 Main Buttons ----------------------------- */
+	const loginBtn: HTMLButtonElement = document.createElement("button");
+	loginBtn.className = "auth-button login-btn";
 
-	const btn2: HTMLButtonElement = document.createElement("button");
-	btn2.className = "player-select player2-btn";
+	const registerBtn: HTMLButtonElement = document.createElement("button");
+	registerBtn.className = "auth-button register-btn";
 
-	const player1Img: HTMLImageElement = document.createElement("img");
-	const player2Img: HTMLImageElement = document.createElement("img");
+	const loginImg: HTMLImageElement = document.createElement("img");
+	const registerImg: HTMLImageElement = document.createElement("img");
 
-	const player1Label: HTMLHeadingElement = document.createElement("h1");
-	const player2Label: HTMLHeadingElement = document.createElement("h1");
-	player1Label.textContent = "Player 1";
-	player2Label.textContent = "Player 2";
+	const loginLabel: HTMLHeadingElement = document.createElement("h1");
+	const registerLabel: HTMLHeadingElement = document.createElement("h1");
+	loginLabel.textContent = "Login";
+	registerLabel.textContent = "Register";
 
-	btn1.appendChild(player1Img);
-	btn1.appendChild(player1Label);
-	btn2.appendChild(player2Img);
-	btn2.appendChild(player2Label);
+	loginBtn.appendChild(loginImg);
+	loginBtn.appendChild(loginLabel);
+	registerBtn.appendChild(registerImg);
+	registerBtn.appendChild(registerLabel);
 
-	const playerBtnDiv: HTMLDivElement = document.createElement("div");
-	playerBtnDiv.className = "player-selection-container";
+	const authBtnDiv: HTMLDivElement = document.createElement("div");
+	authBtnDiv.className = "auth-buttons-container";
 
-	btn1.addEventListener("click", loginAsPlayer1);
-	btn2.addEventListener("click", loginAsPlayer2);
+	loginBtn.addEventListener("click", async () => {
+		try {
+			window.location.href = "/login";
+		} catch (err) {
+			console.error(err);
+		}
+	});
+	registerBtn.addEventListener("click", async () => {
+		try {
+			window.location.href = "/register";
+		} catch (err) {
+			console.error(err);
+		}
+	});
+	/* ------------------------------------ * ----------------------------------- */
 
-	playerBtnDiv.appendChild(btn1);
-	playerBtnDiv.appendChild(btn2);
+	authBtnDiv.appendChild(loginBtn);
+	authBtnDiv.appendChild(registerBtn);
 
 	homepage.appendChild(logoImg);
-	homepage.appendChild(playerBtnDiv);
+	homepage.appendChild(authBtnDiv);
 
 	const blurDiv: HTMLDivElement = document.createElement("div");
-	blurDiv.className ="blur";
+	blurDiv.className = "blur";
 	homepage.appendChild(blurDiv);
 
 	body.appendChild(homepage);
@@ -53,4 +70,3 @@ export async function removeHomepage() {
 	const homepage = document.querySelector(".pseudo-homepage") as HTMLDivElement;
 	homepage.remove();
 }
- 
