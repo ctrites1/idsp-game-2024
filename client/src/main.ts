@@ -24,10 +24,12 @@ socket.on("message", async (...data) => {
 socket.on("update", async (...cardData) => {
   const opp = document.querySelector("#oppHill");
   const oppId = Number(opp?.getAttribute("player-id"));
+  const player = document.querySelector("#playerHill");
+  const playerId = Number(player?.getAttribute("player-id"));
   const endTurnBtn = document.querySelector(
     ".endTurn-button"
   ) as HTMLButtonElement;
-  if (cardData[0].player_id === oppId) {
+  if (cardData[0].player_id === oppId || cardData[0].player_id === playerId) {
     const cardPlayed = createCard(cardData[0]);
     addCardToOppTrench(cardPlayed);
     endTurnBtn?.removeAttribute("card-played");
