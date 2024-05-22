@@ -391,12 +391,16 @@ export async function validateUser(username: string, password: string) {
     };
     const user: any = await database.query(validateQuery, validateParams);
     if (user[0][0]) {
-      await bcrypt.compare(password, user[0][0].password_hash);
-      return {
-        success: true,
-        playerId: user[0][0].player_id,
-        message: "Logged in successfully",
-      };
+      const comparepass = await bcrypt.compare(password, user[0][0].password_hash);
+      if(comparepass) {
+        return {
+          success: true,
+          playerId: user[0][0].player_id,
+          message: "Logged in successfully",
+        };
+      } else {
+        return { success: false, playerId: null, message: "the password is incorrect" };
+      } 
     } else {
       return { success: false, playerId: null, message: "No user found" };
     }

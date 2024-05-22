@@ -69,6 +69,7 @@ export async function login(username: string, password: string) {
 		}),
 	});
 	const userResponse = await user.json();
+	console.log("user response", userResponse)
 	if (userResponse.success) {
 		await loginSuccess();
 		const roundState = await startgame();
