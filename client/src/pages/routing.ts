@@ -30,3 +30,25 @@ export const routes: { [key: string]: Route } = {
 		handler: createRegistrationPage,
 	},
 };
+
+export const router = async () => {
+	const path = location.pathname;
+	const route = routes[path] || routes[404];
+
+	document.title = route.title;
+	await route.handler();
+};
+
+export const addRouteToBtn = async (
+	button: HTMLButtonElement,
+	path: string
+) => {
+	button.addEventListener("click", async () => {
+		try {
+			history.pushState(null, "", path);
+			await router();
+		} catch (err) {
+			console.error(err);
+		}
+	});
+};

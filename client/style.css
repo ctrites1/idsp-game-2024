@@ -11,6 +11,7 @@
 	--scoreColor: rgba(17, 68, 105, 0.87);
 	--shadow: rgb(226, 217, 197);
 	--primary-background: #1a1a1ac4;
+	--transparent-background: #1a1a1a89;
 }
 
 html {
@@ -339,12 +340,12 @@ button:focus-visible {
 	place-items: center;
 	width: 100vw;
 	height: 100vh;
-	z-index: 10;
 	position: fixed;
 	left: 0;
 	top: 0;
 	justify-content: space-evenly;
 	align-content: center;
+	z-index: 1;
 }
 
 .blur {
@@ -358,7 +359,7 @@ button:focus-visible {
 	background-size: cover;
 	background-position: center;
 	filter: blur(10px);
-	z-index: 1;
+	z-index: 0;
 }
 
 .pseudo-homepage > .auth-buttons-container {
@@ -424,73 +425,6 @@ body > div.pseudo-homepage > div > button.auth-button.login-btn:hover {
 	height: 70%;
 	z-index: 2;
 }
-
-/* .player-select::before {
-	content: "";
-	background: linear-gradient(
-		45deg,
-		#ff0000,
-		#ff7300,
-		#fffb00,
-		#48ff00,
-		#00ffd5,
-		#002bff,
-		#7a00ff,
-		#ff00c8,
-		#ff0000
-	);
-	position: absolute;
-	top: -2px;
-	left: -2px;
-	background-size: 400%;
-	z-index: -1;
-	filter: blur(5px);
-	width: calc(100% + 4px);
-	height: calc(100% + 4px);
-	animation: glowing 20s linear infinite;
-	opacity: 0;
-	transition: opacity 0.3s ease-in-out;
-	border-radius: 10px;
-}
-
-.player-select:active::after {
-	background: transparent;
-}
-
-.player-select:hover::before {
-	opacity: 1;
-}
-
-.player-select::after {
-	z-index: -1;
-	content: "";
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	background: #111;
-	left: 0;
-	top: 0;
-	border-radius: 10px;
-}
-
-@keyframes glowing {
-	0% {
-		background-position: 0 0;
-	}
-	50% {
-		background-position: 400% 0;
-	}
-	100% {
-		background-position: 0 0;
-	}
-} */
-
-/* .player-select:hover,
-.player-select:focus {
-	/* Up and blurred shadow */
-/* transform: scale(1.05);
-	filter: drop-shadow(0rem 0.8125rem 1.6875rem rgba(50, 50, 93, 0.25))
-		drop-shadow(0rem 0.5rem 1rem rgba(0, 0, 0, 0.3)); */
 
 /* -------------------------------------------------------------------------- */
 /*                                   Footer                                   */
@@ -908,22 +842,62 @@ html {
 /*                              Login & Reg Pages                             */
 /* -------------------------------------------------------------------------- */
 
+.login-homepage {
+	display: grid;
+	place-items: center;
+	width: 100vw;
+	height: 100vh;
+	position: fixed;
+	left: 0;
+	top: 0;
+	justify-content: space-evenly;
+	align-content: center;
+	z-index: 1;
+	grid-template-rows: 1fr 2fr;
+}
+
+.smaller-homepage-logo {
+	display: flex;
+	justify-content: center;
+	align-self: flex-start;
+	width: 30rem;
+	height: auto;
+	z-index: 2;
+	margin: 1rem;
+}
+
 .login-form {
 	display: flex;
 	flex-direction: column;
 	width: 100%;
 	height: 100%;
 	align-items: center;
-	justify-content: center;
-}
-
-.login-form > form {
-	display: flex;
-	flex-direction: column;
-	width: 100%;
-	height: 100%;
-	align-items: center;
-	justify-content: center;
+	align-self: center;
+	justify-content: flex-start;
+	z-index: 3;
+	margin-top: 5rem;
+	> form {
+		display: flex;
+		flex-direction: column;
+		width: 65%;
+		height: 50%;
+		align-items: center;
+		background-color: #252a35a8;
+		border-radius: 16px;
+		justify-content: center;
+		> input {
+			display: flex;
+			flex-direction: column;
+			height: 1.5rem;
+			width: 50%;
+			margin: 1rem 0.5rem;
+			padding: 0.5rem;
+		}
+		> button {
+			background-color: #1a1a1a91;
+			border-radius: 0.5rem;
+		}
+	}
 }
 
 /* -------------------------------------------------------------------------- */

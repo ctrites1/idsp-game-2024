@@ -1,6 +1,38 @@
-export async function showLoginForm() {
-	const body = document.querySelector("body") as HTMLBodyElement;
+import { createHomepage } from "../homepage";
 
+const changeLogo = async () => {
+	const logo = document.querySelector(".homepage-logo") as HTMLImageElement;
+	if (!logo) {
+		throw new Error("Failed to find the logo element.");
+	}
+	logo.classList.remove("homepage-logo");
+	logo.classList.add("smaller-homepage-logo");
+};
+
+const changeHomepage = async () => {
+	let homepage = document.querySelector(".pseudo-homepage") as HTMLDivElement;
+	if (!homepage) {
+		await createHomepage();
+		homepage = document.querySelector(".pseudo-homepage") as HTMLDivElement;
+		if (!homepage) {
+			throw new Error("Failed to create or find the homepage element.");
+		}
+	}
+	homepage.classList.add("login-homepage");
+	const authBtns = document.querySelector(
+		".auth-buttons-container"
+	) as HTMLDivElement;
+	if (authBtns) {
+		authBtns.remove();
+	}
+
+	await changeLogo();
+};
+
+export async function showLoginForm() {
+	await changeHomepage();
+
+	const homepage = document.querySelector(".pseudo-homepage") as HTMLDivElement;
 	const formDiv = document.createElement("div");
 	formDiv.className = "login-form";
 
@@ -14,7 +46,7 @@ export async function showLoginForm() {
 
 	username.setAttribute("placeholder", "username");
 	username.setAttribute("name", "username");
-	username.type = "username";
+	username.type = "text";
 
 	password.setAttribute("placeholder", "password");
 	password.setAttribute("name", "password");
@@ -27,5 +59,6 @@ export async function showLoginForm() {
 	loginForm.appendChild(password);
 	loginForm.appendChild(submit);
 	formDiv.appendChild(loginForm);
-	body.appendChild(formDiv);
+
+	homepage.appendChild(formDiv);
 }
