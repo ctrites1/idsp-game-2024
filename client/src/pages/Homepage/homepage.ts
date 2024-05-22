@@ -67,6 +67,9 @@ export async function createHomepage() {
 }
 
 export async function removeHomepage() {
-	const homepage = document.querySelector(".pseudo-homepage") as HTMLDivElement;
-	homepage.remove();
+	const homepage = document.querySelector(".pseudo-homepage");
+    if (!homepage) {
+        throw new Error("Failed to create or find the homepage element.");
+    }
+    homepage.remove();
 }
