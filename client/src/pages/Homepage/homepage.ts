@@ -44,14 +44,6 @@ export async function createHomepage() {
 	const authBtnDiv: HTMLDivElement = document.createElement("div");
 	authBtnDiv.className = "auth-buttons-container";
 
-	// loginBtn.addEventListener("click", async () => { // TODO: delete this
-	// 	try {
-	// 		history.pushState(null, "", "login");
-	// 	} catch (err) {
-	// 		console.error(err);
-	// 	}
-	// });
-
 	/* ------------------------------------ * ----------------------------------- */
 
 	authBtnDiv.appendChild(loginBtn);
@@ -68,6 +60,9 @@ export async function createHomepage() {
 }
 
 export async function removeHomepage() {
-	const homepage = document.querySelector(".pseudo-homepage") as HTMLDivElement;
+	const homepage = document.querySelector(".pseudo-homepage");
+	if (!homepage) {
+		throw new Error("Failed to create or find the homepage element.");
+	}
 	homepage.remove();
 }

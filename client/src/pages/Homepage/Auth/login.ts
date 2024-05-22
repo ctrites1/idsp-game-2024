@@ -9,7 +9,7 @@ const changeLogo = async () => {
 	logo.classList.add("smaller-homepage-logo");
 };
 
-const changeHomepage = async () => {
+export const changeHomepage = async (name: string) => {
 	let homepage = document.querySelector(".pseudo-homepage") as HTMLDivElement;
 	if (!homepage) {
 		await createHomepage();
@@ -18,7 +18,7 @@ const changeHomepage = async () => {
 			throw new Error("Failed to create or find the homepage element.");
 		}
 	}
-	homepage.classList.add("login-homepage");
+	homepage.classList.add(`${name}-homepage`);
 	const authBtns = document.querySelector(
 		".auth-buttons-container"
 	) as HTMLDivElement;
@@ -30,7 +30,7 @@ const changeHomepage = async () => {
 };
 
 export async function showLoginForm() {
-	await changeHomepage();
+	await changeHomepage("auth");
 
 	const homepage = document.querySelector(".pseudo-homepage") as HTMLDivElement;
 	const formDiv = document.createElement("div");
@@ -40,9 +40,12 @@ export async function showLoginForm() {
 	loginForm.method = "POST";
 	loginForm.action = "/api/login";
 
+	const title: HTMLHeadingElement = document.createElement("h1");
 	const username: HTMLInputElement = document.createElement("input");
 	const password: HTMLInputElement = document.createElement("input");
 	const submit: HTMLButtonElement = document.createElement("button");
+
+	title.textContent = "Login";
 
 	username.setAttribute("placeholder", "username");
 	username.setAttribute("name", "username");
@@ -55,6 +58,7 @@ export async function showLoginForm() {
 	submit.type = "submit";
 	submit.innerText = "Login";
 
+	formDiv.appendChild(title);
 	loginForm.appendChild(username);
 	loginForm.appendChild(password);
 	loginForm.appendChild(submit);
