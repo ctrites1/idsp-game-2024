@@ -659,7 +659,7 @@ async function endGame(matchId: number) {
 export async function getLatestOppMove(oppId: number) {
   try {
     let getMove = `
-    SELECT card.card_id, card.power, card.name, trench_position, player_id
+    SELECT card.card_id, card.power, card.name, trench_position, player_id, round_id
     FROM move 
     JOIN card on move.card_id = card.card_id
     WHERE player_id = :oppId 

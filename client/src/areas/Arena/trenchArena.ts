@@ -71,8 +71,6 @@ export async function logMove() {
       }),
     });
     const res: any = status.json();
-    console.log(res);
-  } else {
-    console.log("No move to be logged");
+    return res;
   }
 }

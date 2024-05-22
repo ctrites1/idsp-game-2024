@@ -74,7 +74,6 @@ async function createServer() {
   io.on("connection", (socket) => {
     socket.on("message", async (...arg) => {
       if (typeof arg[1] === "number") {
-        console.log(`Received: ${arg[1]}`);
         const newMove = await getLatestOppMove(arg[1]);
         console.log(newMove);
         socket.broadcast.emit("update", newMove);

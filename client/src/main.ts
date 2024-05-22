@@ -1,7 +1,7 @@
-import { createCard } from "./areas/Arena/cardArena";
-import { createArenaPage } from "./areas/Arena/mainArena";
+import { createCard, getHandData } from "./areas/Arena/cardArena";
+import { countCards } from "./areas/Arena/laneArena";
 import { addCardToOppTrench } from "./areas/Arena/trenchArena";
-import { loginAsPlayer1 } from "./areas/Homepage/choosePlayer";
+import { loginSuccess } from "./areas/Homepage/choosePlayer";
 import { createHomepage } from "./areas/Homepage/homepage";
 import { io } from "socket.io-client";
 
@@ -21,14 +21,38 @@ socket.on("message", async (...data) => {
   }
 });
 
-socket.on("update", (...cardData) => {
+socket.on("update", async (...cardData) => {
   const opp = document.querySelector("#oppHill");
   const oppId = Number(opp?.getAttribute("player-id"));
-  const endTurnBtn = document.querySelector(".endTurn-button");
+  const endTurnBtn = document.querySelector(
+    ".endTurn-button"
+  ) as HTMLButtonElement;
   if (cardData[0].player_id === oppId) {
     const cardPlayed = createCard(cardData[0]);
     addCardToOppTrench(cardPlayed);
     endTurnBtn?.removeAttribute("card-played");
+    endTurnBtn.disabled = false;
+    const modal = document.querySelector("#modal");
+    const roundCounter = document.querySelector(".round-indicator")
+      ?.innerHTML as string;
+    const round = Number(roundCounter.substring(6, 7));
+    modal?.remove();
+    const totalMoves = countCards();
+    if (totalMoves >= 6) {
+      await loginSuccess();
+      await getHandData({
+        oppId,
+        round_id: cardData[0].round_id,
+      });
+    }
+    if (totalMoves === 2 && round === 3) {
+      console.log("END THE GAME NOW");
+      await loginSuccess();
+      await getHandData({
+        oppId,
+        round_id: cardData[0].round_id,
+      });
+    }
   }
 });
 

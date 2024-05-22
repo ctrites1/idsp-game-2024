@@ -1,9 +1,10 @@
-import { logout } from "../Homepage/choosePlayer";
+import { loginSuccess, logout } from "../Homepage/choosePlayer";
 import { createHomepage } from "../Homepage/homepage";
 import { setupDropZones } from "./cardArena";
 import { logMove } from "./trenchArena";
 import { showOpponentsTurn } from "./opponentsTurn";
 import { socket } from "../../main";
+import { countCards } from "./laneArena";
 
 export async function createArenaPage() {
   const body = document.querySelector("body") as HTMLBodyElement;
@@ -124,6 +125,11 @@ export async function createArenaPage() {
     const playerId: number = Number(player?.getAttribute("player-id"));
     console.log(playerId);
     socket.send("hello", playerId);
+    const totalMoves = countCards();
+    if (totalMoves >= 6) {
+      await loginSuccess();
+      return;
+    }
     showOpponentsTurn();
     endTurnButton.disabled = true;
   });
