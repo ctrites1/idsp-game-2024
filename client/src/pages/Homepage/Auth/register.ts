@@ -1,7 +1,8 @@
-import { register } from "../Homepage/choosePlayer";
+import { changeHomepage } from "./login";
 
 export async function createRegistrationPage() {
-	const body = document.querySelector("body") as HTMLBodyElement;
+	await changeHomepage("auth");
+	const homepage = document.querySelector(".pseudo-homepage") as HTMLDivElement;
 	const formDiv = document.createElement("div");
 	formDiv.className = "register-form";
 
@@ -34,10 +35,5 @@ export async function createRegistrationPage() {
 	registerForm.appendChild(email);
 	registerForm.appendChild(submit);
 	formDiv.appendChild(registerForm);
-	body.appendChild(formDiv);
-
-	registerForm.addEventListener('submit', async (event) => {
-		event.preventDefault();
-		await register(username.value, email.value, password.value);
-	  });
+	homepage.appendChild(formDiv);
 }

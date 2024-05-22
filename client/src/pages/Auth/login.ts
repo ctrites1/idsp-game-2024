@@ -35,3 +35,4 @@ export async function createLoginPage() {
 		await login(username.value, password.value);
 	  });
 }
+
