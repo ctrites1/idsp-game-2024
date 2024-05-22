@@ -12,6 +12,7 @@ import {
   test,
   validateUser,
   countTotalMoves,
+  getLatestOppMove,
 } from "../server/databaseAccess";
 import bodyParser from "body-parser";
 import cookieSession from "cookie-session";
@@ -64,7 +65,6 @@ async function createServer() {
   const io = new Server(server, {
     cors: {
       origin: "http://localhost:3000",
-      // methods: ["GET", "POST"],
       credentials: true,
     },
   });
@@ -72,12 +72,12 @@ async function createServer() {
   io.listen(server);
 
   io.on("connection", (socket) => {
-    socket.on("message", (message) => {
-      console.log(`Received: ${message}`);
-      // Broadcast message to all connected clients
-      if (message === "Hello Bitch!") {
-        console.log("telling opponent to update");
-        io.emit("message", "Update Bro");
+    socket.on("message", async (...arg) => {
+      if (typeof arg[1] === "number") {
+        console.log(`Received: ${arg[1]}`);
+        const newMove = await getLatestOppMove(arg[1]);
+        console.log(newMove);
+        socket.broadcast.emit("update", newMove);
       }
     });
   });
