@@ -1,8 +1,4 @@
-import { getHandData } from "../Arena/cardArena";
-import { startgame } from "./../Arena/game";
-// import { createArenaPage } from "../Arena/mainArena";
-
-async function addPlayerDetailsToArena(
+export async function addPlayerDetailsToArena(
 	username: string,
 	profileImgSrc: string,
 	opponent: string,
@@ -66,7 +62,6 @@ export async function login(username: string, password: string) {
 		}),
 	});
 	const userResponse = await user.json();
-	console.log("user response", userResponse);
 	if (userResponse.success) {
 		// const roundState = await startgame();
 		// console.log(roundState, "more testing!!!");
@@ -84,62 +79,6 @@ export async function login(username: string, password: string) {
 		window.location.href = "/lobby";
 	}
 }
-
-// export async function loginAsPlayer1() {
-//   const user = await fetch("/api/login", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({
-//       username: "keeles",
-//       password: "strongPassword2",
-//     }),
-//   });
-//   const userResponse = await user.json();
-//   if (userResponse.success) {
-//     await loginSuccess();
-//     const roundState = await startgame();
-//     const currentPlayer = roundState.data.player_2_username;
-//     const currentOpponent = roundState.data.player_1_username;
-//     await getHandData(roundState.data);
-//     await addPlayerDetailsToArena(
-//       currentPlayer,
-//       "/assets/update/displayPic.png",
-//       currentOpponent,
-//       "/assets/update/oppPic.png"
-//     );
-//     return;
-//   }
-// }
-
-// export async function loginAsPlayer2() {
-//   const user = await fetch("/api/login", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({
-//       username: "potat",
-//       password: "strongPassword1",
-//     }),
-//   });
-//   const userResponse = await user.json();
-//   if (userResponse.success) {
-//     await loginSuccess();
-//     const roundState = await startgame();
-//     const currentPlayer = roundState.data.player_1_username;
-//     const currentOpponent = roundState.data.player_2_username;
-//     await getHandData(roundState.data);
-//     await addPlayerDetailsToArena(
-//       currentPlayer,
-//       "/assets/update/oppPic.png",
-//       currentOpponent,
-//       "/assets/update/displayPic.png"
-//     );
-//     return;
-//   }
-// }
 
 export async function logout() {
 	const logout = await fetch("/api/logout");

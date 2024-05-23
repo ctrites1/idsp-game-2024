@@ -59,7 +59,6 @@ export async function showLoginForm() {
 	password.setAttribute("name", "password");
 	password.type = "password";
 
-	// submit.type = "submit";
 	submit.innerText = "Login";
 	submit.addEventListener("click", async () => {
 		const inputUsername: string = username.value;

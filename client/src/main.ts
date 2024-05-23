@@ -12,13 +12,13 @@ export const socket = io("http://localhost:5173", {
 	timeout: 20000,
 });
 
-socket.on("message", async (...data) => {
-	console.log("WSdata", data);
-	if (typeof data === "string") {
-		// console.log("UPDATING");
-		// await loginAsPlayer1();
-	}
-});
+// socket.on("message", async (...data) => {
+// 	console.log("WSdata", data);
+// 	if (typeof data === "string") {
+// 		// console.log("UPDATING");
+// 		// await loginAsPlayer1();
+// 	}
+// });
 
 socket.on("update", async (...cardData) => {
 	const opp = document.querySelector("#oppHill");
