@@ -686,3 +686,29 @@ export async function getLatestOppMove(oppId: number) {
     console.log("ERROR getting opponents move");
   }
 }
+
+export async function getAllPlayers() {
+  try {
+    const query = "SELECT player_id, username FROM player;";
+    const results: any = database.query(query);
+    return { success: true, players: results[0] };
+  } catch (err) {
+    console.log(`Error getting list of all players: ${err}`);
+    return { success: false, players: null };
+  }
+}
+
+export async function getExistingGames(playerId: number) {
+  try {
+    const existingGames =
+      "SELECT match_id, is_completed, player_1_id, player_2_id, player.username AS player_1_username, p.username AS player_2_username FROM `match` JOIN player ON player_1_id = player.player_id JOIN player AS p ON player_2_id = p.player_id WHERE player_1_id = :playerId OR player_2_id = :playerId HAVING is_completed = 0;";
+    const params = {
+      playerId,
+    };
+    const games = await database.query(existingGames, params);
+    return { success: true, games: games[0] };
+  } catch (err) {
+    console.log(`Error getting existing games: ${err}`);
+    return { success: false, games: null };
+  }
+}

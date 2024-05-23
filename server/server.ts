@@ -13,6 +13,8 @@ import {
   validateUser,
   countTotalMoves,
   getLatestOppMove,
+  getAllPlayers,
+  getExistingGames,
 } from "../server/databaseAccess";
 import bodyParser from "body-parser";
 import cookieSession from "cookie-session";
@@ -273,6 +275,32 @@ async function createServer() {
       return;
     }
     res.json({ success: true });
+  });
+
+  app.get("/api/players", async (req, res) => {
+    if (!req.session?.playerId) {
+      res.json({
+        success: false,
+        data: "Session Error - could not authenticate player",
+      });
+      return;
+    }
+    const playerId = req.session.playerId;
+    const allPlayers = await getAllPlayers();
+    const currentGames = await getExistingGames(playerId);
+    if (allPlayers.success && currentGames.success) {
+      res.json({
+        success: true,
+        players: allPlayers.players,
+        games: currentGames.games,
+      });
+    } else {
+      res.json({
+        success: false,
+        players: null,
+        games: null,
+      });
+    }
   });
 
   server.listen(port, () => {
