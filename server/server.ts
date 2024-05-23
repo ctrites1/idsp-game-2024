@@ -15,6 +15,7 @@ import {
   getLatestOppMove,
   getAllPlayers,
   getExistingGames,
+  createPlayer,
 } from "../server/databaseAccess";
 import bodyParser from "body-parser";
 import cookieSession from "cookie-session";
@@ -79,8 +80,8 @@ async function createServer() {
 
   io.listen(server);
 
-  io.on("connection", (socket) => {
-    socket.on("message", async (...arg) => {
+  io.on("connection", (socket: any) => {
+    socket.on("message", async (...arg: any[]) => {
       if (typeof arg[1] === "number") {
         const newMove = await getLatestOppMove(arg[1]);
         console.log(newMove);
@@ -112,6 +113,28 @@ async function createServer() {
 
   const data = await test();
   console.log(data);
+
+  app.post("/api/register", async (req: Request, res: Response) => {
+    const { username, email, password } = req.body;
+
+    try {
+      const result: any = await createPlayer({ username, email, password });
+
+      if (result) {
+        console.log("new user", result.data[0]);
+        req.session = { playerId: result.data[0].player_id };
+      }
+
+      res.json(result);
+    } catch (error) {
+      res
+        .status(500)
+        .json({
+          success: false,
+          message: "An error occurred during registration.",
+        });
+    }
+  });
 
   app.post("/api/playerhand", async (req: Request, res: Response) => {
     if (!req.session?.playerId) {
@@ -286,7 +309,7 @@ async function createServer() {
       return;
     }
     const playerId = req.session.playerId;
-    const allPlayers = await getAllPlayers();
+    const allPlayers = await getAllPlayers(playerId);
     const currentGames = await getExistingGames(playerId);
     if (allPlayers.success && currentGames.success) {
       res.json({
@@ -301,6 +324,48 @@ async function createServer() {
         games: null,
       });
     }
+  });
+
+  app.post("/api/logmove", async (req: Request, res: Response) => {
+    if (!req.session?.playerId) {
+      res.json({
+        success: false,
+        data: "Session Error - could not authenticate player",
+      });
+      return;
+    }
+    const move = {
+      roundId: req.body.roundId,
+      cardId: req.body.cardId,
+      trenchPos: req.body.trenchPos,
+      playerId: req.session.playerId,
+      winnerId: req.body.winner_id,
+    };
+    const moveLogged = await logMove(
+      move.roundId,
+      move.cardId,
+      move.trenchPos,
+      move.playerId
+    );
+    if (!moveLogged.success) {
+      res.json({ success: false });
+      return;
+    }
+    const isRoundOver = await countTotalMoves(move.roundId, move.winnerId);
+    if (isRoundOver?.gameOver) {
+      res.json({
+        success: true,
+        gameOver: true,
+        data: isRoundOver.data,
+        gameWinner: isRoundOver.gameWinner,
+      });
+      return;
+    }
+    if (isRoundOver?.newRound) {
+      res.json({ success: true, roundOver: true, data: isRoundOver.data });
+      return;
+    }
+    res.json({ success: true });
   });
 
   server.listen(port, () => {

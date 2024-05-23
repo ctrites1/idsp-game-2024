@@ -295,42 +295,96 @@ export async function getRoundState(
 }
 
 export async function createPlayer(data: any) {
-  const saltRounds = 10;
-  bcrypt.genSalt(saltRounds, function (err: any, salt: any) {
-    bcrypt.hash(data.password, salt, function (err: any, hash: any) {
-      const createPlayerQuery = `
-        INSERT INTO player (username, email, password_hash)
-        VALUES (:username, :email, :password)
-      `;
-      const createPlayerParams = {
-        username: data.username,
-        email: data.email,
-        password: hash,
-      };
-      database
-        .query(createPlayerQuery, createPlayerParams)
-        .then(() => {
-          console.log("Player created successfully!");
-          return { success: true, message: "Player created successfully!" };
-        })
-        .catch((error: any) => {
-          console.error("Error creating player:", error);
+  // const saltRounds = 10;
+  // bcrypt.genSalt(saltRounds, async function (err: any, salt: any) {
+  //   bcrypt.hash(data.password, salt, async function (err: any, hash: any) {
+  //     const createPlayerQuery = `
+  //       INSERT INTO player (username, email, password_hash)
+  //       VALUES (:username, :email, :password);
+  //     `;
+  //     const createPlayerParams = {
+  //       username: data.username,
+  //       email: data.email,
+  //       password: hash,
+  //     };
 
-          if (error.code === "ER_DUP_ENTRY") {
-            if (error.sqlMessage.includes("username")) {
-              console.log("Username already in use.");
-              return { success: false, message: "Username already in use" };
-            } else if (error.sqlMessage.includes("email")) {
-              console.log("Email already in use.");
-              return { success: false, message: "Email already in use" };
-            }
-          } else {
-            console.log("An unexpected error occurred.");
-            return { success: false, message: "An unexpected error occurred." };
-          }
-        });
+  //     const getUserId = `Select player_id from player
+  //     where username = :username;`
+
+  //     await database
+  //       .query(createPlayerQuery, createPlayerParams)
+  //       .then(async () => {
+  //         console.log("Player created successfully!");
+  //         const playerId = await database.query(getUserId, {username: createPlayerParams.username});
+  //         return { success: true, message: "Player created successfully!", data: playerId };
+  //       })
+  //       .catch((error: any) => {
+  //         console.error("Error creating player:", error);
+
+  //         if (error.code === "ER_DUP_ENTRY") {
+  //           if (error.sqlMessage.includes("username")) {
+  //             console.log("Username already in use.");
+  //             return { success: false, message: "Username already in use" };
+  //           } else if (error.sqlMessage.includes("email")) {
+  //             console.log("Email already in use.");
+  //             return { success: false, message: "Email already in use" };
+  //           }
+  //         } else {
+  //           console.log("An unexpected error occurred.");
+  //           return { success: false, message: "An unexpected error occurred." };
+  //         }
+  //       });
+  //   });
+  // });
+  const saltRounds = 10;
+  try {
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hash = await bcrypt.hash(data.password, salt);
+
+    const createPlayerQuery = `
+    INSERT INTO player (username, email, password_hash)
+      VALUES (:username, :email, :password);;
+    `;
+    const createPlayerParams = {
+      username: data.username,
+      email: data.email,
+      password: hash,
+    };
+
+    await database.query(createPlayerQuery, createPlayerParams);
+
+    const getUserIdQuery = `
+      SELECT player_id FROM player
+      WHERE username = :username;
+    `;
+    const playerIdResult = await database.query(getUserIdQuery, {
+      username: data.username,
     });
-  });
+
+    if (playerIdResult.length > 0) {
+      return {
+        success: true,
+        message: "Player created successfully!",
+        data: playerIdResult,
+      };
+    } else {
+      return { success: false, message: "Player creation failed." };
+    }
+  } catch (error: any) {
+    console.error("Error creating player:", error);
+
+    if (error.code === "ER_DUP_ENTRY") {
+      if (error.sqlMessage.includes("username")) {
+        console.log("Username already in use.");
+        return { success: false, message: "Username already in use" };
+      } else if (error.sqlMessage.includes("email")) {
+        console.log("Email already in use.");
+        return { success: false, message: "Email already in use" };
+      }
+    }
+
+    return { success: false, message: "An unexpected error occurred." };
+  }
 }
 
 export async function validateUser(username: string, password: string) {
@@ -343,12 +397,23 @@ export async function validateUser(username: string, password: string) {
     };
     const user: any = await database.query(validateQuery, validateParams);
     if (user[0][0]) {
-      await bcrypt.compare(password, user[0][0].password_hash);
-      return {
-        success: true,
-        playerId: user[0][0].player_id,
-        message: "Logged in successfully",
-      };
+      const comparepass = await bcrypt.compare(
+        password,
+        user[0][0].password_hash
+      );
+      if (comparepass) {
+        return {
+          success: true,
+          playerId: user[0][0].player_id,
+          message: "Logged in successfully",
+        };
+      } else {
+        return {
+          success: false,
+          playerId: null,
+          message: "the password is incorrect",
+        };
+      }
     } else {
       return { success: false, playerId: null, message: "No user found" };
     }
@@ -687,21 +752,10 @@ export async function getLatestOppMove(oppId: number) {
   }
 }
 
-export async function getAllPlayers() {
-  try {
-    const query = "SELECT player_id, username FROM player;";
-    const results: any = await database.query(query);
-    return { success: true, players: results[0] };
-  } catch (err) {
-    console.log(`Error getting list of all players: ${err}`);
-    return { success: false, players: null };
-  }
-}
-
 export async function getExistingGames(playerId: number) {
   try {
     const existingGames =
-      "SELECT match_id, is_completed, player_1_id, player_2_id, player.username AS player_1_username, p.username AS player_2_username FROM `match` JOIN player ON player_1_id = player.player_id JOIN player AS p ON player_2_id = p.player_id WHERE player_1_id = :playerId OR player_2_id = :playerId HAVING is_completed = 0;";
+      "SELECT match_id, is_completed, player_1_id, player_2_id, player.username AS player_1_username, p.username AS player_2_username FROM `match` JOIN player ON player_1_id = player.player_id JOIN player AS p ON player_2_id = p.player_id WHERE (player_1_id = :playerId OR player_2_id = :playerId) AND is_completed = 0;";
     const params = {
       playerId,
     };
@@ -710,5 +764,48 @@ export async function getExistingGames(playerId: number) {
   } catch (err) {
     console.log(`Error getting existing games: ${err}`);
     return { success: false, games: null };
+  }
+}
+
+export async function getAllPlayers(playerId: number) {
+  try {
+    let getPlayers = `
+    SELECT player_id, username
+    from player
+    where player_id != :playerId;
+    `;
+
+    const players: any = await database.query(getPlayers, { playerId });
+    return { success: true, players: players[0] };
+  } catch (err) {
+    console.log(err);
+    console.log("ERROR getting players");
+    return { success: false, players: null };
+  }
+}
+
+export async function getLobbyData(playerId: number) {
+  try {
+    if (playerId > 0) {
+      const players: any = await getAllPlayers(playerId);
+      const matches: any = await getExistingGames(playerId);
+
+      if (players && matches) {
+        return {
+          success: true,
+          players: players[0],
+          games: matches[0],
+        };
+      } else {
+        return {
+          success: false,
+          players: null,
+          games: null,
+        };
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    console.log("ERROR getting lobby data");
   }
 }

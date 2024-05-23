@@ -1,3 +1,4 @@
+import { register } from "../choosePlayer";
 import { changeHomepage } from "./login";
 
 export async function createRegistrationPage() {
@@ -40,4 +41,11 @@ export async function createRegistrationPage() {
 	formDiv.appendChild(title);
 	formDiv.appendChild(registerForm);
 	homepage.appendChild(formDiv);
+
+	submit.addEventListener('click', async (event) => {
+		event.preventDefault();
+		console.log(event)
+
+		await register(username.value,email.value, password.value);
+	});
 }

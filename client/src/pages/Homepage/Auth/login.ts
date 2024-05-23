@@ -1,3 +1,4 @@
+import { login } from "../choosePlayer";
 import { createHomepage } from "../homepage";
 
 const changeLogo = async () => {
@@ -38,7 +39,7 @@ export async function showLoginForm() {
 
 	const loginForm: HTMLFormElement = document.createElement("form");
 	loginForm.method = "POST";
-	loginForm.action = "/api/login";
+	// loginForm.action = "/api/login";
 
 	const title: HTMLHeadingElement = document.createElement("h1");
 	const username: HTMLInputElement = document.createElement("input");
@@ -55,7 +56,7 @@ export async function showLoginForm() {
 	password.setAttribute("name", "password");
 	password.type = "password";
 
-	submit.type = "submit";
+	// submit.type = "submit";
 	submit.innerText = "Login";
 
 	formDiv.appendChild(title);
@@ -65,4 +66,11 @@ export async function showLoginForm() {
 	formDiv.appendChild(loginForm);
 
 	homepage.appendChild(formDiv);
+
+	submit.addEventListener('click', async (event) => {
+		event.preventDefault();
+		console.log(event)
+
+		await login(username.value, password.value);
+	});
 }
