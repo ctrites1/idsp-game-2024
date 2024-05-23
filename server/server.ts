@@ -2,7 +2,6 @@ import express, { Request, Response } from "express";
 import path from "path";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import { cards } from "./database";
 import {
 	createInitialHand,
 	startGame,
@@ -13,12 +12,13 @@ import {
 	test,
 	validateUser,
 	countTotalMoves,
+	getLatestOppMove,
 } from "../server/databaseAccess";
 import bodyParser from "body-parser";
 import cookieSession from "cookie-session";
 import cors from "cors";
-import { Card } from "./types/Card";
-import { match } from "assert";
+import { Server, Socket } from "socket.io";
+import http from "node:http";
 
 export default interface CardIn {
 	card_id: number;
@@ -38,6 +38,7 @@ interface NewHandResponse {
 async function createServer() {
 	const app = express();
 	const port = 3000;
+	// const server = http.createServer(app);
 
 	const __filename = fileURLToPath(import.meta.url);
 	const __dirname = dirname(__filename);
@@ -63,6 +64,27 @@ async function createServer() {
 	app.get("/api/hello", async (req: Request, res: Response) => {
 		const playerId = req.session?.playerId;
 		res.json({ hello: "world" });
+	});
+
+	const server = http.createServer(app);
+
+	const io = new Server(server, {
+		cors: {
+			origin: "http://localhost:3000",
+			credentials: true,
+		},
+	});
+
+	io.listen(server);
+
+	io.on("connection", (socket) => {
+		socket.on("message", async (...arg) => {
+			if (typeof arg[1] === "number") {
+				const newMove = await getLatestOppMove(arg[1]);
+				console.log(newMove);
+				socket.broadcast.emit("update", newMove);
+			}
+		});
 	});
 
 	app.post("/api/login", async (req: Request, res: Response) => {
@@ -265,17 +287,9 @@ async function createServer() {
 		res.json({ success: true });
 	});
 
-	app.listen(port, () => {
+	server.listen(port, () => {
 		console.log(`server listening on port ${port}`);
 	});
 }
-
-// function pickRandomCards(cards: Card[], count: number): Card[] {
-// 	for (let i = cards.length - 1; i > 0; i--) {
-// 		const j = Math.floor(Math.random() * (i + 1));
-// 		[cards[i], cards[j]] = [cards[j], cards[i]];
-// 	}
-// 	return cards.slice(0, count);
-// }
 
 createServer();

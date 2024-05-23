@@ -655,3 +655,24 @@ async function endGame(matchId: number) {
     return { gameEnded: false };
   }
 }
+
+export async function getLatestOppMove(oppId: number) {
+  try {
+    let getMove = `
+    SELECT card.card_id, card.power, card.name, trench_position, player_id, round_id
+    FROM move 
+    JOIN card on move.card_id = card.card_id
+    WHERE player_id = :oppId 
+    ORDER BY move_time DESC
+    LIMIT 1;
+    `;
+    let params = {
+      oppId,
+    };
+    const cardPlayed: any = await database.query(getMove, params);
+    return cardPlayed[0][0];
+  } catch (err) {
+    console.log(err);
+    console.log("ERROR getting opponents move");
+  }
+}
