@@ -16,6 +16,7 @@ import {
   getAllPlayers,
   getExistingGames,
   createPlayer,
+  getLobbyData,
 } from "../server/databaseAccess";
 import bodyParser from "body-parser";
 import cookieSession from "cookie-session";
@@ -127,12 +128,10 @@ async function createServer() {
 
       res.json(result);
     } catch (error) {
-      res
-        .status(500)
-        .json({
-          success: false,
-          message: "An error occurred during registration.",
-        });
+      res.status(500).json({
+        success: false,
+        message: "An error occurred during registration.",
+      });
     }
   });
 
@@ -309,21 +308,8 @@ async function createServer() {
       return;
     }
     const playerId = req.session.playerId;
-    const allPlayers = await getAllPlayers(playerId);
-    const currentGames = await getExistingGames(playerId);
-    if (allPlayers.success && currentGames.success) {
-      res.json({
-        success: true,
-        players: allPlayers.players,
-        games: currentGames.games,
-      });
-    } else {
-      res.json({
-        success: false,
-        players: null,
-        games: null,
-      });
-    }
+    const response = await getLobbyData(playerId);
+    res.json(response);
   });
 
   app.post("/api/logmove", async (req: Request, res: Response) => {
