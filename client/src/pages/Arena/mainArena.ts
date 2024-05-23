@@ -123,7 +123,6 @@ export async function createArenaPage() {
     await logMove();
     const player = document.querySelector("#playerHill");
     const playerId: number = Number(player?.getAttribute("player-id"));
-    console.log(playerId);
     socket.send("hello", playerId);
     const totalMoves = countCards();
     if (totalMoves >= 6) {

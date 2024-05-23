@@ -520,16 +520,26 @@ export async function countTotalMoves(roundId: number, winnerId: number) {
   }
 }
 
-//export async function updateGameState(playerId: number, roundId: number) {
-//   try {
-//       const movesThisRound = await countPlayerMoves(roundId, playerId);
-//       const totalMoves = await countTotalMoves(roundId);
-
-//       console.log({ movesThisRound, totalMoves });
-//   } catch (err) {
-//       console.error("Failed to update game state:", err);
-//   }
-// }
+export async function updateGameState(
+  playerId: number,
+  oppId: number,
+  roundId: number
+) {
+  const gameState = await getRoundState(playerId, oppId, roundId);
+  const playerHand = await getCurrentHand(playerId, roundId);
+  if (gameState.success && playerHand.success) {
+    return {
+      success: true,
+      gameState: gameState.data,
+      hand: playerHand.hand,
+    };
+  } else {
+    return {
+      success: false,
+      error: "Error getting updated game state",
+    };
+  }
+}
 
 export async function startNewRound(
   matchId: number,
