@@ -56,9 +56,10 @@ socket.on("update", async (...cardData) => {
 });
 
 document.addEventListener("DOMContentLoaded", async () => {
-	window.addEventListener("popstate", async () => {
+	try {
+		window.addEventListener("popstate", router);
 		await router();
-	});
-
-	await router();
+	} catch (error) {
+		console.error("Error during page initialization:", error);
+	}
 });

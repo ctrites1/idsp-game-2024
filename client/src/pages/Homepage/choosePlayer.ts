@@ -40,16 +40,16 @@ export async function register(
 	const result = await response.json();
 
 	if (result.success) {
-		const roundState = await startgame();
-		const currentPlayer = roundState.data.player_2_username;
-		const currentOpponent = roundState.data.player_1_username;
-		await getHandData(roundState.data);
-		await addPlayerDetailsToArena(
-			currentPlayer,
-			"/assets/update/displayPic.png",
-			currentOpponent,
-			"/assets/update/oppPic.png"
-		);
+		// const roundState = await startgame();
+		// const currentPlayer = roundState.data.player_2_username;
+		// const currentOpponent = roundState.data.player_1_username;
+		// await getHandData(roundState.data);
+		// await addPlayerDetailsToArena(
+		// 	currentPlayer,
+		// 	"/assets/update/displayPic.png",
+		// 	currentOpponent,
+		// 	"/assets/update/oppPic.png"
+		// );
 		return;
 	}
 }
