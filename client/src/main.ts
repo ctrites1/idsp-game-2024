@@ -2,7 +2,6 @@ import { router } from "../src/pages/routing";
 import { createCard, getHandData } from "./pages/Arena/cardArena";
 import { countCards } from "./pages/Arena/laneArena";
 import { addCardToOppTrench } from "./pages/Arena/trenchArena";
-import { loginSuccess } from "./pages/Homepage/choosePlayer";
 import { io } from "socket.io-client";
 
 export const socket = io("http://localhost:5173", {
@@ -41,7 +40,6 @@ socket.on("update", async (...cardData) => {
 		modal?.remove();
 		const totalMoves = countCards();
 		if (totalMoves >= 6) {
-			await loginSuccess();
 			await getHandData({
 				oppId,
 				round_id: cardData[0].round_id,
@@ -49,7 +47,6 @@ socket.on("update", async (...cardData) => {
 		}
 		if (totalMoves === 2 && round === 3) {
 			console.log("END THE GAME NOW");
-			await loginSuccess();
 			await getHandData({
 				oppId,
 				round_id: cardData[0].round_id,
@@ -65,5 +62,4 @@ document.addEventListener("DOMContentLoaded", async () => {
 	} catch (error) {
 		console.error("Error during page initialization:", error);
 	}
-	// !
 });
