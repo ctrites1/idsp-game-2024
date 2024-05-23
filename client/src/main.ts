@@ -1,10 +1,9 @@
 import { router } from "../src/pages/routing";
 
 document.addEventListener("DOMContentLoaded", async () => {
-	try {
-		window.addEventListener("popstate", router);
+	window.addEventListener("popstate", async () => {
 		await router();
-	} catch (error) {
-		console.error("Error during page initialization:", error);
-	}
+	});
+
+	await router();
 });
