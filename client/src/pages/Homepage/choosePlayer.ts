@@ -68,20 +68,20 @@ export async function login(username: string, password: string) {
 	const userResponse = await user.json();
 	console.log("user response", userResponse);
 	if (userResponse.success) {
-		const roundState = await startgame();
-		console.log(roundState, "more testing!!!");
-		const currentPlayer = roundState.data.player_2_username;
-		const currentOpponent = roundState.data.player_1_username;
-		console.log(currentPlayer, currentOpponent, "testing!!");
-		await getHandData(roundState.data);
-		await addPlayerDetailsToArena(
-			currentPlayer,
-			"/assets/update/displayPic.png",
-			currentOpponent,
-			"/assets/update/oppPic.png"
-		);
-		history.pushState(null, "", "/arena");
-		// window.location.href = "/arena";
+		// const roundState = await startgame();
+		// console.log(roundState, "more testing!!!");
+		// const currentPlayer = roundState.data.player_2_username;
+		// const currentOpponent = roundState.data.player_1_username;
+		// console.log(currentPlayer, currentOpponent, "testing!!");
+		// await getHandData(roundState.data);
+		// await addPlayerDetailsToArena(
+		// 	currentPlayer,
+		// 	"/assets/update/displayPic.png",
+		// 	currentOpponent,
+		// 	"/assets/update/oppPic.png"
+		// );
+		// history.pushState(null, "", "/lobby");
+		window.location.href = "/lobby";
 	}
 }
 

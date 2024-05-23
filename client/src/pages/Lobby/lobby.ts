@@ -32,6 +32,12 @@ const generatePlayersList = async (): Promise<HTMLDivElement> => {
 	// });
 	return playersListDiv;
 };
+/* 
+	* Other buttons/UI stuff: 
+	- Logout
+	- players that current User is in a game with
+	- players that they are NOT in a game with
+*/
 
 export const showLobbyPage = async () => {
 	await emptyBody();
