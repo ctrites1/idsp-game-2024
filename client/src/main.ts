@@ -1,8 +1,8 @@
-import { createCard, getHandData } from "./areas/Arena/cardArena";
-import { countCards } from "./areas/Arena/laneArena";
-import { addCardToOppTrench } from "./areas/Arena/trenchArena";
-import { loginSuccess } from "./areas/Homepage/choosePlayer";
-import { createHomepage } from "./areas/Homepage/homepage";
+import { createCard, getHandData } from "./pages/Arena/cardArena";
+import { countCards } from "./pages/Arena/laneArena";
+import { addCardToOppTrench } from "./pages/Arena/trenchArena";
+import { loginSuccess } from "./pages/Homepage/choosePlayer";
+import { createHomepage } from "./pages/Homepage/homepage";
 import { io } from "socket.io-client";
 import { router } from "../src/pages/routing";
 
@@ -60,9 +60,10 @@ socket.on("update", async (...cardData) => {
 });
 
 document.addEventListener("DOMContentLoaded", async () => {
-  try {
-    await createHomepage();
-  } catch (error) {
-    console.error("Error during page initialization:", error);
-  }
+	try {
+		window.addEventListener("popstate", router);
+		await router();
+	} catch (error) {
+		console.error("Error during page initialization:", error);
+	}
 });

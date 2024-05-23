@@ -728,3 +728,58 @@ export async function getLatestOppMove(oppId: number) {
     console.log("ERROR getting opponents move");
   }
 }
+
+export async function getAllPlayers(playerId: number) {
+  try {
+    let getPlayers = `
+    SELECT player_id, username
+    from player
+    where player_id != :playerId;
+    `;
+
+    const players: any = await database.query(getPlayers, {playerId});
+    return players[0][0];
+  } catch (err) {
+    console.log(err);
+    console.log("ERROR getting players");
+  }
+}
+
+export async function getLobbyData(playerId: number) {
+  try {
+    if (playerId > 0) {
+      const players = await getAllPlayers(playerId);
+      const matches = await getAllMatches(playerId);
+
+      if (players && matches) {
+        return {
+          success: true,
+          data: {
+            players: players[0],
+            matches: matches[0],
+          }
+        }
+      } else {
+        return {
+          success: false,
+          message: "An error occured" 
+        }
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    console.log("ERROR getting lobby data");
+  }
+}
+
+export async function getAllMatches(playerId: number) {
+  try {
+    let getAll = " SELECT match_id, player_1_id, player_2_id FROM `match`WHERE (player_1_id = :playerId OR player_2_id = :playerId) AND is_completed = 0 ORDER BY start_time ASC;";
+
+    const matches: any = await database.query(getAll, {playerId});
+    return matches[0][0];
+  } catch (err) {
+    console.log(err);
+    console.log("ERROR getting matches");
+  }
+}

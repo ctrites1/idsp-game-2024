@@ -13,6 +13,7 @@ import {
   validateUser,
   countTotalMoves,
   getLatestOppMove,
+  createPlayer,
 } from "../server/databaseAccess";
 import bodyParser from "body-parser";
 import cookieSession from "cookie-session";
@@ -71,8 +72,8 @@ async function createServer() {
 
   io.listen(server);
 
-  io.on("connection", (socket) => {
-    socket.on("message", async (...arg) => {
+  io.on("connection", (socket: any) => {
+    socket.on("message", async (...arg: any[]) => {
       if (typeof arg[1] === "number") {
         const newMove = await getLatestOppMove(arg[1]);
         console.log(newMove);
