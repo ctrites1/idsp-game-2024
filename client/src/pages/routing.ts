@@ -3,6 +3,7 @@ import { createHomepage } from "./Homepage/homepage";
 import { create404Page } from "./Error/404";
 import { showLoginForm } from "./Homepage/Auth/login";
 import { createRegistrationPage } from "./Homepage/Auth/register";
+import { showLobbyPage } from "./Lobby/lobby";
 interface Route {
 	title: string;
 	handler: () => Promise<void>;
@@ -22,12 +23,16 @@ export const routes: { [key: string]: Route } = {
 		handler: createArenaPage,
 	},
 	"/login": {
-		title: "Login to ACG!",
+		title: "Login!",
 		handler: showLoginForm,
 	},
 	"/register": {
-		title: "Register new Player!",
+		title: "Register!",
 		handler: createRegistrationPage,
+	},
+	"/lobby": {
+		title: "Player Lobby",
+		handler: showLobbyPage,
 	},
 };
 
@@ -51,4 +56,11 @@ export const addRouteToBtn = async (
 			console.error(err);
 		}
 	});
+};
+
+export const emptyBody = async (): Promise<void> => {
+	const body = document.querySelector("body") as HTMLBodyElement;
+	while (body.hasChildNodes()) {
+		body.removeChild(body.firstChild as ChildNode);
+	}
 };

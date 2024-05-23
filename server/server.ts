@@ -81,8 +81,8 @@ async function createServer() {
 
   io.listen(server);
 
-  io.on("connection", (socket: any) => {
-    socket.on("message", async (...arg: any[]) => {
+  io.on("connection", (socket) => {
+    socket.on("message", async (...arg) => {
       if (typeof arg[1] === "number") {
         const newMove = await getLatestOppMove(arg[1]);
         console.log(newMove);

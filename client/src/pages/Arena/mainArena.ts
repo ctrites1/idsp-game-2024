@@ -1,4 +1,4 @@
-import { loginSuccess, logout } from "../Homepage/choosePlayer";
+import { logout } from "../Homepage/choosePlayer";
 import { createHomepage } from "../Homepage/homepage";
 import { setupDropZones } from "./cardArena";
 import { logMove } from "./trenchArena";

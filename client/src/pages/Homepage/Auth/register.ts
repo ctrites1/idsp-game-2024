@@ -27,6 +27,12 @@ export async function createRegistrationPage() {
 	password.setAttribute("name", "password");
 	password.type = "password";
 
+	/*         
+	<button type="button" id="togglePassword">
+    <i id="toggleIcon" class="fas fa-eye"></i>
+    </button> 
+	*/
+
 	email.setAttribute("placeholder", "email");
 	email.setAttribute("name", "email");
 	email.type = "email";
