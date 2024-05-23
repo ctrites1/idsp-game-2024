@@ -120,7 +120,10 @@ export async function createArenaPage() {
   ) as HTMLButtonElement;
   endTurnButton.disabled = false;
   endTurnButton?.addEventListener("click", async () => {
-    await logMove();
+    const gameState = await logMove();
+    if (gameState.gameOver) {
+      // Show winner from gameState.gameWinner (id)
+    }
     const player = document.querySelector("#playerHill");
     const playerId: number = Number(player?.getAttribute("player-id"));
     socket.send("hello", playerId);

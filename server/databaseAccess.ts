@@ -807,5 +807,10 @@ export async function getLobbyData(playerId: number) {
   } catch (err) {
     console.log(err);
     console.log("ERROR getting lobby data");
+    return {
+      success: false,
+      players: null,
+      games: null,
+    };
   }
 }

@@ -312,48 +312,6 @@ async function createServer() {
     res.json(response);
   });
 
-  app.post("/api/logmove", async (req: Request, res: Response) => {
-    if (!req.session?.playerId) {
-      res.json({
-        success: false,
-        data: "Session Error - could not authenticate player",
-      });
-      return;
-    }
-    const move = {
-      roundId: req.body.roundId,
-      cardId: req.body.cardId,
-      trenchPos: req.body.trenchPos,
-      playerId: req.session.playerId,
-      winnerId: req.body.winner_id,
-    };
-    const moveLogged = await logMove(
-      move.roundId,
-      move.cardId,
-      move.trenchPos,
-      move.playerId
-    );
-    if (!moveLogged.success) {
-      res.json({ success: false });
-      return;
-    }
-    const isRoundOver = await countTotalMoves(move.roundId, move.winnerId);
-    if (isRoundOver?.gameOver) {
-      res.json({
-        success: true,
-        gameOver: true,
-        data: isRoundOver.data,
-        gameWinner: isRoundOver.gameWinner,
-      });
-      return;
-    }
-    if (isRoundOver?.newRound) {
-      res.json({ success: true, roundOver: true, data: isRoundOver.data });
-      return;
-    }
-    res.json({ success: true });
-  });
-
   server.listen(port, () => {
     console.log(`server listening on port ${port}`);
   });
