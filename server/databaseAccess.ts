@@ -690,7 +690,7 @@ export async function getLatestOppMove(oppId: number) {
 export async function getAllPlayers() {
   try {
     const query = "SELECT player_id, username FROM player;";
-    const results: any = database.query(query);
+    const results: any = await database.query(query);
     return { success: true, players: results[0] };
   } catch (err) {
     console.log(`Error getting list of all players: ${err}`);
