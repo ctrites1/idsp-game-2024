@@ -45,11 +45,16 @@ export async function showLoginForm() {
   });
 
   const title: HTMLHeadingElement = document.createElement("h1");
+  const errorDiv: HTMLDivElement = document.createElement("div");
   const username: HTMLInputElement = document.createElement("input");
   const password: HTMLInputElement = document.createElement("input");
   const submit: HTMLButtonElement = document.createElement("button");
+  const registerNow: HTMLLinkElement = document.createElement("link");
 
   title.textContent = "Login";
+  errorDiv.className = "error-message";
+  errorDiv.style.display = "none";
+  errorDiv.textContent = "Invalid password or username";
 
   username.setAttribute("placeholder", "username");
   username.setAttribute("name", "username");
@@ -59,29 +64,33 @@ export async function showLoginForm() {
   password.setAttribute("name", "password");
   password.type = "password";
 
+  registerNow.innerText ="Register Now";
+
   submit.innerText = "Login";
-  submit.addEventListener("click", async () => {
+  submit.addEventListener("click", async (event) => {
+    event.preventDefault();
     const inputUsername: string = username.value;
     const inputPassword: string = password.value;
 
     if (!inputUsername || !inputPassword) {
+      errorDiv.style.display = "block";
       return;
     }
-    await login(inputUsername, inputPassword);
+
+    const success = await login(inputUsername, inputPassword);
+    if (!success) {
+      errorDiv.style.display = "block";
+    } else {
+      errorDiv.style.display = "none";
+    }
   });
 
   formDiv.appendChild(title);
+  formDiv.appendChild(errorDiv);
   loginForm.appendChild(username);
   loginForm.appendChild(password);
   loginForm.appendChild(submit);
   formDiv.appendChild(loginForm);
 
   homepage.appendChild(formDiv);
-
-  submit.addEventListener("click", async (event) => {
-    event.preventDefault();
-    console.log(event);
-
-    await login(username.value, password.value);
-  });
 }

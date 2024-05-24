@@ -50,8 +50,8 @@ export async function register(
   }
 }
 
-export async function login(username: string, password: string) {
-  const user = await fetch("/api/login", {
+export async function login(username: string, password: string): Promise<boolean> {
+  const response = await fetch("/api/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -61,9 +61,10 @@ export async function login(username: string, password: string) {
       password: password,
     }),
   });
-  const userResponse = await user.json();
+
+  const userResponse = await response.json();
   if (userResponse.success) {
-    // const roundState = await startgame();
+        // const roundState = await startgame();
     // console.log(roundState, "more testing!!!");
     // const currentPlayer = roundState.data.player_2_username;
     // const currentOpponent = roundState.data.player_1_username;
@@ -77,8 +78,12 @@ export async function login(username: string, password: string) {
     // );
     // history.pushState(null, "", "/lobby");
     window.location.href = "/lobby";
+    return true;
+  } else {
+    return false;
   }
 }
+
 
 export async function logout() {
   const logout = await fetch("/api/logout");
