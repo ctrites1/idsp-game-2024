@@ -21,18 +21,15 @@ export const socket = io("http://localhost:5173", {
 // 	}
 // });
 
-socket.on("update", async (...cardData) => {
-  console.log("UPDATING");
+socket.on("update", async (...cardData: any) => {
   const opp = document.querySelector("#oppHill");
   const oppId = Number(opp?.getAttribute("player-id"));
-  //   const player = document.querySelector("#playerHill");
-  //   const playerId = Number(player?.getAttribute("player-id"));
+  const player = document.querySelector("#playerHill");
+  const playerId = Number(player?.getAttribute("player-id"));
   const endTurnBtn = document.querySelector(
     ".endTurn-button"
   ) as HTMLButtonElement;
-  if (
-    cardData[0].player_id === oppId /*|| cardData[0].player_id === playerId*/
-  ) {
+  if (cardData[0].player_id === oppId || cardData[0].player_id === playerId) {
     const cardPlayed = createCard(cardData[0]);
     addCardToOppTrench(cardPlayed);
     endTurnBtn?.removeAttribute("card-played");
@@ -44,17 +41,17 @@ socket.on("update", async (...cardData) => {
     modal?.remove();
     const totalMoves = countCards();
     if (totalMoves >= 6) {
-      location.reload();
       await getHandData({
         oppId,
         round_id: cardData[0].round_id,
       });
-      return;
     }
     if (totalMoves === 2 && round === 3) {
       console.log("END THE GAME NOW");
-      await showLobbyPage();
-      return;
+      await getHandData({
+        oppId,
+        round_id: cardData[0].round_id,
+      });
     }
   }
 });

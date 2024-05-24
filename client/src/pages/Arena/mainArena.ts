@@ -134,10 +134,13 @@ export async function createArenaPage() {
     socket.send("hello", playerId);
     const totalMoves = countCards();
     if (totalMoves >= 6) {
+<<<<<<< HEAD
       //! Round end logic
       console.log("ROUND ENDED");
       location.reload();
       await createArenaPage();
+=======
+>>>>>>> dev
       return;
     }
     showOpponentsTurn();
