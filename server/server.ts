@@ -17,6 +17,7 @@ import {
   getExistingGames,
   createPlayer,
   getLobbyData,
+  getUsernameById,
 } from "../server/databaseAccess";
 import bodyParser from "body-parser";
 import cookieSession from "cookie-session";
@@ -238,8 +239,12 @@ async function createServer() {
       players.opponent,
       currentGame.round_id
     );
-    roundState.data.player_1_username = currentGame.player_1_username;
-    roundState.data.player_2_username = currentGame.player_2_username;
+
+    const player1Username = await getUsernameById(players.player);
+    const player2Username = await getUsernameById(players.opponent);
+
+    roundState.data.player_1_username = player1Username.username.username;
+    roundState.data.player_2_username = player2Username.username.username;
     if (!roundState?.success) {
       res.json({
         gameState: false,
