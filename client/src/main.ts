@@ -1,9 +1,11 @@
 import { router } from "../src/pages/routing";
 import { createCard, getHandData } from "./pages/Arena/cardArena";
 import { countCards } from "./pages/Arena/laneArena";
-import { addCardToOppTrench } from "./pages/Arena/trenchArena";
+import { addCardToOppTrench, clearTrench } from "./pages/Arena/trenchArena";
 import { io } from "socket.io-client";
 import { showLobbyPage } from "./pages/Lobby/lobby";
+import { startgame } from "./pages/Arena/game";
+import { showResult } from "./pages/Arena/showResult";
 
 export const socket = io("http://localhost:5173", {
   reconnection: true,
@@ -21,7 +23,9 @@ export const socket = io("http://localhost:5173", {
 // 	}
 // });
 
-socket.on("update", async (...cardData: any) => {
+socket.on("update", update);
+
+export async function update(...cardData: any) {
   const opp = document.querySelector("#oppHill");
   const oppId = Number(opp?.getAttribute("player-id"));
   const player = document.querySelector("#playerHill");
@@ -41,20 +45,16 @@ socket.on("update", async (...cardData: any) => {
     modal?.remove();
     const totalMoves = countCards();
     if (totalMoves >= 6) {
-      await getHandData({
-        oppId,
-        round_id: cardData[0].round_id,
-      });
+      clearTrench();
+      await startgame(playerId, oppId);
     }
     if (totalMoves === 2 && round === 3) {
-      console.log("END THE GAME NOW");
-      await getHandData({
-        oppId,
-        round_id: cardData[0].round_id,
-      });
+      console.log("END GAME");
+      clearTrench();
+      await showLobbyPage();
     }
   }
-});
+}
 
 document.addEventListener("DOMContentLoaded", async () => {
   try {

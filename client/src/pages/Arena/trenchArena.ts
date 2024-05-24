@@ -27,9 +27,14 @@ export function addCardToOppTrench(card: HTMLDivElement) {
 }
 
 export function clearTrench() {
-  const trench = document.querySelector("#playerTrench")!;
-  const cardHolders = trench.querySelectorAll(".cardHolder");
-  Array.from(cardHolders).map((holder) => {
+  const playerTrench = document.querySelector("#playerTrench")!;
+  const oppTrench = document.querySelector("#oppTrench")!;
+  const playerCardHolders = playerTrench.querySelectorAll(".cardHolder");
+  const oppCardHolders = oppTrench.querySelectorAll(".cardHolder");
+  Array.from(playerCardHolders).map((holder) => {
+    holder.innerHTML = "";
+  });
+  Array.from(oppCardHolders).map((holder) => {
     holder.innerHTML = "";
   });
 

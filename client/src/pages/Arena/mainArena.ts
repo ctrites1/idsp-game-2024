@@ -1,11 +1,12 @@
 import { logout } from "../Homepage/choosePlayer";
 import { createHomepage } from "../Homepage/homepage";
 import { getHandData, setupDropZones } from "./cardArena";
-import { logMove } from "./trenchArena";
+import { clearTrench, logMove } from "./trenchArena";
 import { showOpponentsTurn } from "./opponentsTurn";
 import { socket } from "../../main";
 import { countCards } from "./laneArena";
 import { showLobbyPage } from "../Lobby/lobby";
+import { startgame } from "./game";
 
 export async function createArenaPage() {
   const body = document.querySelector("body") as HTMLBodyElement;
@@ -124,23 +125,20 @@ export async function createArenaPage() {
     const gameState = await logMove();
     if (gameState.gameOver) {
       // Show winner from gameState.gameWinner (id)
-      location.reload();
+      clearTrench();
       await showLobbyPage();
       return;
     }
     const player = document.querySelector("#playerHill");
     const playerId: number = Number(player?.getAttribute("player-id"));
+    const opp = document.querySelector("#oppHill");
+    const oppId: number = Number(opp?.getAttribute("player-id"));
     console.log("SENDING UPDATE MESSAGE");
     socket.send("hello", playerId);
     const totalMoves = countCards();
     if (totalMoves >= 6) {
-<<<<<<< HEAD
-      //! Round end logic
-      console.log("ROUND ENDED");
-      location.reload();
-      await createArenaPage();
-=======
->>>>>>> dev
+      await clearTrench();
+      await startgame(playerId, oppId);
       return;
     }
     showOpponentsTurn();

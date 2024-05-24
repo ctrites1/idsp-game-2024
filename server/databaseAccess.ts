@@ -186,7 +186,7 @@ export async function startGame(player_1_id: number, player_2_id: number) {
 
     let getRound = "SELECT MAX(round_id) AS 'created_round' FROM `round`;";
     const round: any = await database.query(getRound);
-    const round_id = round[0].created_round;
+    const round_id = round[0][0].created_round;
 
     let commitChanges = `COMMIT;`;
     await database.query(commitChanges);
