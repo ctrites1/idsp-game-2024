@@ -1,4 +1,4 @@
-import { emptyBody } from "../routing";
+import { emptyBody, navigateTo } from "../routing";
 
 export async function addPlayerDetailsToArena(
 	username: string,
@@ -55,8 +55,9 @@ export async function login(username: string, password: string) {
 	});
 	const userResponse = await user.json();
 	if (userResponse.success) {
-		history.pushState(null, "", "/lobby");
+		return true;
 	} else {
+		return false;
 	}
 }
 

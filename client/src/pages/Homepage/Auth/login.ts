@@ -1,3 +1,4 @@
+import { navigateTo } from "../../routing";
 import { login } from "../choosePlayer";
 import { createHomepage } from "../homepage";
 
@@ -54,7 +55,6 @@ export async function showLoginForm() {
 	title.textContent = "Login";
 	errorDiv.className = "error-message";
 	errorDiv.style.display = "none";
-	errorDiv.textContent = "Invalid password or username";
 
 	username.setAttribute("placeholder", "username");
 	username.setAttribute("name", "username");
@@ -72,16 +72,23 @@ export async function showLoginForm() {
 		const inputUsername: string = username.value;
 		const inputPassword: string = password.value;
 
-		if (!inputUsername || !inputPassword) {
+		if (!inputUsername) {
 			errorDiv.style.display = "block";
+			errorDiv.textContent = "Missing Username";
 			return;
-		}
-
-		const success = await login(inputUsername, inputPassword);
-		if (!success) {
+		} else if (!inputPassword) {
 			errorDiv.style.display = "block";
+			errorDiv.textContent = "Missing Password";
+			return;
 		} else {
-			errorDiv.style.display = "none";
+			const success = await login(inputUsername, inputPassword);
+			if (!success) {
+				errorDiv.style.display = "block";
+				errorDiv.textContent = "Incorrect Username or Password";
+			} else {
+				errorDiv.style.display = "none";
+				await navigateTo("/lobby");
+			}
 		}
 	});
 
