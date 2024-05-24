@@ -1,10 +1,11 @@
 import { logout } from "../Homepage/choosePlayer";
 import { createHomepage } from "../Homepage/homepage";
-import { setupDropZones } from "./cardArena";
+import { getHandData, setupDropZones } from "./cardArena";
 import { logMove } from "./trenchArena";
 import { showOpponentsTurn } from "./opponentsTurn";
 import { socket } from "../../main";
 import { countCards } from "./laneArena";
+import { showLobbyPage } from "../Lobby/lobby";
 
 export async function createArenaPage() {
   const body = document.querySelector("body") as HTMLBodyElement;
@@ -123,13 +124,20 @@ export async function createArenaPage() {
     const gameState = await logMove();
     if (gameState.gameOver) {
       // Show winner from gameState.gameWinner (id)
+      location.reload();
+      await showLobbyPage();
+      return;
     }
     const player = document.querySelector("#playerHill");
     const playerId: number = Number(player?.getAttribute("player-id"));
+    console.log("SENDING UPDATE MESSAGE");
     socket.send("hello", playerId);
     const totalMoves = countCards();
     if (totalMoves >= 6) {
-      await loginSuccess();
+      //! Round end logic
+      console.log("ROUND ENDED");
+      location.reload();
+      await createArenaPage();
       return;
     }
     showOpponentsTurn();
