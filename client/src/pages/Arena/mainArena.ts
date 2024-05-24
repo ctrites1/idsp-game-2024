@@ -129,7 +129,6 @@ export async function createArenaPage() {
     socket.send("hello", playerId);
     const totalMoves = countCards();
     if (totalMoves >= 6) {
-      await loginSuccess();
       return;
     }
     showOpponentsTurn();
