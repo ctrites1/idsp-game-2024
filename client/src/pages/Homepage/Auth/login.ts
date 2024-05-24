@@ -70,6 +70,16 @@ export async function showLoginForm() {
     await login(inputUsername, inputPassword);
   });
 
+  submit.addEventListener("click", async () => {
+    const inputUsername: string = username.value;
+    const inputPassword: string = username.value;
+
+    if (!inputUsername || !inputPassword) {
+      return;
+    }
+    await login(username.value, password.value);
+  });
+
   formDiv.appendChild(title);
   loginForm.appendChild(username);
   loginForm.appendChild(password);
@@ -77,11 +87,4 @@ export async function showLoginForm() {
   formDiv.appendChild(loginForm);
 
   homepage.appendChild(formDiv);
-
-  submit.addEventListener("click", async (event) => {
-    event.preventDefault();
-    console.log(event);
-
-    await login(username.value, password.value);
-  });
 }

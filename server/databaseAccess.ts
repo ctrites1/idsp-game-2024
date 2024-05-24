@@ -206,20 +206,22 @@ export async function checkForExistingGame(
 ) {
   try {
     let checkForPlayer1Matches =
-      "SELECT m.match_id, player_1_id, player_2_id, is_completed, round_id, p1.username AS player_1_username, p2.username AS player_2_username FROM `match` AS m JOIN `round` AS r ON m.match_id = r.match_id JOIN player AS p1 ON m.player_1_id = p1.player_id JOIN player AS p2 ON m.player_2_id = p2.player_id WHERE player_1_id = :player_1_id OR player_2_id = :player_1_id ORDER BY round_id desc LIMIT 1;";
+      "SELECT m.match_id, player_1_id, player_2_id, is_completed, round_id, p1.username AS player_1_username, p2.username AS player_2_username  FROM `match` AS m  JOIN `round` AS r ON m.match_id = r.match_id  JOIN player AS p1 ON m.player_1_id = p1.player_id  JOIN player AS p2 ON m.player_2_id = p2.player_id WHERE player_1_id = :player_1_id OR player_2_id = :player_1_id HAVING is_completed = 0 ORDER BY round_id desc;";
 
     const player1Games: any = await database.query(checkForPlayer1Matches, {
       player_1_id,
     });
-
     const gameAlreadyExists = player1Games[0].filter((game: any) => {
       if (
-        (game.player_1_id !== player_2_id ||
-          game.player_2_id !== player_2_id) &&
-        !game.is_completed
+        game.player_1_id !== player_2_id &&
+        game.player_2_id !== player_2_id
       ) {
-        return game;
+        if (!game.is_completed) {
+          return;
+        }
+        return;
       }
+      return game;
     });
 
     if (gameAlreadyExists.length > 0) {
@@ -793,14 +795,16 @@ export async function getLobbyData(playerId: number) {
       if (players && matches) {
         return {
           success: true,
-          players: players[0],
-          games: matches[0],
+          players: players,
+          games: matches,
+          currentUserId: playerId,
         };
       } else {
         return {
           success: false,
           players: null,
           games: null,
+          currentUserId: playerId,
         };
       }
     }
