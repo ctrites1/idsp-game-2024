@@ -1,6 +1,6 @@
 import { logout } from "../Homepage/choosePlayer";
 import { createHomepage } from "../Homepage/homepage";
-import { getHandData, setupDropZones } from "./cardArena";
+import { setupDropZones } from "./cardArena";
 import { clearTrench, logMove } from "./trenchArena";
 import { showOpponentsTurn } from "./opponentsTurn";
 import { socket } from "../../main";
