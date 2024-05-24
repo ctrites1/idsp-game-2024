@@ -11,7 +11,6 @@ interface Player {
 const getPlayerData = async () => {
 	const res = await fetch("/api/players");
 	const { success, currentUserId, players } = await res.json();
-	console.log(players);
 	if (success) {
 		const allPlayers: Player[] = players.players.filter((player: Player) => {
 			if (player.player_id !== currentUserId) {

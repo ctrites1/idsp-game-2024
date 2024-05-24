@@ -57,9 +57,22 @@ socket.on("update", async (...cardData) => {
 
 document.addEventListener("DOMContentLoaded", async () => {
 	try {
-		window.addEventListener("popstate", router);
+		window.addEventListener("popstate", async () => {
+			console.log("Event listener: popstate");
+			await router();
+		});
 		await router();
+		console.log("Event listener: DOMContentLoaded");
 	} catch (error) {
 		console.error("Error during page initialization:", error);
 	}
 });
+
+window.onload = () => {
+	console.log("page is fully loaded");
+};
+/*
+	Note: Page is loading once (only seeing 
+		window.onload msg once. DOM content 
+		is being loaded twice.)
+*/
