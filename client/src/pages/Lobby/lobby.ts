@@ -1,20 +1,11 @@
 import { getHandData } from "../Arena/cardArena";
-import { currentgame, startgame } from "../Arena/game";
+import { startgame } from "../Arena/game";
 import { addPlayerDetailsToArena } from "../Homepage/choosePlayer";
 import { addRouteToBtn, emptyBody } from "../routing";
 
 interface Player {
 	player_id: number;
 	username: string;
-}
-
-interface Game {
-	is_completed: number;
-	match_id: number;
-	player_1_id: number;
-	player_1_username: string;
-	player_2_id: number;
-	player_2_username: string;
 }
 
 const getPlayerData = async () => {
