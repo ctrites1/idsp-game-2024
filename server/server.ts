@@ -21,6 +21,7 @@ import {
 import bodyParser from "body-parser";
 import cookieSession from "cookie-session";
 import cors from "cors";
+// @ts-ignore
 import { Server, Socket } from "socket.io";
 import http from "node:http";
 
@@ -81,8 +82,8 @@ async function createServer() {
 
   io.listen(server);
 
-  io.on("connection", (socket) => {
-    socket.on("message", async (...arg) => {
+  io.on("connection", (socket: any) => {
+    socket.on("message", async (...arg: any[]) => {
       if (typeof arg[1] === "number") {
         const newMove = await getLatestOppMove(arg[1]);
         console.log(newMove);

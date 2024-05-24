@@ -111,6 +111,7 @@ export async function createArenaPage() {
     ".home-button"
   ) as HTMLButtonElement;
   homeButton?.addEventListener("click", async () => {
+
     await logout();
     await createHomepage();
   });
@@ -129,7 +130,6 @@ export async function createArenaPage() {
     socket.send("hello", playerId);
     const totalMoves = countCards();
     if (totalMoves >= 6) {
-      await loginSuccess();
       return;
     }
     showOpponentsTurn();
