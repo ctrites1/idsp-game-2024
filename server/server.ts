@@ -124,7 +124,7 @@ async function createServer() {
 
       if (result) {
         console.log("new user", result.data[0]);
-        req.session = { playerId: result.data[0].player_id };
+        req.session = { playerId: result.data[0][0].player_id };
       }
 
       res.json(result);
@@ -313,7 +313,9 @@ async function createServer() {
       return;
     }
     const playerId = req.session.playerId;
+    console.log("pid", playerId)
     const response = await getLobbyData(playerId);
+    console.log("res pid", response);
     res.json(response);
   });
 

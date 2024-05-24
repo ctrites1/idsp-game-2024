@@ -18,6 +18,8 @@ const getPlayerData = async () => {
 				return player;
 			}
 		});
+
+		console.log("c u", currentUserId);
 		return { currentUserId: currentUserId, allPlayers: allPlayers };
 	}
 };
