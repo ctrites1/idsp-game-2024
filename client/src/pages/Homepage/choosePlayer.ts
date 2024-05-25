@@ -66,7 +66,7 @@ export async function logout() {
 	const loggedOut = await logout.json();
 	if (loggedOut.success) {
 		await emptyBody();
-		history.pushState(null, "", "/");
+		await navigateTo("/");
 		return true;
 	}
 	return false;

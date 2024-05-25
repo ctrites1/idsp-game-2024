@@ -12,14 +12,6 @@ export const socket = io("http://localhost:5173", {
 	timeout: 20000,
 });
 
-// socket.on("message", async (...data) => {
-// 	console.log("WSdata", data);
-// 	if (typeof data === "string") {
-// 		// console.log("UPDATING");
-// 		// await loginAsPlayer1();
-// 	}
-// });
-
 socket.on("update", async (...cardData) => {
 	const opp = document.querySelector("#oppHill");
 	const oppId = Number(opp?.getAttribute("player-id"));
@@ -55,11 +47,29 @@ socket.on("update", async (...cardData) => {
 	}
 });
 
-document.addEventListener("DOMContentLoaded", async () => {
-	try {
-		window.addEventListener("popstate", router);
-		await router();
-	} catch (error) {
-		console.error("Error during page initialization:", error);
-	}
-});
+window.addEventListener(
+	"DOMContentLoaded",
+	async function () {
+		try {
+			window.addEventListener("popstate", async () => {
+				console.log("Event listener: popstate");
+				await router();
+			});
+			await router();
+			console.log("Event listener: DOMContentLoaded");
+		} catch (error) {
+			console.error("Error during page initialization:", error);
+		}
+	},
+	{ once: true }
+);
+
+window.onload = () => {
+	console.log("page is fully loaded");
+};
+/*
+	TODO:
+	Note: Page is loading once (only seeing 
+		window.onload msg once. DOM content 
+		is being loaded twice.)
+*/

@@ -15,11 +15,11 @@ export const routes: { [key: string]: Route } = {
 		handler: create404Page,
 	},
 	"/": {
-		title: "ACG| A Card Game",
+		title: "ACG",
 		handler: createHomepage,
 	},
 	"/arena": {
-		title: "ACG| Arena",
+		title: "Arena",
 		handler: createArenaPage,
 	},
 	"/login": {
