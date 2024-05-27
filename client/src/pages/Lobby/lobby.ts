@@ -40,7 +40,7 @@ const generatePlayersList = async (): Promise<HTMLDivElement> => {
       const roundState = await startgame(currentUserId, player.player_id);
       const currentPlayer = roundState.data.player_1_username;
       const currentOpponent = roundState.data.player_2_username;
-      await getHandData(roundState.data);
+      // await getHandData(roundState.data);
       await addPlayerDetailsToArena(
         currentPlayer,
         "/assets/update/displayPic.png",

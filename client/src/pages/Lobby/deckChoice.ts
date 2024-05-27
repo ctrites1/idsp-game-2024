@@ -48,7 +48,6 @@ export async function displayDeckChoice(gamestate: any) {
 
 async function chooseIceDeck(gamestate: any) {
   const modal = document.querySelector(".modal");
-  console.log(modal);
   modal?.remove();
   await createArenaPage();
   const response = await fetch("/api/playerhand", {
@@ -64,7 +63,6 @@ async function chooseIceDeck(gamestate: any) {
     credentials: "include",
   });
   const data = await response.json();
-  console.log(data);
   createPlayerHand(data);
 }
 
