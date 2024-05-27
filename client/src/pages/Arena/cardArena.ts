@@ -172,6 +172,7 @@ export function viewSingleCard(card: HTMLElement) {
 }
 
 export async function getHandData(gamestate: any) {
+  const randomChoice = getRandomInt(3);
   const response = await fetch("/api/playerhand", {
     method: "POST",
     headers: {
@@ -179,7 +180,7 @@ export async function getHandData(gamestate: any) {
     },
     body: JSON.stringify({
       round_id: gamestate.round_id,
-      player_deck_choice: 1,
+      player_deck_choice: randomChoice,
       opp_id: gamestate.oppId,
     }),
     credentials: "include", // Ensures cookies are sent with the req
@@ -242,4 +243,8 @@ export function createPlayerHand(data: any) {
     cardHolder.appendChild(card);
     hand.appendChild(cardHolder);
   });
+}
+
+function getRandomInt(max: number) {
+  return Math.floor(Math.random() * max);
 }

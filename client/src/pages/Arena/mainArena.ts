@@ -125,7 +125,7 @@ export async function createArenaPage() {
     const oppId: number = Number(opp?.getAttribute("player-id"));
     const gameState = await logMove();
     if (gameState.gameOver) {
-      // Show winner from gameState.gameWinner (id)
+      console.log("GAME OVER SEND");
       socket.send("hello", playerId);
       clearTrench();
       await showLobbyPage();

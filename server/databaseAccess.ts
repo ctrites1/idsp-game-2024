@@ -422,18 +422,21 @@ export async function removePlayerById(playerId: number) {
     });
 }
 
-//! These are functions that are not getting exported - could move to separate file
 function randomizeDeck(cards: Card[]) {
-  const hand = cards.filter(
+  const deck = cards.filter(
     (card) => card.unit_type_id === 1 || card.unit_type_id === 2
   );
+  const hand: Card[] = [];
+  for (let i = 0; i < 7; i++) {
+    const randomIndex = Math.floor(Math.random() * deck.length);
+    const randomCard = deck[randomIndex];
+    if (hand.includes(randomCard)) {
+      i--;
+    } else {
+      hand.push(randomCard);
+    }
+  }
   return hand;
-  //   const deck = [];
-  //   const nonHeroCards = cards.filter((card) => card.unit_type_id === 1 || card.unit_type_id === 2);
-  //   for (let i = 0; i < 7; i++) {
-  //     const randomIndex = Math.floor(Math.random() * nonHeroCards.length);
-  //   }
-  //   return deck;
 }
 
 export async function loadGameState(roundId: number) {

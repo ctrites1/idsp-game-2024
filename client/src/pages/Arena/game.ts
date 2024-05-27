@@ -24,7 +24,6 @@ export async function startgame(playerId: number, oppId: number) {
   if (!response.gameStarted) {
     const cg = await currentgame(playerId, oppId);
     await setupGameState(cg, playerId, oppId);
-    console.log("cg", cg);
     return cg;
   }
   await setupGameState(response, playerId, oppId);
