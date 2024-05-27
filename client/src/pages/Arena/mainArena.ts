@@ -1,5 +1,3 @@
-import { logout } from "../Homepage/choosePlayer";
-import { createHomepage } from "../Homepage/homepage";
 import { setupDropZones } from "./cardArena";
 import { clearTrench, logMove } from "./trenchArena";
 import { showOpponentsTurn } from "./opponentsTurn";
@@ -113,8 +111,7 @@ export async function createArenaPage() {
     ".home-button"
   ) as HTMLButtonElement;
   homeButton?.addEventListener("click", async () => {
-    await logout();
-    await createHomepage();
+    await showLobbyPage();
   });
 
   const endTurnButton = document.querySelector(
