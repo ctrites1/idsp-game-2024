@@ -24,7 +24,12 @@ export async function update(...cardData: any) {
   const endTurnBtn = document.querySelector(
     ".endTurn-button"
   ) as HTMLButtonElement;
-  if (cardData[0].player_id === oppId) {
+  console.log("cardData", cardData);
+  const roundId = endTurnBtn?.getAttribute("round-played");
+  if (
+    cardData[0].player_id === oppId &&
+    cardData[0].round_id === Number(roundId)
+  ) {
     const cardPlayed = createCard(cardData[0]);
     addCardToOppTrench(cardPlayed);
     endTurnBtn?.removeAttribute("card-played");
