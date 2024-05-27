@@ -7,6 +7,7 @@ import {
 import { addCardToOppTrench } from "./trenchArena";
 import { updateRoundIndicator } from "./roundCounter";
 import { updateTurnCounter } from "./laneArena";
+import { displayDeckChoice } from "../Lobby/deckChoice";
 
 export async function startgame(playerId: number, oppId: number) {
   const game = await fetch("/api/startgame", {
@@ -32,6 +33,7 @@ export async function startgame(playerId: number, oppId: number) {
     opp_id: oppId,
   };
   await getHandData(newHandInfo);
+  await displayDeckChoice(newHandInfo);
 }
 
 export async function currentgame(playerId: number, oppId: number) {
