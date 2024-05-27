@@ -24,6 +24,7 @@ import cookieSession from "cookie-session";
 import cors from "cors";
 import { Server, Socket } from "socket.io";
 import http from "node:http";
+import history from "connect-history-api-fallback";
 
 export default interface CardIn {
 	card_id: number;
@@ -64,6 +65,7 @@ async function createServer() {
 			credentials: true,
 		})
 	);
+	app.use(history());
 
 	// test route
 	app.get("/api/hello", async (req: Request, res: Response) => {
