@@ -18,7 +18,6 @@ const getPlayerData = async () => {
       }
     });
 
-    console.log("c u", currentUserId);
     return { currentUserId: currentUserId, allPlayers: allPlayers };
   }
 };
@@ -36,7 +35,6 @@ const generatePlayersList = async (): Promise<HTMLDivElement> => {
     const playerButton = document.createElement("button");
     playerButton.textContent = player.username;
     playerButton.classList.add("player-button");
-    console.log(player);
 
     playerButton.addEventListener("click", async () => {
       const roundState = await startgame(currentUserId, player.player_id);
@@ -53,7 +51,6 @@ const generatePlayersList = async (): Promise<HTMLDivElement> => {
     await addRouteToBtn(playerButton, "/arena");
     playersListDiv.appendChild(playerButton);
   });
-  console.log(playersListDiv);
   return playersListDiv;
 };
 /* 
