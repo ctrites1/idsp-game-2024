@@ -733,12 +733,14 @@ export async function getLobbyData(playerId: number) {
     if (playerId > 0) {
       const players: any = await getAllPlayers(playerId);
       const matches: any = await getExistingGames(playerId);
+      const leaderboard: any = await getLeaderBoard();
 
       if (players && matches) {
         return {
           success: true,
           players: players,
           games: matches,
+          leaderboard: leaderboard.data,
           currentUserId: playerId,
         };
       } else {
@@ -774,5 +776,18 @@ export async function getUsernameById(playerId: number) {
     console.log(err);
     console.log("ERROR getting player");
     return { success: false, players: null };
+  }
+}
+
+export async function getLeaderBoard() {
+  try {
+    let getLeaderBoard = "WITH RoundWins AS ( SELECT r.match_id, r.winner_id, COUNT(*) AS rounds_won FROM `round` r GROUP BY r.match_id, r.winner_id), MatchWinners AS (SELECT rw.match_id, rw.winner_id FROM RoundWins rw WHERE rw.rounds_won >= 2 ) SELECT p.username, COUNT(mw.match_id) AS matches_won FROM MatchWinners mw JOIN `player` p ON mw.winner_id = p.player_id GROUP BY  p.username ORDER BY  matches_won DESC Limit 10;"
+
+    const leaderboard: any = await database.query(getLeaderBoard)
+    return {success: true, data: leaderboard[0]}
+  } catch (error) {
+    console.log(error);
+    console.log("ERROR getting leaderboard");
+    return { success: false, leaderboard: null };
   }
 }
