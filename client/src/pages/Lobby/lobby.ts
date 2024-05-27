@@ -1,6 +1,5 @@
 import { getHandData } from "../Arena/cardArena";
 import { startgame } from "../Arena/game";
-import { startgame } from "../Arena/game";
 import { addPlayerDetailsToArena } from "../Homepage/choosePlayer";
 import { addRouteToBtn, emptyBody } from "../routing";
 
