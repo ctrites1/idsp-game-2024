@@ -49,11 +49,11 @@ export async function createRegistrationPage() {
 	formDiv.appendChild(registerForm);
 	homepage.appendChild(formDiv);
 
-	submit.addEventListener('click', async (event) => {
+	submit.addEventListener("click", async (event) => {
 		event.preventDefault();
-		console.log(event)
+		console.log(event);
 
-		const registerNew = await register(username.value,email.value, password.value);
+		await register(username.value, email.value, password.value);
 		await navigateTo("/lobby");
 	});
 }
