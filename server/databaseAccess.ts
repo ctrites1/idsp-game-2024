@@ -760,3 +760,19 @@ export async function getLobbyData(playerId: number) {
     };
   }
 }
+
+export async function getUsernameById(playerId: number) {
+  try {
+    let getUsername = `
+    SELECT username
+    FROM player 
+    WHERE player_id = :playerId;
+    `;
+    const username: any = await database.query(getUsername, { playerId });
+    return { username: username[0][0] };
+  } catch (err) {
+    console.log(err);
+    console.log("ERROR getting player");
+    return { success: false, players: null };
+  }
+}

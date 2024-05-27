@@ -1,5 +1,6 @@
 import { getHandData } from "../Arena/cardArena";
 import { startgame } from "../Arena/game";
+import { startgame } from "../Arena/game";
 import { addPlayerDetailsToArena } from "../Homepage/choosePlayer";
 import { addRouteToBtn, emptyBody } from "../routing";
 
@@ -8,25 +9,17 @@ interface Player {
   username: string;
 }
 
-// interface Game {
-//   is_completed: number;
-//   match_id: number;
-//   player_1_id: number;
-//   player_1_username: string;
-//   player_2_id: number;
-//   player_2_username: string;
-// }
-
 const getPlayerData = async () => {
   const res = await fetch("/api/players");
   const { success, currentUserId, players } = await res.json();
-  console.log(players);
   if (success) {
     const allPlayers: Player[] = players.players.filter((player: Player) => {
       if (player.player_id !== currentUserId) {
         return player;
       }
     });
+
+    console.log("c u", currentUserId);
     return { currentUserId: currentUserId, allPlayers: allPlayers };
   }
 };
@@ -65,10 +58,7 @@ const generatePlayersList = async (): Promise<HTMLDivElement> => {
   return playersListDiv;
 };
 /* 
-	* Other buttons/UI stuff: 
-	- Logout
-	- players that current User is in a game with
-	- players that they are NOT in a game with
+	TODO: Logout button
 */
 
 export const showLobbyPage = async () => {

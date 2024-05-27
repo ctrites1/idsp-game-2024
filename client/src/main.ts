@@ -1,5 +1,5 @@
 import { router } from "../src/pages/routing";
-import { createCard } from "./pages/Arena/cardArena";
+import { createCard, getHandData } from "./pages/Arena/cardArena";
 import { countCards } from "./pages/Arena/laneArena";
 import { addCardToOppTrench, clearTrench } from "./pages/Arena/trenchArena";
 import { io } from "socket.io-client";
@@ -14,17 +14,7 @@ export const socket = io("http://localhost:5173", {
   timeout: 20000,
 });
 
-// socket.on("message", async (...data) => {
-// 	console.log("WSdata", data);
-// 	if (typeof data === "string") {
-// 		// console.log("UPDATING");
-// 		// await loginAsPlayer1();
-// 	}
-// });
-
-socket.on("update", update);
-
-export async function update(...cardData: any) {
+socket.on("update", async (...cardData) => {
   const opp = document.querySelector("#oppHill");
   const oppId = Number(opp?.getAttribute("player-id"));
   const player = document.querySelector("#playerHill");
@@ -32,7 +22,7 @@ export async function update(...cardData: any) {
   const endTurnBtn = document.querySelector(
     ".endTurn-button"
   ) as HTMLButtonElement;
-  if (cardData[0].player_id === oppId) {
+  if (cardData[0].player_id === oppId || cardData[0].player_id === playerId) {
     const cardPlayed = createCard(cardData[0]);
     addCardToOppTrench(cardPlayed);
     endTurnBtn?.removeAttribute("card-played");
@@ -44,22 +34,44 @@ export async function update(...cardData: any) {
     modal?.remove();
     const totalMoves = countCards();
     if (totalMoves >= 6) {
-      clearTrench();
-      await startgame(playerId, oppId);
+      await getHandData({
+        oppId,
+        round_id: cardData[0].round_id,
+      });
     }
     if (totalMoves === 2 && round === 3) {
-      console.log("END GAME");
-      clearTrench();
-      await showLobbyPage();
+      console.log("END THE GAME NOW");
+      await getHandData({
+        oppId,
+        round_id: cardData[0].round_id,
+      });
     }
   }
-}
-
-document.addEventListener("DOMContentLoaded", async () => {
-  try {
-    window.addEventListener("popstate", router);
-    await router();
-  } catch (error) {
-    console.error("Error during page initialization:", error);
-  }
 });
+
+window.addEventListener(
+  "DOMContentLoaded",
+  async function () {
+    try {
+      window.addEventListener("popstate", async () => {
+        console.log("Event listener: popstate");
+        await router();
+      });
+      await router();
+      console.log("Event listener: DOMContentLoaded");
+    } catch (error) {
+      console.error("Error during page initialization:", error);
+    }
+  },
+  { once: true }
+);
+
+window.onload = () => {
+  console.log("page is fully loaded");
+};
+/*
+	TODO:
+	Note: Page is loading once (only seeing 
+		window.onload msg once. DOM content 
+		is being loaded twice.)
+*/

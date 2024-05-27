@@ -15,11 +15,11 @@ export const routes: { [key: string]: Route } = {
 		handler: create404Page,
 	},
 	"/": {
-		title: "ACG| A Card Game",
+		title: "ACG",
 		handler: createHomepage,
 	},
 	"/arena": {
-		title: "ACG| Arena",
+		title: "Arena",
 		handler: createArenaPage,
 	},
 	"/login": {
@@ -44,17 +44,21 @@ export const router = async () => {
 	await route.handler();
 };
 
+export const navigateTo = async (path: string) => {
+	try {
+		history.pushState(null, "", path);
+		await router();
+	} catch (err) {
+		console.error(err);
+	}
+};
+
 export const addRouteToBtn = async (
 	button: HTMLButtonElement,
 	path: string
 ) => {
 	button.addEventListener("click", async () => {
-		try {
-			history.pushState(null, "", path);
-			await router();
-		} catch (err) {
-			console.error(err);
-		}
+		await navigateTo(path);
 	});
 };
 

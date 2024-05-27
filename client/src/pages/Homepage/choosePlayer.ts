@@ -1,4 +1,4 @@
-import { emptyBody } from "../routing";
+import { emptyBody, navigateTo } from "../routing";
 
 export async function addPlayerDetailsToArena(
 	username: string,
@@ -38,16 +38,6 @@ export async function register(
 	const result = await response.json();
 
 	if (result.success) {
-		// const roundState = await startgame();
-		// const currentPlayer = roundState.data.player_2_username;
-		// const currentOpponent = roundState.data.player_1_username;
-		// await getHandData(roundState.data);
-		// await addPlayerDetailsToArena(
-		// 	currentPlayer,
-		// 	"/assets/update/displayPic.png",
-		// 	currentOpponent,
-		// 	"/assets/update/oppPic.png"
-		// );
 		return;
 	}
 }
@@ -65,20 +55,9 @@ export async function login(username: string, password: string) {
 	});
 	const userResponse = await user.json();
 	if (userResponse.success) {
-		// const roundState = await startgame();
-		// console.log(roundState, "more testing!!!");
-		// const currentPlayer = roundState.data.player_2_username;
-		// const currentOpponent = roundState.data.player_1_username;
-		// console.log(currentPlayer, currentOpponent, "testing!!");
-		// await getHandData(roundState.data);
-		// await addPlayerDetailsToArena(
-		// 	currentPlayer,
-		// 	"/assets/update/displayPic.png",
-		// 	currentOpponent,
-		// 	"/assets/update/oppPic.png"
-		// );
-		history.pushState(null, "", "/lobby");
-		// window.location.href = "/lobby";
+		return true;
+	} else {
+		return false;
 	}
 }
 
@@ -87,7 +66,7 @@ export async function logout() {
 	const loggedOut = await logout.json();
 	if (loggedOut.success) {
 		await emptyBody();
-		history.pushState(null, "", "/");
+		await navigateTo("/");
 		return true;
 	}
 	return false;

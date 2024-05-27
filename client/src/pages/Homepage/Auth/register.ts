@@ -1,3 +1,4 @@
+import { navigateTo } from "../../routing";
 import { register } from "../choosePlayer";
 import { changeHomepage } from "./login";
 
@@ -52,6 +53,7 @@ export async function createRegistrationPage() {
 		event.preventDefault();
 		console.log(event)
 
-		await register(username.value,email.value, password.value);
+		const registerNew = await register(username.value,email.value, password.value);
+		await navigateTo("/lobby");
 	});
 }
