@@ -310,9 +310,7 @@ async function createServer() {
       return;
     }
     const playerId = req.session.playerId;
-    console.log("pid", playerId);
     const response = await getLobbyData(playerId);
-    console.log("res pid", response);
     res.json(response);
   });
   app.use("*", express.static(path.join(__dirname, "../client/dist")));
