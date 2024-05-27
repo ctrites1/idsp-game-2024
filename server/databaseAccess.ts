@@ -297,47 +297,6 @@ export async function getRoundState(
 }
 
 export async function createPlayer(data: any) {
-  // const saltRounds = 10;
-  // bcrypt.genSalt(saltRounds, async function (err: any, salt: any) {
-  //   bcrypt.hash(data.password, salt, async function (err: any, hash: any) {
-  //     const createPlayerQuery = `
-  //       INSERT INTO player (username, email, password_hash)
-  //       VALUES (:username, :email, :password);
-  //     `;
-  //     const createPlayerParams = {
-  //       username: data.username,
-  //       email: data.email,
-  //       password: hash,
-  //     };
-
-  //     const getUserId = `Select player_id from player
-  //     where username = :username;`
-
-  //     await database
-  //       .query(createPlayerQuery, createPlayerParams)
-  //       .then(async () => {
-  //         console.log("Player created successfully!");
-  //         const playerId = await database.query(getUserId, {username: createPlayerParams.username});
-  //         return { success: true, message: "Player created successfully!", data: playerId };
-  //       })
-  //       .catch((error: any) => {
-  //         console.error("Error creating player:", error);
-
-  //         if (error.code === "ER_DUP_ENTRY") {
-  //           if (error.sqlMessage.includes("username")) {
-  //             console.log("Username already in use.");
-  //             return { success: false, message: "Username already in use" };
-  //           } else if (error.sqlMessage.includes("email")) {
-  //             console.log("Email already in use.");
-  //             return { success: false, message: "Email already in use" };
-  //           }
-  //         } else {
-  //           console.log("An unexpected error occurred.");
-  //           return { success: false, message: "An unexpected error occurred." };
-  //         }
-  //       });
-  //   });
-  // });
   const saltRounds = 10;
   try {
     const salt = await bcrypt.genSalt(saltRounds);
@@ -499,23 +458,6 @@ export async function loadGameState(roundId: number) {
     },
   };
 }
-
-// async function countPlayerMoves(roundId: number, playerId: number): Promise<number> {
-//   const sql = `
-//       SELECT COUNT(*) AS moveCount
-//       FROM move
-//       WHERE round_id = :roundId and player_id = :playerId;
-//   `;
-//   try {
-//       const rows: any[] = await database.query(sql, {roundId, playerId});
-//       return rows[0].moveCount;
-//   } catch (err) {
-//       console.error("ERROR: Failed to count moves in round", err);
-//       throw new Error('Failed to count moves in round');
-//   }
-// }
-
-// console.log(countPlayerMoves(6, 3));
 
 export async function countTotalMoves(roundId: number, winnerId: number) {
   try {

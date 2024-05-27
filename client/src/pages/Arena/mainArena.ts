@@ -122,18 +122,18 @@ export async function createArenaPage() {
   ) as HTMLButtonElement;
   endTurnButton.disabled = false;
   endTurnButton?.addEventListener("click", async () => {
-    const gameState = await logMove();
-    if (gameState.gameOver) {
-      // Show winner from gameState.gameWinner (id)
-      clearTrench();
-      await showLobbyPage();
-      return;
-    }
     const player = document.querySelector("#playerHill");
     const playerId: number = Number(player?.getAttribute("player-id"));
     const opp = document.querySelector("#oppHill");
     const oppId: number = Number(opp?.getAttribute("player-id"));
-    console.log("SENDING UPDATE MESSAGE");
+    const gameState = await logMove();
+    if (gameState.gameOver) {
+      // Show winner from gameState.gameWinner (id)
+      socket.send("hello", playerId);
+      clearTrench();
+      await showLobbyPage();
+      return;
+    }
     socket.send("hello", playerId);
     const totalMoves = countCards();
     if (totalMoves >= 6) {

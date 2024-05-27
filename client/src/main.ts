@@ -1,11 +1,10 @@
 import { router } from "../src/pages/routing";
-import { createCard, getHandData } from "./pages/Arena/cardArena";
+import { createCard } from "./pages/Arena/cardArena";
 import { countCards } from "./pages/Arena/laneArena";
 import { addCardToOppTrench, clearTrench } from "./pages/Arena/trenchArena";
 import { io } from "socket.io-client";
 import { showLobbyPage } from "./pages/Lobby/lobby";
 import { startgame } from "./pages/Arena/game";
-import { showResult } from "./pages/Arena/showResult";
 
 export const socket = io("http://localhost:5173", {
   reconnection: true,
@@ -33,7 +32,7 @@ export async function update(...cardData: any) {
   const endTurnBtn = document.querySelector(
     ".endTurn-button"
   ) as HTMLButtonElement;
-  if (cardData[0].player_id === oppId || cardData[0].player_id === playerId) {
+  if (cardData[0].player_id === oppId) {
     const cardPlayed = createCard(cardData[0]);
     addCardToOppTrench(cardPlayed);
     endTurnBtn?.removeAttribute("card-played");

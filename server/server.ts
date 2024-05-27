@@ -85,7 +85,6 @@ async function createServer() {
     socket.on("message", async (...arg) => {
       if (typeof arg[1] === "number") {
         const newMove = await getLatestOppMove(arg[1]);
-        console.log(newMove);
         socket.broadcast.emit("update", newMove);
       }
     });
@@ -122,7 +121,6 @@ async function createServer() {
       const result: any = await createPlayer({ username, email, password });
 
       if (result) {
-        console.log("new user", result.data[0]);
         req.session = { playerId: result.data[0].player_id };
       }
 
@@ -148,7 +146,6 @@ async function createServer() {
       round: req.body.round_id,
       choice: req.body.player_deck_choice,
     };
-    console.log(params);
     const hand: NewHandResponse = await getCurrentHand(
       params.player,
       params.round
