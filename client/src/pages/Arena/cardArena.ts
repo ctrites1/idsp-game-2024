@@ -197,18 +197,20 @@ export function createCard(data: any) {
   const cardInside: HTMLDivElement = document.createElement("div");
   cardInside.classList.add("card-inside");
 
+  const cardName = data.name.replace(" ", "");
+
   const cardFront: HTMLDivElement = document.createElement("div");
   cardFront.classList.add("card-front");
-  cardFront.style.backgroundImage = "url('/assets/Water/EmptyCardFront.svg')";
+  cardFront.style.backgroundImage = `url('/assets/Cards/${cardName}')`;
 
-  const cardFrontText: HTMLUListElement = document.createElement("ul");
-  const cardName = document.createElement("li");
-  cardName.textContent = data.name;
-  const cardPower = document.createElement("li");
-  cardPower.textContent = `${data.power}`;
+  // const cardFrontText: HTMLUListElement = document.createElement("ul");
+  // const cardName = document.createElement("li");
+  // cardName.textContent = data.name;
+  // const cardPower = document.createElement("li");
+  // cardPower.textContent = `${data.power}`;
 
-  cardFrontText.append(cardPower, cardName);
-  cardFront.appendChild(cardFrontText);
+  // cardFrontText.append(cardPower, cardName);
+  // cardFront.appendChild(cardFrontText);
 
   const cardBack: HTMLDivElement = document.createElement("div");
   cardBack.classList.add("card-back");
