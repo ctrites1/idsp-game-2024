@@ -197,11 +197,11 @@ export function createCard(data: any) {
   const cardInside: HTMLDivElement = document.createElement("div");
   cardInside.classList.add("card-inside");
 
-  const cardName = data.name.replace(" ", "");
+  const cardName: string = data.name.replaceAll(" ", "");
 
   const cardFront: HTMLDivElement = document.createElement("div");
   cardFront.classList.add("card-front");
-  cardFront.style.backgroundImage = `url('/assets/Cards/${cardName}')`;
+  cardFront.style.backgroundImage = `url('/assets/Cards/${cardName}.svg')`;
 
   // const cardFrontText: HTMLUListElement = document.createElement("ul");
   // const cardName = document.createElement("li");
