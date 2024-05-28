@@ -148,8 +148,6 @@ async function createServer() {
       choice: req.body.player_deck_choice,
     };
 
-    console.log("PARAMS", params);
-
     const hand: NewHandResponse = await getCurrentHand(
       params.player,
       params.round
