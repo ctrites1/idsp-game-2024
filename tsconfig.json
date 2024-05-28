@@ -24,5 +24,6 @@
 		"noUnusedParameters": false,
 		"noPropertyAccessFromIndexSignature": false
 	},
-	"include": ["server"]
+	"include": ["src/**/*", "server/**/*"],
+	"exclude": ["node_modules", "client/dist"]
 }

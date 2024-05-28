@@ -43,7 +43,6 @@ interface NewHandResponse {
 async function createServer() {
   const app = express();
   const port = 3000;
-  // const server = http.createServer(app);
 
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
@@ -60,7 +59,7 @@ async function createServer() {
   );
   app.use(
     cors({
-      origin: "http://localhost:5173", // should change to our domain for prod
+      origin: ["http://localhost:3000", "https://idsp-game-2024.onrender.com"],
       credentials: true,
     })
   );
@@ -75,7 +74,7 @@ async function createServer() {
 
   const io = new Server(server, {
     cors: {
-      origin: "http://localhost:3000",
+      origin: ["http://localhost:3000", "https://idsp-game-2024.onrender.com"],
       credentials: true,
     },
   });
@@ -314,8 +313,8 @@ async function createServer() {
   });
   app.use("*", express.static(path.join(__dirname, "../client/dist")));
 
-  server.listen(port, () => {
-    console.log(`server listening on port ${port}`);
+  server.listen(port, "0.0.0.0", () => {
+    console.log(`server running on http://0.0.0.0:${port}`);
   });
 }
 
