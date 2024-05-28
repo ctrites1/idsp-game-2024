@@ -147,11 +147,17 @@ async function createServer() {
       round: req.body.round_id,
       choice: req.body.player_deck_choice,
     };
+
+    console.log("PARAMS", params);
+
     const hand: NewHandResponse = await getCurrentHand(
       params.player,
       params.round
     );
-    if (hand.hand?.length === 0) {
+
+    const deckOptions = [1, 2, 3];
+
+    if (deckOptions.includes(params.choice) && !hand.success) {
       const newHand = await createInitialHand(
         params.choice,
         params.player,
@@ -163,11 +169,6 @@ async function createServer() {
       }
       res.json(newHand);
       return;
-    }
-
-    if (!hand || !hand.hand || hand.hand.length === 0) {
-      console.error("Failed to find hand or no cards found.");
-      return [];
     }
 
     res.json(hand);

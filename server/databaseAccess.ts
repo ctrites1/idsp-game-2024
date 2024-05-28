@@ -62,8 +62,8 @@ export async function getCurrentHand(playerId: number, roundId: number) {
       roundId,
     };
     const hand: any = await database.query(getHand, handParams);
-    if (hand.length === 0) {
-      throw new Error("No hand exists for this player in the current round");
+    if (hand[0].length === 0) {
+      return { success: false, hand: null };
     }
     return { success: true, hand: hand[0] };
   } catch (err) {

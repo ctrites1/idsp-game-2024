@@ -1,9 +1,6 @@
 import { createPlayerHand } from "../Arena/cardArena";
-import { createArenaPage } from "../Arena/mainArena";
-import { emptyBody } from "../routing";
 
 export async function displayDeckChoice(gamestate: any) {
-  await emptyBody();
   const body = document.querySelector("body") as HTMLBodyElement;
   const modal = document.createElement("div");
   modal.className = "modal";
@@ -49,7 +46,6 @@ export async function displayDeckChoice(gamestate: any) {
 async function chooseIceDeck(gamestate: any) {
   const modal = document.querySelector(".modal");
   modal?.remove();
-  await createArenaPage();
   const response = await fetch("/api/playerhand", {
     method: "POST",
     headers: {
@@ -68,9 +64,7 @@ async function chooseIceDeck(gamestate: any) {
 
 async function chooseWaterDeck(gamestate: any) {
   const modal = document.querySelector(".modal");
-  console.log(modal);
   modal?.remove();
-  await createArenaPage();
   const response = await fetch("/api/playerhand", {
     method: "POST",
     headers: {
@@ -84,15 +78,12 @@ async function chooseWaterDeck(gamestate: any) {
     credentials: "include",
   });
   const data = await response.json();
-  console.log(data);
   createPlayerHand(data);
 }
 
 async function chooseFireDeck(gamestate: any) {
   const modal = document.querySelector(".modal");
-  console.log(modal);
   modal?.remove();
-  await createArenaPage();
   const response = await fetch("/api/playerhand", {
     method: "POST",
     headers: {
@@ -106,6 +97,5 @@ async function chooseFireDeck(gamestate: any) {
     credentials: "include",
   });
   const data = await response.json();
-  console.log(data);
   createPlayerHand(data);
 }

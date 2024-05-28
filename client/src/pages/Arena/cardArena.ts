@@ -1,3 +1,4 @@
+import { displayDeckChoice } from "../Lobby/deckChoice";
 import { updateHillScores } from "./hillArena";
 
 /* ------------------------------- Drag & Drop ------------------------------ */
@@ -149,12 +150,6 @@ export function moveCardToTrench(card: HTMLElement) {
   }
 }
 
-// export function removeCardFromHolder(card: HTMLElement) {
-// 	//	renamed "removeCardFromHand" -> "removeCardFromHolder"
-// 	const holder = card.closest(".cardHolder");
-// 	holder?.removeChild(card);
-// }
-
 export function viewSingleCard(card: HTMLElement) {
   const bigCard = card.cloneNode(true) as HTMLDivElement;
   const poppedCard: HTMLDivElement = document.querySelector(".singleCardView")!;
@@ -172,7 +167,6 @@ export function viewSingleCard(card: HTMLElement) {
 }
 
 export async function getHandData(gamestate: any) {
-  const randomChoice = getRandomInt(3);
   const response = await fetch("/api/playerhand", {
     method: "POST",
     headers: {
@@ -180,12 +174,16 @@ export async function getHandData(gamestate: any) {
     },
     body: JSON.stringify({
       round_id: gamestate.round_id,
-      player_deck_choice: randomChoice,
+      player_deck_choice: gamestate.player_deck_choice,
       opp_id: gamestate.oppId,
     }),
     credentials: "include", // Ensures cookies are sent with the req
   });
   const data = await response.json();
+  if (!data.success) {
+    await displayDeckChoice(gamestate);
+    return;
+  }
   createPlayerHand(data);
 }
 
@@ -243,8 +241,4 @@ export function createPlayerHand(data: any) {
     cardHolder.appendChild(card);
     hand.appendChild(cardHolder);
   });
-}
-
-function getRandomInt(max: number) {
-  return Math.floor(Math.random() * max);
 }

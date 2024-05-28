@@ -1,13 +1,7 @@
-import {
-  createCard,
-  dragstartHandler,
-  getHandData,
-  moveCardToTrench,
-} from "./cardArena";
+import { createCard, dragstartHandler, moveCardToTrench } from "./cardArena";
 import { addCardToOppTrench } from "./trenchArena";
 import { updateRoundIndicator } from "./roundCounter";
 import { updateTurnCounter } from "./laneArena";
-import { displayDeckChoice } from "../Lobby/deckChoice";
 
 export async function startgame(playerId: number, oppId: number) {
   const game = await fetch("/api/startgame", {
@@ -22,18 +16,11 @@ export async function startgame(playerId: number, oppId: number) {
   });
   // can get player id and opponent to set attribute for hills
   const response = await game.json();
-  if (!response.gameStarted) {
+  if (response) {
     const cg = await currentgame(playerId, oppId);
     await setupGameState(cg, playerId, oppId);
     return cg;
   }
-  await setupGameState(response, playerId, oppId);
-  const newHandInfo = {
-    round_id: response.round_id,
-    opp_id: oppId,
-  };
-  await getHandData(newHandInfo);
-  await displayDeckChoice(newHandInfo);
 }
 
 export async function currentgame(playerId: number, oppId: number) {
