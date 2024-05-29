@@ -196,8 +196,9 @@ export function createCard(data: any) {
 
   const cardInside: HTMLDivElement = document.createElement("div");
   cardInside.classList.add("card-inside");
-
+  console.log("data.name", data.name);
   const cardName: string = data.name.replaceAll(" ", "");
+  console.log("cardName", cardName);
 
   const cardFront: HTMLDivElement = document.createElement("div");
   cardFront.classList.add("card-front");
