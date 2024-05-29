@@ -30,7 +30,7 @@ const generatePlayersTable = async (): Promise<HTMLDivElement> => {
 
 	const playersTable = document.createElement("table") as HTMLTableElement;
 	playersTable.classList.add("players-table");
-	const tableHeading = document.createElement("th");
+	const tableHeading = document.createElement("thead");
 	tableHeading.innerText = "All Users";
 	const row1 = document.createElement("tr");
 	row1.appendChild(tableHeading);
