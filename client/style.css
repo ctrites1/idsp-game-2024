@@ -208,6 +208,8 @@ header #oppDisplayPic {
   justify-content: center;
   align-content: center;
   font-size: large;
+  background-size: cover;
+  background-repeat: no-repeat;
   /* font-family: "Papyrus", fantasy; */
 }
 
