@@ -68,8 +68,14 @@ const generatePlayersTable = async (): Promise<HTMLDivElement> => {
 	});
 	return playersTable;
 };
+
+const createLobbyHeader = () => {};
+
 /* 
-	TODO: Logout button
+	TODO: 
+	- Logout button
+	- Header
+	- Leaderboard
 */
 
 export const showLobbyPage = async () => {
