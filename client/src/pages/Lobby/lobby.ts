@@ -8,6 +8,9 @@ interface Player {
 	username: string;
 }
 
+// TODO: make interface for leaderboard data
+// leaderboard: [ { username: string, matches_won: number }]
+
 const getPlayerData = async () => {
 	const res = await fetch("/api/players");
 	const { success, currentUserId, players } = await res.json();
@@ -86,12 +89,42 @@ const createLobbyHeader = () => {
 	return header;
 };
 
-/* 
-	TODO: 
-	- Logout button
-	- Header
-	- Leaderboard
-*/
+const getLeaderboardData = async () => {
+	const res = await fetch("/api/players");
+	const { success, currentUserId, leaderboard } = await res.json();
+	if (success) {
+		return { currentUserId: currentUserId, leaderboard: leaderboard };
+	}
+};
+
+const createLeaderboard = () => {
+	const leaderboardContainer = document.createElement("div");
+	leaderboardContainer.classList.add("leaderboard");
+
+	const title = document.createElement("h1");
+	title.textContent = "Leaderboard";
+	leaderboardContainer.appendChild(title);
+
+	const leaderboardTable = document.createElement("table");
+	leaderboardTable.classList.add("leaderboard-table");
+	leaderboardContainer.appendChild(leaderboardTable);
+
+	const thead = document.createElement("thead");
+	thead.innerHTML = `
+	  <tr>
+		<th>Player</th>
+		<th>Score</th>
+	  </tr>
+	`;
+	leaderboardTable.appendChild(thead);
+
+	const tbody = document.createElement("tbody");
+	// const  = await getLeaderboardData();
+
+	leaderboardTable.appendChild(tbody);
+
+	return leaderboardContainer;
+};
 
 export const showLobbyPage = async () => {
 	await emptyBody();
