@@ -761,6 +761,15 @@ html {
   margin-left: 1rem;
 }
 
+.win {
+  background-color: green;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  margin: 5px;
+}
+
 /* ---------------------------------------------------------------------------- */
 /*                             Opponent's Turn                                  */
 /* ---------------------------------------------------------------------------- */

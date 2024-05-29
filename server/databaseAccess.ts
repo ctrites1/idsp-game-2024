@@ -776,3 +776,19 @@ export async function getUsernameById(playerId: number) {
     return { success: false, players: null };
   }
 }
+
+export async function surrenderGame(matchId: number, playerId: number) {
+  try {
+    const completeGame = `
+      UPDATE \`match\` 
+      SET is_completed = 1 
+      WHERE match_id = :matchId AND (player_1_id = :playerId OR player_2_id = :playerId);
+    `;
+
+    await database.query(completeGame, { matchId, playerId });
+    return { success: true };
+  } catch (err) {
+    console.log("ERROR: Failed to surrender game:", err);
+    return { success: false };
+  }
+}
