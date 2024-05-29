@@ -31,14 +31,18 @@ const generatePlayersTable = async (): Promise<HTMLDivElement> => {
 	const playersTable = document.createElement("table") as HTMLTableElement;
 	playersTable.classList.add("players-table");
 	const tableHeading = document.createElement("thead");
-	tableHeading.innerText = "All Users";
 	const row1 = document.createElement("tr");
-	row1.appendChild(tableHeading);
-	playersTable.appendChild(row1);
+	const headCell = document.createElement("th");
+	headCell.innerText = "Players";
+	row1.appendChild(headCell);
+	tableHeading.appendChild(row1);
+	playersTable.appendChild(tableHeading);
 
 	allPlayers.forEach(async (player: Player) => {
 		const playerButton = document.createElement("button");
-		playerButton.textContent = player.username;
+		const span = document.createElement("span");
+		span.textContent = player.username;
+		playerButton.appendChild(span);
 		playerButton.classList.add("player-button");
 
 		playerButton.addEventListener("click", async () => {
@@ -71,6 +75,9 @@ const generatePlayersTable = async (): Promise<HTMLDivElement> => {
 export const showLobbyPage = async () => {
 	await emptyBody();
 	const body = document.querySelector("body") as HTMLBodyElement;
+	if (body.querySelector("lobby-container")) {
+		return;
+	}
 	const playersTable = await generatePlayersTable();
 	const lobbyDiv = document.createElement("div") as HTMLDivElement;
 	lobbyDiv.classList.add("lobby-container");
