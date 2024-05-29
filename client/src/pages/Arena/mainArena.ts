@@ -5,6 +5,7 @@ import { socket } from "../../main";
 import { countCards } from "./laneArena";
 import { showLobbyPage } from "../Lobby/lobby";
 import { startgame } from "./game";
+import { showResult } from "./showResult";
 
 export async function createArenaPage() {
   const body = document.querySelector("body") as HTMLBodyElement;
@@ -103,7 +104,7 @@ export async function createArenaPage() {
   ) as HTMLButtonElement;
   surrenderButton.addEventListener("click", () => {
     console.log("Surrender clicked");
-    // showResult("lose");
+    showResult("lose");
     // TODO: Logic to handle log viewing to be added here
   });
 
@@ -124,7 +125,14 @@ export async function createArenaPage() {
     const opp = document.querySelector("#oppHill");
     const oppId: number = Number(opp?.getAttribute("player-id"));
     const gameState = await logMove();
-    if (gameState.gameOver) {
+    console.log(`this is the gameState: ${gameState}`)
+    if (gameState.gameOver === true) {
+      // if(gameState.winner_id === playerId) {
+      //   showResult("win");
+      //   console.log(gameState.gameWinner);
+      // } else {
+      //   showResult("lose");
+      // }
       // Show winner from gameState.gameWinner (id)
       socket.send("hello", playerId);
       clearTrench();

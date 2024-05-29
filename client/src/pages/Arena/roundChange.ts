@@ -1,4 +1,4 @@
-export function showOpponentsTurn(): void {
+export function showRoundChange(roundCount:number): void {
     const body = document.querySelector("body") as HTMLBodyElement;
     const modal = document.createElement("div");
     modal.className = "modal";
@@ -9,7 +9,7 @@ export function showOpponentsTurn(): void {
   
     const modalText = document.createElement("p");
     modalText.id = "modal-text";
-    modalText.textContent = "Opponent's Turn";
+    modalText.textContent = `Round ${roundCount}`;
   
     modalContent.appendChild(modalText);
     modal.appendChild(modalContent);
@@ -17,13 +17,13 @@ export function showOpponentsTurn(): void {
   
     modal.style.display = "block";
 
-    // track animation end to close
-    modalContent.addEventListener("animationend", () => {
-      modal.style.display = "none";
-      body.removeChild(modal);
-  });
+       // track animation end to close
+       modalContent.addEventListener("animationend", () => {
+        modal.style.display = "none";
+        body.removeChild(modal);
+    });
   
-  // Click outside to close
+    // clock outside to close
     window.addEventListener("click", (event) => {
       if (event.target === modal) {
         modal.style.display = "none";

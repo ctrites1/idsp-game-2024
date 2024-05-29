@@ -762,7 +762,7 @@ html {
 }
 
 /* ---------------------------------------------------------------------------- */
-/*                             Round Winner/loser                               */
+/*                             Opponent's Turn                                  */
 /* ---------------------------------------------------------------------------- */
 
 .modal {
@@ -792,7 +792,8 @@ html {
   font-size: 2em;
   animation-duration: 10s;
   animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
 }
 
 .modal-content {

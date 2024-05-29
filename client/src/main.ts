@@ -5,6 +5,7 @@ import { addCardToOppTrench, clearTrench } from "./pages/Arena/trenchArena";
 import { io } from "socket.io-client";
 import { showLobbyPage } from "./pages/Lobby/lobby";
 import { startgame } from "./pages/Arena/game";
+import { showResult } from "./pages/Arena/showResult";
 
 export const socket = io("http://localhost:5173", {
   reconnection: true,
@@ -45,6 +46,9 @@ export async function update(...cardData: any) {
       await startgame(playerId, oppId);
     }
     if (totalMoves === 2 && round === 3) {
+      console.log("it is going through here main.ts")
+      showResult("win");
+      //person receives from web socket
       console.log("END GAME");
       clearTrench();
       await showLobbyPage();
