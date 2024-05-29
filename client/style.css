@@ -72,6 +72,10 @@ header button {
 	border-radius: 50%;
 }
 
+header .logout-button {
+	background-image: url("/assets/Icons/logout.png");
+}
+
 header .home-button {
 	background-image: url("/assets/Icons/home-btn.svg");
 }

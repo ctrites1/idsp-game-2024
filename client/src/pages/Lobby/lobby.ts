@@ -1,6 +1,6 @@
 import { getHandData } from "../Arena/cardArena";
 import { startgame } from "../Arena/game";
-import { addPlayerDetailsToArena } from "../Homepage/choosePlayer";
+import { addPlayerDetailsToArena, logout } from "../Homepage/choosePlayer";
 import { addRouteToBtn, emptyBody } from "../routing";
 
 interface Player {
@@ -69,7 +69,22 @@ const generatePlayersTable = async (): Promise<HTMLDivElement> => {
 	return playersTable;
 };
 
-const createLobbyHeader = () => {};
+const createLobbyHeader = () => {
+	const header = document.createElement("header");
+	header.classList.add("lobby-header");
+	const headerBtnDiv = document.createElement("div");
+	headerBtnDiv.classList.add("header-btns");
+
+	const logoutBtn = document.createElement("button");
+	logoutBtn.classList.add("logout-button");
+	logoutBtn.addEventListener("click", async () => {
+		await logout();
+	});
+
+	headerBtnDiv.appendChild(logoutBtn);
+	header.appendChild(headerBtnDiv);
+	return header;
+};
 
 /* 
 	TODO: 
@@ -87,6 +102,7 @@ export const showLobbyPage = async () => {
 	const playersTable = await generatePlayersTable();
 	const lobbyDiv = document.createElement("div") as HTMLDivElement;
 	lobbyDiv.classList.add("lobby-container");
+	lobbyDiv.appendChild(createLobbyHeader());
 	lobbyDiv.appendChild(playersTable);
 
 	body.appendChild(lobbyDiv);

@@ -5,22 +5,26 @@ import { socket } from "../../main";
 import { countCards } from "./laneArena";
 import { showLobbyPage } from "../Lobby/lobby";
 import { startgame } from "./game";
+import { logout } from "../Homepage/choosePlayer";
 
 export async function createArenaPage() {
-  const body = document.querySelector("body") as HTMLBodyElement;
-  const content: string = `
-        <header><div class="header-btns">
+	const body = document.querySelector("body") as HTMLBodyElement;
+	const content: string = `
+        <header>
+          <div class="header-btns">
+            <button type="button" class="logout-button">
+            </button>
             <button type="button" class="home-button">
             </button>
             <button type="button" class="howTo-button">
             </button>
-        </div>
-        
-        <div class="player-round-log">
-        <div class="player-round-3"></div>
-        <div class="player-round-1"></div>
-        <div class="player-round-2"></div>
-        </div>
+          </div>
+          
+          <div class="player-round-log">
+          <div class="player-round-3"></div>
+          <div class="player-round-1"></div>
+          <div class="player-round-2"></div>
+          </div>
 
             <div class="round-indicator">
             </div>
@@ -95,52 +99,59 @@ export async function createArenaPage() {
                 </div>
         </footer>
     `;
-  body.innerHTML = content;
+	body.innerHTML = content;
 
-  //* For demo, should refactor later - maybe not use class for footer for easier function calls?
-  const surrenderButton = document.querySelector(
-    ".surrender-button"
-  ) as HTMLButtonElement;
-  surrenderButton.addEventListener("click", () => {
-    console.log("Surrender clicked");
-    // showResult("lose");
-    // TODO: Logic to handle log viewing to be added here
-  });
+	//* For demo, should refactor later - maybe not use class for footer for easier function calls?
+	const surrenderButton = document.querySelector(
+		".surrender-button"
+	) as HTMLButtonElement;
+	surrenderButton.addEventListener("click", () => {
+		console.log("Surrender clicked");
+		// showResult("lose");
+		// TODO: Logic to handle log viewing to be added here
+	});
 
-  const homeButton = document.querySelector(
-    ".home-button"
-  ) as HTMLButtonElement;
-  homeButton?.addEventListener("click", async () => {
-    await showLobbyPage();
-  });
+	const logoutBtn = document.querySelector(
+		".logout-button"
+	) as HTMLButtonElement;
+	logoutBtn.addEventListener("click", async () => {
+		await logout();
+	});
 
-  const endTurnButton = document.querySelector(
-    ".endTurn-button"
-  ) as HTMLButtonElement;
-  endTurnButton.disabled = false;
-  endTurnButton?.addEventListener("click", async () => {
-    const player = document.querySelector("#playerHill");
-    const playerId: number = Number(player?.getAttribute("player-id"));
-    const opp = document.querySelector("#oppHill");
-    const oppId: number = Number(opp?.getAttribute("player-id"));
-    const gameState = await logMove();
-    if (gameState.gameOver) {
-      // Show winner from gameState.gameWinner (id)
-      socket.send("hello", playerId);
-      clearTrench();
-      await showLobbyPage();
-      return;
-    }
-    socket.send("hello", playerId);
-    const totalMoves = countCards();
-    if (totalMoves >= 6) {
-      clearTrench();
-      await startgame(playerId, oppId);
-      return;
-    }
-    showOpponentsTurn();
-    endTurnButton.disabled = true;
-  });
+	const homeButton = document.querySelector(
+		".home-button"
+	) as HTMLButtonElement;
+	homeButton?.addEventListener("click", async () => {
+		await showLobbyPage();
+	});
 
-  setupDropZones();
+	const endTurnButton = document.querySelector(
+		".endTurn-button"
+	) as HTMLButtonElement;
+	endTurnButton.disabled = false;
+	endTurnButton?.addEventListener("click", async () => {
+		const player = document.querySelector("#playerHill");
+		const playerId: number = Number(player?.getAttribute("player-id"));
+		const opp = document.querySelector("#oppHill");
+		const oppId: number = Number(opp?.getAttribute("player-id"));
+		const gameState = await logMove();
+		if (gameState.gameOver) {
+			// Show winner from gameState.gameWinner (id)
+			socket.send("hello", playerId);
+			clearTrench();
+			await showLobbyPage();
+			return;
+		}
+		socket.send("hello", playerId);
+		const totalMoves = countCards();
+		if (totalMoves >= 6) {
+			clearTrench();
+			await startgame(playerId, oppId);
+			return;
+		}
+		showOpponentsTurn();
+		endTurnButton.disabled = true;
+	});
+
+	setupDropZones();
 }

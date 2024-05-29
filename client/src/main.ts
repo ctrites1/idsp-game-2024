@@ -73,12 +73,10 @@ window.addEventListener(
 	{ once: true }
 );
 
+window.addEventListener("beforeunload", () => {
+	sessionStorage.removeItem("DOMContentLoadedHandled");
+});
+
 window.onload = () => {
 	console.log("page is fully loaded");
 };
-/*
-	TODO:
-	Note: Page is loading once (only seeing 
-		window.onload msg once. DOM content 
-		is being loaded twice.)
-*/
