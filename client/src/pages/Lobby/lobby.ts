@@ -1,3 +1,4 @@
+import { error } from "console";
 import { getHandData } from "../Arena/cardArena";
 import { startgame } from "../Arena/game";
 import { addPlayerDetailsToArena, logout } from "../Homepage/choosePlayer";
@@ -10,6 +11,11 @@ interface Player {
 
 // TODO: make interface for leaderboard data
 // leaderboard: [ { username: string, matches_won: number }]
+
+interface playerStat {
+	username: string;
+	matches_won: number;
+}
 
 const getPlayerData = async () => {
 	const res = await fetch("/api/players");
@@ -93,11 +99,13 @@ const getLeaderboardData = async () => {
 	const res = await fetch("/api/players");
 	const { success, currentUserId, leaderboard } = await res.json();
 	if (success) {
-		return { currentUserId: currentUserId, leaderboard: leaderboard };
+		return { success: true, currentUserId: currentUserId, data: leaderboard };
+	} else {
+		return { success: false, error: "Could not retrieve leaderboard data" };
 	}
 };
 
-const createLeaderboard = () => {
+const createLeaderboard = async () => {
 	const leaderboardContainer = document.createElement("div");
 	leaderboardContainer.classList.add("leaderboard");
 
@@ -113,14 +121,33 @@ const createLeaderboard = () => {
 	thead.innerHTML = `
 	  <tr>
 		<th>Player</th>
-		<th>Score</th>
+		<th>Total Matches Won</th>
 	  </tr>
 	`;
 	leaderboardTable.appendChild(thead);
 
 	const tbody = document.createElement("tbody");
-	// const  = await getLeaderboardData();
+	try {
+		const leaderboardData = await getLeaderboardData();
+		if (!leaderboardData.success) {
+			throw leaderboardData.error;
+		} else {
+			leaderboardData.data.forEach((playerStat: playerStat) => {
+				const player = document.createElement("td");
+				player.innerText = playerStat.username;
 
+				const matchesWon = document.createElement("td");
+				matchesWon.innerText = playerStat.matches_won.toString();
+
+				const newRow = document.createElement("tr") as HTMLTableRowElement;
+				newRow.appendChild(player);
+				newRow.appendChild(matchesWon);
+				tbody.appendChild(newRow);
+			});
+		}
+	} catch (err) {
+		console.error(err);
+	}
 	leaderboardTable.appendChild(tbody);
 
 	return leaderboardContainer;
@@ -132,11 +159,14 @@ export const showLobbyPage = async () => {
 	if (body.querySelector("lobby-container")) {
 		return;
 	}
-	const playersTable = await generatePlayersTable();
 	const lobbyDiv = document.createElement("div") as HTMLDivElement;
+	const playersTable = await generatePlayersTable();
+	const leaderboardContainer = await createLeaderboard();
+
 	lobbyDiv.classList.add("lobby-container");
 	lobbyDiv.appendChild(createLobbyHeader());
 	lobbyDiv.appendChild(playersTable);
+	lobbyDiv.appendChild(leaderboardContainer);
 
 	body.appendChild(lobbyDiv);
 };
