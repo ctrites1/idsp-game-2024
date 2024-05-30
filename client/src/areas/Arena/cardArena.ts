@@ -35,7 +35,7 @@ function checkIfCardPlayedThisTurn(cardId: string) {
 }
 
 export function setupDropZones() {
-	const trenchHolders = document.querySelectorAll("#playerTrench .cardHolder");
+	const trenchHolders = document.querySelectorAll("#playerTrench .trench");
 	console.log(`Found ${trenchHolders.length} drop zones.`); // Check how many were found
 
 	trenchHolders.forEach((holder) => {
