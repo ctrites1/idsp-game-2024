@@ -311,8 +311,6 @@ async function createServer() {
     const playerId = req.session.playerId;
     const response = await getLobbyData(playerId);
 
-    console.log("response", response)
-    
     res.json(response);
   });
   app.use("*", express.static(path.join(__dirname, "../client/dist")));

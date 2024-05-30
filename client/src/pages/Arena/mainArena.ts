@@ -6,10 +6,11 @@ import { countCards } from "./laneArena";
 import { showLobbyPage } from "../Lobby/lobby";
 import { startgame } from "./game";
 import { logout } from "../Homepage/choosePlayer";
+import { showResult } from "./showResult";
 
 export async function createArenaPage() {
-	const body = document.querySelector("body") as HTMLBodyElement;
-	const content: string = `
+  const body = document.querySelector("body") as HTMLBodyElement;
+  const content: string = `
         <header>
           <div class="header-btns">
             <button type="button" class="logout-button">
@@ -99,59 +100,72 @@ export async function createArenaPage() {
                 </div>
         </footer>
     `;
-	body.innerHTML = content;
+  body.innerHTML = content;
 
-	//* For demo, should refactor later - maybe not use class for footer for easier function calls?
-	const surrenderButton = document.querySelector(
-		".surrender-button"
-	) as HTMLButtonElement;
-	surrenderButton.addEventListener("click", () => {
-		console.log("Surrender clicked");
-		// showResult("lose");
-		// TODO: Logic to handle log viewing to be added here
-	});
+  //* For demo, should refactor later - maybe not use class for footer for easier function calls?
+  const surrenderButton = document.querySelector(
+    ".surrender-button"
+  ) as HTMLButtonElement;
+  surrenderButton.addEventListener("click", () => {
+    console.log("Surrender clicked");
+    showResult("lose");
+    // TODO: Logic to handle log viewing to be added here
+  });
 
-	const logoutBtn = document.querySelector(
-		".logout-button"
-	) as HTMLButtonElement;
-	logoutBtn.addEventListener("click", async () => {
-		await logout();
-	});
+  const logoutBtn = document.querySelector(
+    ".logout-button"
+  ) as HTMLButtonElement;
+  logoutBtn.addEventListener("click", async () => {
+    await logout();
+  });
 
-	const homeButton = document.querySelector(
-		".home-button"
-	) as HTMLButtonElement;
-	homeButton?.addEventListener("click", async () => {
-		await showLobbyPage();
-	});
+  const homeButton = document.querySelector(
+    ".home-button"
+  ) as HTMLButtonElement;
+  homeButton?.addEventListener("click", async () => {
+    await showLobbyPage();
+  });
 
-	const endTurnButton = document.querySelector(
-		".endTurn-button"
-	) as HTMLButtonElement;
-	endTurnButton.disabled = false;
-	endTurnButton?.addEventListener("click", async () => {
-		const player = document.querySelector("#playerHill");
-		const playerId: number = Number(player?.getAttribute("player-id"));
-		const opp = document.querySelector("#oppHill");
-		const oppId: number = Number(opp?.getAttribute("player-id"));
-		const gameState = await logMove();
-		if (gameState.gameOver) {
-			// Show winner from gameState.gameWinner (id)
-			socket.send("hello", playerId);
-			clearTrench();
-			await showLobbyPage();
-			return;
-		}
-		socket.send("hello", playerId);
-		const totalMoves = countCards();
-		if (totalMoves >= 6) {
-			clearTrench();
-			await startgame(playerId, oppId);
-			return;
-		}
-		showOpponentsTurn();
-		endTurnButton.disabled = true;
-	});
+  const endTurnButton = document.querySelector(
+    ".endTurn-button"
+  ) as HTMLButtonElement;
+  endTurnButton.disabled = false;
+  endTurnButton?.addEventListener("click", async () => {
+    const player = document.querySelector("#playerHill");
+    const playerId: number = Number(player?.getAttribute("player-id"));
+    const opp = document.querySelector("#oppHill");
+    const oppId: number = Number(opp?.getAttribute("player-id"));
+    const gameState = await logMove();
+    if (gameState.gameOver) {
+      if (gameState.gameWinner === playerId) {
+        opp?.setAttribute("win", "lose");
+        showResult("win");
+        setTimeout(() => {
+          socket.send("hello", playerId);
+          clearTrench();
+          showLobbyPage();
+        }, 10000);
+      } else {
+        opp?.setAttribute("win", "win");
+        showResult("lose");
+        setTimeout(() => {
+          socket.send("hello", playerId);
+          clearTrench();
+          showLobbyPage();
+        }, 10000);
+      }
+      return;
+    }
+    socket.send("hello", playerId);
+    const totalMoves = countCards();
+    if (totalMoves >= 6) {
+      clearTrench();
+      await startgame(playerId, oppId);
+      return;
+    }
+    showOpponentsTurn();
+    endTurnButton.disabled = true;
+  });
 
-	setupDropZones();
+  setupDropZones();
 }
