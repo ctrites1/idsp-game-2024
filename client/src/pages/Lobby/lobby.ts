@@ -1,4 +1,3 @@
-import { error } from "console";
 import { getHandData } from "../Arena/cardArena";
 import { startgame } from "../Arena/game";
 import { addPlayerDetailsToArena, logout } from "../Homepage/choosePlayer";
@@ -9,9 +8,6 @@ interface Player {
 	username: string;
 }
 
-// TODO: make interface for leaderboard data
-// leaderboard: [ { username: string, matches_won: number }]
-
 interface playerStat {
 	username: string;
 	matches_won: number;
@@ -20,13 +16,14 @@ interface playerStat {
 const getPlayerData = async () => {
 	const res = await fetch("/api/players");
 	const { success, currentUserId, players } = await res.json();
+	console.log("success: ", success);
 	if (success) {
 		const allPlayers: Player[] = players.players.filter((player: Player) => {
 			if (player.player_id !== currentUserId) {
 				return player;
 			}
 		});
-
+		console.log("getPlayerData:", currentUserId);
 		return { currentUserId: currentUserId, allPlayers: allPlayers };
 	}
 };

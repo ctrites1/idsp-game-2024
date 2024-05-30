@@ -124,7 +124,6 @@ async function createServer() {
 			if (result) {
 				req.session = { playerId: result.data[0].player_id };
 			}
-
 			res.json(result);
 		} catch (error) {
 			res.status(500).json({
@@ -310,7 +309,7 @@ async function createServer() {
 		}
 		const playerId = req.session.playerId;
 		const response = await getLobbyData(playerId);
-
+		console.log("playerId: ", playerId);
 		console.log("response", response);
 
 		res.json(response);
