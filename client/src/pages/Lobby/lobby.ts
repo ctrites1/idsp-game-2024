@@ -40,11 +40,11 @@ const generatePlayersTable = async (): Promise<HTMLDivElement> => {
 	const playersTable = document.createElement("table") as HTMLTableElement;
 	playersTable.classList.add("players-table");
 	const tableHeading = document.createElement("thead");
-	const row1 = document.createElement("tr");
 	const headCell = document.createElement("th");
-	headCell.innerText = "Players";
-	row1.appendChild(headCell);
-	tableHeading.appendChild(row1);
+	const headCellData = document.createElement("h1");
+	headCellData.innerText = "Players";
+	headCell.appendChild(headCellData);
+	tableHeading.appendChild(headCell);
 	playersTable.appendChild(tableHeading);
 
 	allPlayers.forEach(async (player: Player) => {

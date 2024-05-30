@@ -977,7 +977,6 @@ html {
 			flex-direction: column;
 			justify-content: flex-start;
 			align-items: center;
-			padding: 1rem 2rem 2rem 1rem;
 
 			.players-table {
 				width: 70%;
@@ -994,8 +993,7 @@ html {
 					text-align: center;
 					vertical-align: middle;
 					th {
-						padding: 0.5rem;
-						font-size: 2rem;
+						font-family: Papyrus;
 					}
 				}
 
@@ -1028,7 +1026,7 @@ html {
 			padding-right: 5rem;
 
 			h1 {
-				padding-top: 1.5rem;
+				/* padding-top: 1.5rem; */
 				font-family: "Papyrus";
 			}
 
