@@ -991,80 +991,85 @@ html {
   width: 80%;
   max-width: 600px;
   height: 80%;
-  max-height: 500px;
-  /* background-color: #f8f9fa;
-  border: 3px solid #34495e; */
-  /* border-radius: 10px; */
+  max-height: 550px;
+  background-color: #555557;
+  /* -webkit-clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%);
+  clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%); */
+  border: 5px solid #c1750b; 
+  border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1000;
 }
 
-.popup img {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: fill;
-}
-
 .popup-content {
   text-align: center;
+  overflow: auto;
 }
 
 .popup-content h2 {
-  background-color: #6c7a89;
   color: white;
-  padding: 10px;
+  font-family: Papyrus, fantasy;
+  /* padding: 10px;
   border-radius: 5px;
-  margin-bottom: 20px;
-}
-
-.instructions p {
-  text-align: left;
-  margin-bottom: 20px;
-}
-
-.scoring {
-  text-align: left;
-}
-
-.scoring h3 {
-  background-color: #6c7a89;
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
-  margin-bottom: 10px;
-}
-
-.suit-points, .special-points {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 20px;
-}
-
-.suit, .special {
-  text-align: center;
-}
-
-.suit h4, .special h4 {
-  margin-bottom: 5px;
-}
-
-.suit img, .special img {
-  width: 60px;
-  height: auto;
+  margin-bottom: 20px; */
+  margin-bottom: 0px;
+  margin-top: 0px;
 }
 
 .continue-btn {
-  background-color: #1abc9c;
+  background-color: #2f3688;
   color: white;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  font-family: Papyrus, fantasy;
 }
 
 .continue-btn:hover {
-  background-color: #16a085;
+  background-color: #353072;
 }
+
+.popup-text {
+  overflow: auto;
+  font-family: Papyrus, fantasy;
+}
+
+/* .popup-text {
+  height: 100%;
+  text-align: center;
+  
+  -moz-transform: translateY(100%);
+  -webkit-transform: translateY(100%);
+  transform: translateY(100%);
+  
+  -moz-animation: my-animation 5s linear infinite;
+  -webkit-animation: my-animation 5s linear infinite;
+  animation: my-animation 5s linear infinite;
+} */
+
+/* for Firefox */
+/* @-moz-keyframes my-animation {
+  from { -moz-transform: translateY(100%); }
+  to { -moz-transform: translateY(-100%); }
+} */
+
+/* @-webkit-keyframes my-animation {
+  from { -webkit-transform: translateY(100%); }
+  to { -webkit-transform: translateY(-100%); }
+} */
+
+/* @keyframes my-animation {
+  from {
+    -moz-transform: translateY(100%);
+    -webkit-transform: translateY(100%);
+    transform: translateY(100%);
+  }
+  to {
+    -moz-transform: translateY(-100%);
+    -webkit-transform: translateY(-100%);
+    transform: translateY(-100%);
+  }
+} */
