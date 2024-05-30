@@ -5,12 +5,14 @@ export function updateRoundIndicator(round: number) {
   }
 }
 
-export function markRoundWinner(round: number, winnerId: number) {
-  const playerId = 1; // You should replace this with the actual playerId
-  const roundLogClass = winnerId === playerId ? ".player-round-log" : ".opp-round-log";
-  const roundElement = document.querySelector(`${roundLogClass} .round-${round}`);
+function markRoundWinner(round: number, winner: "player" | "opp") {
+  const playerRound = document.querySelector(`.player-round-${round}`);
+  const oppRound = document.querySelector(`.opp-round-${round}`);
   
-  if (roundElement) {
-    roundElement.classList.add("round-winner");
+  if (winner === "player" && playerRound) {
+    playerRound.classList.add("winner");
+  } else if (winner === "opp" && oppRound) {
+    oppRound.classList.add("winner");
   }
 }
+

@@ -1,3 +1,5 @@
+// mainArena.ts
+
 import { setupDropZones } from "./cardArena";
 import { clearTrench, logMove } from "./trenchArena";
 import { showOpponentsTurn } from "./opponentsTurn";
@@ -5,8 +7,11 @@ import { socket } from "../../main";
 import { countCards } from "./laneArena";
 import { showLobbyPage } from "../Lobby/lobby";
 import { startgame } from "./game";
+import { showResult } from "./showResult";
+import { markRoundWinner, updateRoundIndicator } from "./roundCounter";
 import { logout } from "../Homepage/choosePlayer";
 import { createHowToPlayPopup } from "./tutorial";
+import { addRouteToBtn } from "../routing";
 
 export async function createArenaPage() {
 	const body = document.querySelector("body") as HTMLBodyElement;
@@ -27,51 +32,51 @@ export async function createArenaPage() {
           <div class="player-round-2"></div>
           </div>
 
-            <div class="round-indicator">
-            </div>
-            <div class="opp-round-log">
-            <div class="opp-round-1"></div>
-            <div class="opp-round-2"></div>
-            <div class="opp-round-3"></div>
-            </div>
-            <div class="oppInfo">
-                    <div class="oppName">
-                    </div>
-                    <div class="oppPic">
-                        <img id="oppDisplayPic">
-                    </div>
+        <div class="round-indicator">
+        </div>
+        <div class="opp-round-log">
+        <div class="opp-round-1"></div>
+        <div class="opp-round-2"></div>
+        <div class="opp-round-3"></div>
+        </div>
+        <div class="oppInfo">
+                <div class="oppName">
                 </div>
-
-            </div>
-        </header>
-        <div class="arena">
-
-            <div class="lane">
-                <div class="trench" id="oppTrench">
-                    <div class="cardHolder"></div>
-                    <div class="cardHolder"></div>
-                    <div class="cardHolder"></div>
-                </div>
-
-                <div class="hill">
-                    <div class="scoreDisplay">
-                        <div id="oppHill">0</div>
-                        <div id="playerHill">0</div>
-                    </div>
-                    <img src="/assets/Hills/waterHill.svg" alt="water hill">
-                </div>
-
-                <div class="trench" id="playerTrench">
-                    <div class="cardHolder"></div>
-                    <div class="cardHolder"></div>
-                    <div class="cardHolder"></div>
+                <div class="oppPic">
+                    <img id="oppDisplayPic">
                 </div>
             </div>
 
-            <div class="singleCardView">
-                <div class="cardViewFooter">
-                </div>
+        </div>
+    </header>
+    <div class="arena">
+
+        <div class="lane">
+            <div class="trench" id="oppTrench">
+                <div class="cardHolder"></div>
+                <div class="cardHolder"></div>
+                <div class="cardHolder"></div>
             </div>
+
+            <div class="hill">
+                <div class="scoreDisplay">
+                    <div id="oppHill">0</div>
+                    <div id="playerHill">0</div>
+                </div>
+                <img src="/assets/Hills/waterHill.svg" alt="water hill">
+            </div>
+
+            <div class="trench" id="playerTrench">
+                <div class="cardHolder"></div>
+                <div class="cardHolder"></div>
+                <div class="cardHolder"></div>
+            </div>
+        </div>
+
+        <div class="singleCardView">
+            <div class="cardViewFooter">
+            </div>
+        </div>
 
             <!-- Stars -->
             <div id="stars"></div>
@@ -100,36 +105,46 @@ export async function createArenaPage() {
                 </div>
         </footer>
     `;
-	body.innerHTML = content;
+  body.innerHTML = content;
 
-	//* For demo, should refactor later - maybe not use class for footer for easier function calls?
-	const surrenderButton = document.querySelector(
-		".surrender-button"
-	) as HTMLButtonElement;
-	surrenderButton.addEventListener("click", () => {
-		console.log("Surrender clicked");
-		// showResult("lose");
-		// TODO: Logic to handle log viewing to be added here
-	});
+  const surrenderButton = document.querySelector(
+    ".surrender-button"
+  ) as HTMLButtonElement;
 
-	const logoutBtn = document.querySelector(
-		".logout-button"
-	) as HTMLButtonElement;
-	logoutBtn.addEventListener("click", async () => {
-		await logout();
-	});
+  surrenderButton.addEventListener("click", async () => {
+    console.log("Surrender clicked");
+    const playerHill = document.querySelector("#playerHill");
+    const playerId: number = Number(playerHill?.getAttribute("player-id"));
+    const matchId = await getCurrentMatchId(playerId);
+    const response = await fetch("/api/surrender", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ matchId }),
+    });
+    const result = await response.json();
+    if (result.success) {
+      console.log(`Player surrendered`);
+      clearTrench();
+      showResult("lose");
+      await showLobbyPage();
+    } else {
+      console.error("Failed to surrender the game:", result.message);
+    }
+  });
 
 	const homeButton = document.querySelector(
 		".home-button"
 	) as HTMLButtonElement;
-	homeButton?.addEventListener("click", async () => {
-		await showLobbyPage();
-	});
+	await addRouteToBtn(homeButton, "/lobby");
 
-    const howTobutton = document.querySelector(".howTo-button") as HTMLButtonElement;
-    howTobutton.addEventListener("click", () => {
-        createHowToPlayPopup();
-    })
+	const howTobutton = document.querySelector(
+		".howTo-button"
+	) as HTMLButtonElement;
+	howTobutton.addEventListener("click", () => {
+		createHowToPlayPopup();
+	});
 
 	const endTurnButton = document.querySelector(
 		".endTurn-button"
@@ -161,4 +176,16 @@ export async function createArenaPage() {
 	});
 
 	setupDropZones();
+}
+
+async function getCurrentMatchId(playerId: number): Promise<number> {
+  const response = await fetch("/api/currentgame", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ playerId }),
+  });
+  const result = await response.json();
+  return result.data.matchId;
 }

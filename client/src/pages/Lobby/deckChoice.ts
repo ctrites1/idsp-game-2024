@@ -2,50 +2,69 @@ import { createPlayerHand } from "../Arena/cardArena";
 
 export async function displayDeckChoice(gamestate: any) {
   const body = document.querySelector("body") as HTMLBodyElement;
-  const modal = document.createElement("div");
-  modal.className = "modal";
-  modal.id = "modal";
+  const chooseDeck = document.createElement("div");
+  chooseDeck.className = "chooseDeck";
+  chooseDeck.id = "chooseDeck";
 
-  const modalContent = document.createElement("div");
-  modalContent.className = "modal-content";
+  const chooseDeckContent = document.createElement("div");
+  chooseDeckContent.className = "chooseDeck-content";
 
-  const modalText = document.createElement("p");
-  modalText.id = "modal-text";
-  modalText.textContent = "Choose your Element";
+  const chooseDeckContentText = document.createElement("div");
+  chooseDeckContentText.className = "chooseDeck-contentText"
+
+  const chooseDeckText = document.createElement("p");
+  chooseDeckText.id = "chooseDeck-text";
+  chooseDeckText.textContent = "Choose your Element";
 
   const iceBtn = document.createElement("button");
-  iceBtn.innerHTML = "ICE";
+  iceBtn.className = "iceBtn";
   iceBtn.type = "submit";
+  iceBtn.innerHTML = "ICE";
   iceBtn.addEventListener("click", async () => {
     await chooseIceDeck(gamestate);
   });
+
+  // const iceName = document.createElement("p");
+  // iceName.textContent = "ICE";
+
+  // const fireName = document.createElement("p");
+  // fireName.textContent = "FIRE";
+
+  // const waterName = document.createElement("p");
+  // waterName.textContent = "WATER";
+
   const waterBtn = document.createElement("button");
+  waterBtn.className = "waterBtn";
   waterBtn.innerHTML = "WATER";
   waterBtn.type = "submit";
   waterBtn.addEventListener("click", async () => {
     await chooseWaterDeck(gamestate);
   });
   const fireBtn = document.createElement("button");
+  fireBtn.className = "fireBtn";
   fireBtn.innerHTML = "FIRE";
   fireBtn.type = "submit";
   fireBtn.addEventListener("click", async () => {
     await chooseFireDeck(gamestate);
   });
 
-  modalContent.appendChild(modalText);
-  modalContent.appendChild(iceBtn);
-  modalContent.appendChild(waterBtn);
-  modalContent.appendChild(fireBtn);
+  chooseDeck.appendChild(chooseDeckText);
+  chooseDeckContent.appendChild(iceBtn);
+  chooseDeckContent.appendChild(waterBtn);
+  chooseDeckContent.appendChild(fireBtn);
+  // chooseDeckContentText.appendChild(iceName);
+  // chooseDeckContentText.appendChild(waterName);
+  // chooseDeckContentText.appendChild(fireName);
 
-  modal.appendChild(modalContent);
-  body.appendChild(modal);
+  chooseDeck.appendChild(chooseDeckContent);
+  // chooseDeck.appendChild(chooseDeckContentText);
 
-  modal.style.display = "block";
+  body.appendChild(chooseDeck);
 }
 
 async function chooseIceDeck(gamestate: any) {
-  const modal = document.querySelector(".modal");
-  modal?.remove();
+  const chooseDeck = document.querySelector(".chooseDeck");
+  chooseDeck?.remove();
   const response = await fetch("/api/playerhand", {
     method: "POST",
     headers: {
@@ -63,8 +82,8 @@ async function chooseIceDeck(gamestate: any) {
 }
 
 async function chooseWaterDeck(gamestate: any) {
-  const modal = document.querySelector(".modal");
-  modal?.remove();
+  const chooseDeck = document.querySelector(".chooseDeck");
+  chooseDeck?.remove();
   const response = await fetch("/api/playerhand", {
     method: "POST",
     headers: {
@@ -82,8 +101,8 @@ async function chooseWaterDeck(gamestate: any) {
 }
 
 async function chooseFireDeck(gamestate: any) {
-  const modal = document.querySelector(".modal");
-  modal?.remove();
+  const chooseDeck = document.querySelector(".chooseDeck");
+  chooseDeck?.remove();
   const response = await fetch("/api/playerhand", {
     method: "POST",
     headers: {
@@ -99,3 +118,4 @@ async function chooseFireDeck(gamestate: any) {
   const data = await response.json();
   createPlayerHand(data);
 }
+

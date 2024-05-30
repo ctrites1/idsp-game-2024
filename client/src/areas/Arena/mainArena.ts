@@ -5,6 +5,7 @@ import { logMove } from "./trenchArena";
 import { showOpponentsTurn } from "./opponentsTurn";
 import { socket } from "../../main";
 import { countCards } from "./laneArena";
+import { showResult } from "./showResult";
 
 export async function createArenaPage() {
   const body = document.querySelector("body") as HTMLBodyElement;
@@ -103,8 +104,7 @@ export async function createArenaPage() {
   ) as HTMLButtonElement;
   surrenderButton.addEventListener("click", () => {
     console.log("Surrender clicked");
-    // showResult("lose");
-    // TODO: Logic to handle log viewing to be added here
+    showResult("lose");
   });
 
   const homeButton = document.querySelector(
