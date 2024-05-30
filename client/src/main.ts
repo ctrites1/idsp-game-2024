@@ -44,12 +44,16 @@ export async function update(...cardData: any) {
       if (cardData[0].roundWinner === playerId) {
         showResult("win");
         setTimeout(async () => {
+          const modal = document.querySelector("#modal");
+          modal?.remove();
           clearTrench();
           await startgame(playerId, oppId);
         }, 5000);
       } else {
         showResult("lose");
         setTimeout(async () => {
+          const modal = document.querySelector("#modal");
+          modal?.remove();
           clearTrench();
           await startgame(playerId, oppId);
         }, 5000);
@@ -59,12 +63,16 @@ export async function update(...cardData: any) {
       if (cardData[0].winner === playerId) {
         showResult("win");
         setTimeout(async () => {
+          const modal = document.querySelector("#modal");
+          modal?.remove();
           clearTrench();
           await showLobbyPage();
         }, 10000);
       } else {
         showResult("lose");
         setTimeout(async () => {
+          const modal = document.querySelector("#modal");
+          modal?.remove();
           clearTrench();
           await showLobbyPage();
         }, 10000);

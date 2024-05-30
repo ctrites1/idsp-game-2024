@@ -137,19 +137,23 @@ export async function createArenaPage() {
     const gameState = await logMove();
     if (gameState.gameOver) {
       if (gameState.gameWinner === playerId) {
-        opp?.setAttribute("win", "lose");
         showResult("win");
         socket.send("hello", [playerId, "game", gameState.gameWinner]);
         setTimeout(async () => {
+          const modal = document.querySelector("#modal");
+          console.log(modal);
+          modal?.remove();
           clearTrench();
           await showLobbyPage();
         }, 10000);
         return;
       } else {
-        opp?.setAttribute("win", "win");
         showResult("lose");
         socket.send("hello", [playerId, "game", gameState.gameWinner]);
         setTimeout(async () => {
+          const modal = document.querySelector("#modal");
+          console.log(modal);
+          modal?.remove();
           clearTrench();
           await showLobbyPage();
         }, 10000);

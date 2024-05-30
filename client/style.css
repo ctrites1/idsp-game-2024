@@ -796,13 +796,13 @@ html {
   height: 10rem;
   width: 80rem;
   font-size: 2em;
-  animation-duration: 10s;
+  /* animation-duration: 10s;
   animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
+  animation-iteration-count: infinite; */
 }
 
 .modal-content {
-  animation-name: anim-1;
+  /* animation-name: anim-1; */
 }
 
 .modal-content p {
