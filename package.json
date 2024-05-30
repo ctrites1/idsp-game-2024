@@ -8,6 +8,8 @@
     "build": "tsc -p tsconfig.json --module ESNext"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.7",
+    "@types/connect-history-api-fallback": "^1.5.4",
     "@types/express": "^4.17.21",
     "@types/node": "^20.12.11",
     "bcrypt": "^5.1.1",

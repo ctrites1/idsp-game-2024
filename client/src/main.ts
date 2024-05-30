@@ -8,11 +8,11 @@ import { startgame } from "./pages/Arena/game";
 import { showResult } from "./pages/Arena/showResult";
 
 export const socket = io("http://localhost:5173", {
-  reconnection: true,
-  reconnectionAttempts: Infinity,
-  reconnectionDelay: 1000,
-  reconnectionDelayMax: 5000,
-  timeout: 20000,
+	reconnection: true,
+	reconnectionAttempts: Infinity,
+	reconnectionDelay: 1000,
+	reconnectionDelayMax: 5000,
+	timeout: 20000,
 });
 
 socket.on("update", update);
@@ -57,28 +57,30 @@ export async function update(...cardData: any) {
 }
 
 window.addEventListener(
-  "DOMContentLoaded",
-  async function () {
-    try {
-      window.addEventListener("popstate", async () => {
-        console.log("Event listener: popstate");
-        await router();
-      });
-      await router();
-      console.log("Event listener: DOMContentLoaded");
-    } catch (error) {
-      console.error("Error during page initialization:", error);
-    }
-  },
-  { once: true }
+	"DOMContentLoaded",
+	async function () {
+		if (sessionStorage.getItem("DOMContentLoadedHandled")) {
+			return;
+		}
+		try {
+			sessionStorage.setItem("DOMContentLoadedHandled", "true");
+			window.addEventListener("popstate", async () => {
+				console.log("Event listener: popstate");
+				await router();
+			});
+			await router();
+			console.log("Event listener: DOMContentLoaded");
+		} catch (error) {
+			console.error("Error during page initialization:", error);
+		}
+	},
+	{ once: true }
 );
 
+window.addEventListener("beforeunload", () => {
+	sessionStorage.removeItem("DOMContentLoadedHandled");
+});
+
 window.onload = () => {
-  console.log("page is fully loaded");
+	console.log("page is fully loaded");
 };
-/*
-	TODO:
-	Note: Page is loading once (only seeing 
-		window.onload msg once. DOM content 
-		is being loaded twice.)
-*/

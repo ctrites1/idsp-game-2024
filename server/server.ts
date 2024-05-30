@@ -18,6 +18,7 @@ import {
   createPlayer,
   getLobbyData,
   getUsernameById,
+  getLeaderBoard,
 } from "../server/databaseAccess";
 import bodyParser from "body-parser";
 import cookieSession from "cookie-session";
@@ -43,7 +44,6 @@ interface NewHandResponse {
 async function createServer() {
   const app = express();
   const port = 3000;
-  // const server = http.createServer(app);
 
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
@@ -60,7 +60,7 @@ async function createServer() {
   );
   app.use(
     cors({
-      origin: "http://localhost:5173", // should change to our domain for prod
+      origin: ["http://localhost:3000", "https://idsp-game-2024.onrender.com"],
       credentials: true,
     })
   );
@@ -75,7 +75,7 @@ async function createServer() {
 
   const io = new Server(server, {
     cors: {
-      origin: "http://localhost:3000",
+      origin: ["http://localhost:3000", "https://idsp-game-2024.onrender.com"],
       credentials: true,
     },
   });
@@ -147,11 +147,15 @@ async function createServer() {
       round: req.body.round_id,
       choice: req.body.player_deck_choice,
     };
+
     const hand: NewHandResponse = await getCurrentHand(
       params.player,
       params.round
     );
-    if (hand.hand?.length === 0) {
+
+    const deckOptions = [1, 2, 3];
+
+    if (deckOptions.includes(params.choice) && !hand.success) {
       const newHand = await createInitialHand(
         params.choice,
         params.player,
@@ -163,11 +167,6 @@ async function createServer() {
       }
       res.json(newHand);
       return;
-    }
-
-    if (!hand || !hand.hand || hand.hand.length === 0) {
-      console.error("Failed to find hand or no cards found.");
-      return [];
     }
 
     res.json(hand);
@@ -311,12 +310,15 @@ async function createServer() {
     }
     const playerId = req.session.playerId;
     const response = await getLobbyData(playerId);
+
+    console.log("response", response)
+    
     res.json(response);
   });
   app.use("*", express.static(path.join(__dirname, "../client/dist")));
 
-  server.listen(port, () => {
-    console.log(`server listening on port ${port}`);
+  server.listen(port, "0.0.0.0", () => {
+    console.log(`server running on http://0.0.0.0:${port}`);
   });
 }
 

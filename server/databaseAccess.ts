@@ -62,8 +62,8 @@ export async function getCurrentHand(playerId: number, roundId: number) {
       roundId,
     };
     const hand: any = await database.query(getHand, handParams);
-    if (hand.length === 0) {
-      throw new Error("No hand exists for this player in the current round");
+    if (hand[0].length === 0) {
+      return { success: false, hand: null };
     }
     return { success: true, hand: hand[0] };
   } catch (err) {
@@ -422,18 +422,21 @@ export async function removePlayerById(playerId: number) {
     });
 }
 
-//! These are functions that are not getting exported - could move to separate file
 function randomizeDeck(cards: Card[]) {
-  const hand = cards.filter(
+  const deck = cards.filter(
     (card) => card.unit_type_id === 1 || card.unit_type_id === 2
   );
+  const hand: Card[] = [];
+  for (let i = 0; i < 7; i++) {
+    const randomIndex = Math.floor(Math.random() * deck.length);
+    const randomCard = deck[randomIndex];
+    if (hand.includes(randomCard)) {
+      i--;
+    } else {
+      hand.push(randomCard);
+    }
+  }
   return hand;
-  //   const deck = [];
-  //   const nonHeroCards = cards.filter((card) => card.unit_type_id === 1 || card.unit_type_id === 2);
-  //   for (let i = 0; i < 7; i++) {
-  //     const randomIndex = Math.floor(Math.random() * nonHeroCards.length);
-  //   }
-  //   return deck;
 }
 
 export async function loadGameState(roundId: number) {
@@ -733,12 +736,14 @@ export async function getLobbyData(playerId: number) {
     if (playerId > 0) {
       const players: any = await getAllPlayers(playerId);
       const matches: any = await getExistingGames(playerId);
+      const leaderboard: any = await getLeaderBoard();
 
       if (players && matches) {
         return {
           success: true,
           players: players,
           games: matches,
+          leaderboard: leaderboard.data,
           currentUserId: playerId,
         };
       } else {
@@ -790,5 +795,47 @@ export async function surrenderGame(matchId: number, playerId: number) {
   } catch (err) {
     console.log("ERROR: Failed to surrender game:", err);
     return { success: false };
+  }
+}
+
+export async function getLeaderBoard() {
+  try {
+    let getLeaderBoard =
+      "WITH RoundWins AS ( SELECT r.match_id, r.winner_id, COUNT(*) AS rounds_won FROM `round` r GROUP BY r.match_id, r.winner_id), MatchWinners AS (SELECT rw.match_id, rw.winner_id FROM RoundWins rw WHERE rw.rounds_won >= 2 ) SELECT p.username, COUNT(mw.match_id) AS matches_won FROM MatchWinners mw JOIN `player` p ON mw.winner_id = p.player_id GROUP BY  p.username ORDER BY  matches_won DESC Limit 10;";
+
+    const leaderboard: any = await database.query(getLeaderBoard);
+    return { success: true, data: leaderboard[0] };
+  } catch (error) {
+    console.log(error);
+    console.log("ERROR getting leaderboard");
+    return { success: false, leaderboard: null };
+  }
+}
+
+export async function surrenderGame(matchId: number, playerId: number) {
+  try {
+    const completeGame = `
+      UPDATE \`match\` 
+      SET is_completed = 1 
+      WHERE match_id = :matchId AND (player_1_id = :playerId OR player_2_id = :playerId);
+    `;
+
+    await database.query(completeGame, { matchId, playerId });
+    return { success: true };
+  } catch (err) {
+    console.log("ERROR: Failed to surrender game:", err);
+    return { success: false };
+  }
+}
+export async function getLeaderBoard() {
+  try {
+    let getLeaderBoard = "WITH RoundWins AS ( SELECT r.match_id, r.winner_id, COUNT(*) AS rounds_won FROM `round` r GROUP BY r.match_id, r.winner_id), MatchWinners AS (SELECT rw.match_id, rw.winner_id FROM RoundWins rw WHERE rw.rounds_won >= 2 ) SELECT p.username, COUNT(mw.match_id) AS matches_won FROM MatchWinners mw JOIN `player` p ON mw.winner_id = p.player_id GROUP BY  p.username ORDER BY  matches_won DESC Limit 10;"
+
+    const leaderboard: any = await database.query(getLeaderBoard)
+    return {success: true, data: leaderboard[0]}
+  } catch (error) {
+    console.log(error);
+    console.log("ERROR getting leaderboard");
+    return { success: false, leaderboard: null };
   }
 }

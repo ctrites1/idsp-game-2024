@@ -9,22 +9,26 @@ import { showLobbyPage } from "../Lobby/lobby";
 import { startgame } from "./game";
 import { showResult } from "./showResult";
 import { markRoundWinner, updateRoundIndicator } from "./roundCounter";
+import { logout } from "../Homepage/choosePlayer";
 
 export async function createArenaPage() {
-  const body = document.querySelector("body") as HTMLBodyElement;
-  const content: string = `
-    <header><div class="header-btns">
-        <button type="button" class="home-button">
-        </button>
-        <button type="button" class="howTo-button">
-        </button>
-    </div>
-    
-    <div class="player-round-log">
-    <div class="player-round-1"></div>
-    <div class="player-round-2"></div>
-    <div class="player-round-3"></div>
-    </div>
+	const body = document.querySelector("body") as HTMLBodyElement;
+	const content: string = `
+        <header>
+          <div class="header-btns">
+            <button type="button" class="logout-button">
+            </button>
+            <button type="button" class="home-button">
+            </button>
+            <button type="button" class="howTo-button">
+            </button>
+          </div>
+          
+          <div class="player-round-log">
+          <div class="player-round-3"></div>
+          <div class="player-round-1"></div>
+          <div class="player-round-2"></div>
+          </div>
 
         <div class="round-indicator">
         </div>
@@ -72,33 +76,33 @@ export async function createArenaPage() {
             </div>
         </div>
 
-        <!-- Stars -->
-        <div id="stars"></div>
-        <div id="stars2"></div>
-        <div id="stars3"></div>
-        
-    <footer id="playerFooter">
-        <div class="playInfo">
-            <div class="playerInfo">
-                <div class="playerPic">
-                    <img id="displayPic">
+            <!-- Stars -->
+            <div id="stars"></div>
+            <div id="stars2"></div>
+            <div id="stars3"></div>
+            
+        <footer id="playerFooter">
+            <div class="playInfo">
+                <div class="playerInfo">
+                    <div class="playerPic">
+                        <img id="displayPic">
+                    </div>
+                    <div class="playerName">
+                    </div>
                 </div>
-                <div class="playerName">
+                <div class="turn-indicator">
                 </div>
             </div>
-            <div class="turn-indicator">
-            </div>
-        </div>
-            <div class="playerHand" id="playerHandContainer">
-            </div>
-            <div class="playerDeck"></div>
-            <div class="action-buttons">
-                <button class="endTurn-button" type="button">End Turn</button>
-                <button class="surrender-button" type="button">Surrender</button>
-                <button class="log-button" type="button">Log</button>
-            </div>
-    </footer>
-  `;
+                <div class="playerHand" id="playerHandContainer">
+                </div>
+                <div class="playerDeck"></div>
+                <div class="action-buttons">
+                    <button class="endTurn-button" type="button">End Turn</button>
+                    <button class="surrender-button" type="button">Surrender</button>
+                    <button class="log-button" type="button">Log</button>
+                </div>
+        </footer>
+    `;
   body.innerHTML = content;
 
   const surrenderButton = document.querySelector(
@@ -128,12 +132,12 @@ export async function createArenaPage() {
     }
   });
 
-  const homeButton = document.querySelector(
-    ".home-button"
-  ) as HTMLButtonElement;
-  homeButton?.addEventListener("click", async () => {
-    await showLobbyPage();
-  });
+	const homeButton = document.querySelector(
+		".home-button"
+	) as HTMLButtonElement;
+	homeButton?.addEventListener("click", async () => {
+		await showLobbyPage();
+	});
 
   const endTurnButton = document.querySelector(
     ".endTurn-button"
@@ -176,7 +180,7 @@ export async function createArenaPage() {
     endTurnButton.disabled = true;
   });
 
-  setupDropZones();
+	setupDropZones();
 }
 
 async function getCurrentMatchId(playerId: number): Promise<number> {

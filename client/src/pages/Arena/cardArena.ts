@@ -1,3 +1,4 @@
+import { displayDeckChoice } from "../Lobby/deckChoice";
 import { updateHillScores } from "./hillArena";
 
 /* ------------------------------- Drag & Drop ------------------------------ */
@@ -149,12 +150,6 @@ export function moveCardToTrench(card: HTMLElement) {
   }
 }
 
-// export function removeCardFromHolder(card: HTMLElement) {
-// 	//	renamed "removeCardFromHand" -> "removeCardFromHolder"
-// 	const holder = card.closest(".cardHolder");
-// 	holder?.removeChild(card);
-// }
-
 export function viewSingleCard(card: HTMLElement) {
   const bigCard = card.cloneNode(true) as HTMLDivElement;
   const poppedCard: HTMLDivElement = document.querySelector(".singleCardView")!;
@@ -179,12 +174,16 @@ export async function getHandData(gamestate: any) {
     },
     body: JSON.stringify({
       round_id: gamestate.round_id,
-      player_deck_choice: 1,
+      player_deck_choice: gamestate.player_deck_choice,
       opp_id: gamestate.oppId,
     }),
     credentials: "include", // Ensures cookies are sent with the req
   });
   const data = await response.json();
+  if (!data.success) {
+    await displayDeckChoice(gamestate);
+    return;
+  }
   createPlayerHand(data);
 }
 
@@ -197,19 +196,11 @@ export function createCard(data: any) {
 
   const cardInside: HTMLDivElement = document.createElement("div");
   cardInside.classList.add("card-inside");
+  const cardName: string = data.name.replaceAll(" ", "");
 
   const cardFront: HTMLDivElement = document.createElement("div");
   cardFront.classList.add("card-front");
-  cardFront.style.backgroundImage = "url('/assets/Water/EmptyCardFront.svg')";
-
-  const cardFrontText: HTMLUListElement = document.createElement("ul");
-  const cardName = document.createElement("li");
-  cardName.textContent = data.name;
-  const cardPower = document.createElement("li");
-  cardPower.textContent = `${data.power}`;
-
-  cardFrontText.append(cardPower, cardName);
-  cardFront.appendChild(cardFrontText);
+  cardFront.style.backgroundImage = `url('/assets/Cards/${cardName}.svg')`;
 
   const cardBack: HTMLDivElement = document.createElement("div");
   cardBack.classList.add("card-back");
