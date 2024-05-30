@@ -52,7 +52,7 @@ body {
 	background-position: center;
 	width: 20rem;
 	height: 8vh;
-	margin-top: 0.5rem;
+	margin-top: 4rem;
 	margin-left: -10rem;
 }
 
@@ -65,16 +65,11 @@ header {
 	max-height: 4.5rem;
 	background-color: #1a1a1a;
 
-	div {
-		padding-top: 0.1rem;
-		padding-bottom: 0.1rem;
-
-		button {
-			/* margin-top: 0.5rem; */
-			width: 4rem;
-			height: 4rem;
-			border-radius: 50%;
-		}
+	button {
+		/* margin-top: 0.5rem; */
+		width: 4rem;
+		height: 4rem;
+		border-radius: 50%;
 	}
 }
 
@@ -95,8 +90,8 @@ header .oppInfo {
 	background-repeat: no-repeat;
 	height: 8rem;
 	width: 17rem;
-	margin-top: 0.5rem;
-	margin-right: 0.5rem;
+	margin-top: 6rem;
+	margin-right: 1rem;
 	display: flex;
 	flex-direction: row;
 	justify-content: flex-end;
@@ -108,8 +103,8 @@ header .oppInfo .oppName {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin-top: -2rem;
-	margin-right: 1rem;
+	height: 80%;
+	width: 9rem;
 }
 
 header #oppDisplayPic {
@@ -737,8 +732,8 @@ html {
 	position: absolute;
 	display: flex;
 	flex-direction: row;
-	margin-top: 3.5rem;
-	left: 32vw;
+	margin-top: 4rem;
+	left: 28vw;
 }
 
 .player-round-1,
@@ -757,8 +752,8 @@ html {
 	position: absolute;
 	display: flex;
 	flex-direction: row;
-	margin-top: 3.5rem;
-	left: 60vw;
+	margin-top: 4rem;
+	left: 61vw;
 }
 
 .opp-round-1,
