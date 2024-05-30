@@ -6,6 +6,8 @@ import { countCards } from "./laneArena";
 import { showLobbyPage } from "../Lobby/lobby";
 import { startgame } from "./game";
 import { logout } from "../Homepage/choosePlayer";
+import { createHowToPlayPopup } from "./tutorial";
+import { addRouteToBtn } from "../routing";
 
 export async function createArenaPage() {
 	const body = document.querySelector("body") as HTMLBodyElement;
@@ -107,8 +109,6 @@ export async function createArenaPage() {
 	) as HTMLButtonElement;
 	surrenderButton.addEventListener("click", () => {
 		console.log("Surrender clicked");
-		// showResult("lose");
-		// TODO: Logic to handle log viewing to be added here
 	});
 
 	const logoutBtn = document.querySelector(
@@ -121,8 +121,13 @@ export async function createArenaPage() {
 	const homeButton = document.querySelector(
 		".home-button"
 	) as HTMLButtonElement;
-	homeButton?.addEventListener("click", async () => {
-		await showLobbyPage();
+	await addRouteToBtn(homeButton, "/lobby");
+
+	const howTobutton = document.querySelector(
+		".howTo-button"
+	) as HTMLButtonElement;
+	howTobutton.addEventListener("click", () => {
+		createHowToPlayPopup();
 	});
 
 	const endTurnButton = document.querySelector(
