@@ -811,31 +811,3 @@ export async function getLeaderBoard() {
     return { success: false, leaderboard: null };
   }
 }
-
-export async function surrenderGame(matchId: number, playerId: number) {
-  try {
-    const completeGame = `
-      UPDATE \`match\` 
-      SET is_completed = 1 
-      WHERE match_id = :matchId AND (player_1_id = :playerId OR player_2_id = :playerId);
-    `;
-
-    await database.query(completeGame, { matchId, playerId });
-    return { success: true };
-  } catch (err) {
-    console.log("ERROR: Failed to surrender game:", err);
-    return { success: false };
-  }
-}
-export async function getLeaderBoard() {
-  try {
-    let getLeaderBoard = "WITH RoundWins AS ( SELECT r.match_id, r.winner_id, COUNT(*) AS rounds_won FROM `round` r GROUP BY r.match_id, r.winner_id), MatchWinners AS (SELECT rw.match_id, rw.winner_id FROM RoundWins rw WHERE rw.rounds_won >= 2 ) SELECT p.username, COUNT(mw.match_id) AS matches_won FROM MatchWinners mw JOIN `player` p ON mw.winner_id = p.player_id GROUP BY  p.username ORDER BY  matches_won DESC Limit 10;"
-
-    const leaderboard: any = await database.query(getLeaderBoard)
-    return {success: true, data: leaderboard[0]}
-  } catch (error) {
-    console.log(error);
-    console.log("ERROR getting leaderboard");
-    return { success: false, leaderboard: null };
-  }
-}
