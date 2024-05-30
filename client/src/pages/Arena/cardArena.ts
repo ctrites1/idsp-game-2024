@@ -102,9 +102,11 @@ export function setupDropZones() {
     playerHand.classList.remove("drag-hover-glow");
     if (isDragEvent(event) && event.dataTransfer) {
       const cardId = event.dataTransfer.getData("text/plain");
+      console.log(cardId);
       const card = document.querySelector(
         `#playerTrench #${cardId}`
       ) as HTMLElement;
+      console.log(card);
       console.log("Card classes: ", card.classList);
       if (card.classList.contains("just-played")) {
         moveCardBackToHand(card);
