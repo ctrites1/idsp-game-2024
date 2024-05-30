@@ -7,8 +7,6 @@ import { socket } from "../../main";
 import { countCards } from "./laneArena";
 import { showLobbyPage } from "../Lobby/lobby";
 import { startgame } from "./game";
-import { markRoundWinner, updateRoundIndicator } from "./roundCounter";
-import { logout } from "../Homepage/choosePlayer";
 import { createHowToPlayPopup } from "./tutorial";
 import { addRouteToBtn } from "../routing";
 import { showResult } from "./showResult";
