@@ -13,6 +13,9 @@ export async function displayDeckChoice(gamestate: any) {
   modalText.id = "modal-text";
   modalText.textContent = "Choose your Element";
 
+  const buttonContent = document.createElement("div");
+  buttonContent.className = "modal-button";
+
   const iceBtn = document.createElement("button");
   iceBtn.innerHTML = "ICE";
   iceBtn.type = "submit";
@@ -33,9 +36,10 @@ export async function displayDeckChoice(gamestate: any) {
   });
 
   modalContent.appendChild(modalText);
-  modalContent.appendChild(iceBtn);
-  modalContent.appendChild(waterBtn);
-  modalContent.appendChild(fireBtn);
+  buttonContent.appendChild(iceBtn);
+  buttonContent.appendChild(waterBtn);
+  buttonContent.appendChild(fireBtn);
+  modalContent.appendChild(buttonContent);
 
   modal.appendChild(modalContent);
   body.appendChild(modal);

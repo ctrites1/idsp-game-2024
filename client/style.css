@@ -773,6 +773,8 @@ html {
 
 .modal {
   display: none;
+  justify-content: center;
+  align-items: center;
   position: fixed;
   z-index: 1;
   left: 0;
@@ -784,18 +786,23 @@ html {
 }
 
 .modal-content {
-  /* background-image:url("/assets/update/modal.svg"); */
   background: radial-gradient(circle, #1a1a1a 0%, transparent 70%);
   background-repeat: no-repeat;
   margin-top: 10%;
-  position: absolute;
-  display: block;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   top: 2em;
   height: 10rem;
-  width: 80rem;
+  width: 100vw;
   font-size: 2em;
+}
+
+.modal-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal-content p {
