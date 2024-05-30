@@ -108,7 +108,6 @@ export async function createArenaPage() {
   ) as HTMLButtonElement;
   surrenderButton.addEventListener("click", () => {
     console.log("Surrender clicked");
-    showResult("lose");
     // TODO: Logic to handle log viewing to be added here
   });
 
@@ -140,32 +139,54 @@ export async function createArenaPage() {
       if (gameState.gameWinner === playerId) {
         opp?.setAttribute("win", "lose");
         showResult("win");
-        setTimeout(() => {
+        setTimeout(async () => {
           socket.send("hello", playerId);
           clearTrench();
-          showLobbyPage();
+          await showLobbyPage();
         }, 10000);
       } else {
         opp?.setAttribute("win", "win");
         showResult("lose");
-        setTimeout(() => {
+        setTimeout(async () => {
           socket.send("hello", playerId);
           clearTrench();
-          showLobbyPage();
+          await showLobbyPage();
         }, 10000);
       }
+    }
+    const totalMoves = countCards();
+    if (totalMoves >= 6) {
+      console.log("ROUND OVER");
+      const roundWinner = gameState.data.winner_id;
+      console.log(roundWinner);
+      if (roundWinner === playerId) {
+        opp?.setAttribute("round", "lose");
+        showResult("win");
+        setTimeout(async () => {
+          clearTrench();
+          await startgame(playerId, oppId);
+          showOpponentsTurn();
+        }, 5000);
+      } else {
+        opp?.setAttribute("round", "win");
+        showResult("lose");
+        setTimeout(async () => {
+          clearTrench();
+          await startgame(playerId, oppId);
+          showOpponentsTurn();
+        }, 5000);
+      }
+      socket.send("hello", playerId);
+      endTurnButton.disabled = true;
+    } else {
+      socket.send("hello", playerId);
+      showOpponentsTurn();
+      endTurnButton.disabled = true;
       return;
     }
     socket.send("hello", playerId);
-    const totalMoves = countCards();
-    if (totalMoves >= 6) {
-      clearTrench();
-      await startgame(playerId, oppId);
-      return;
-    }
     showOpponentsTurn();
     endTurnButton.disabled = true;
   });
-
   setupDropZones();
 }

@@ -284,6 +284,7 @@ async function createServer() {
       return;
     }
     const isRoundOver = await countTotalMoves(move.roundId, move.winnerId);
+    console.log(isRoundOver);
     if (isRoundOver?.gameOver) {
       res.json({
         success: true,
