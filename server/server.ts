@@ -19,6 +19,7 @@ import {
   getLobbyData,
   getUsernameById,
   getLeaderBoard,
+  getRoundsData,
 } from "../server/databaseAccess";
 import bodyParser from "body-parser";
 import cookieSession from "cookie-session";
@@ -241,12 +242,16 @@ async function createServer() {
 
     roundState.data.player_1_username = player1Username.username.username;
     roundState.data.player_2_username = player2Username.username.username;
+
+    console.log("starting");
+        const roundsWon = await getRoundsData(currentGame.match_id);
     if (!roundState?.success) {
       res.json({
         gameState: false,
         data: roundState.data,
         oppID: players.opponent,
         round: currentGame.round,
+        roundsWon: roundsWon.data,
       });
       return;
     }

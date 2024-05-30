@@ -141,6 +141,7 @@ export async function createArenaPage() {
 		const opp = document.querySelector("#oppHill");
 		const oppId: number = Number(opp?.getAttribute("player-id"));
 		const gameState = await logMove();
+        countCards();
 		if (gameState.gameOver) {
 			// Show winner from gameState.gameWinner (id)
 			socket.send("hello", playerId);
