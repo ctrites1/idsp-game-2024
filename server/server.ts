@@ -82,14 +82,21 @@ async function createServer() {
 
 	io.listen(server);
 
-	io.on("connection", (socket) => {
-		socket.on("message", async (...arg) => {
-			if (typeof arg[1] === "number") {
-				const newMove = await getLatestOppMove(arg[1]);
-				socket.broadcast.emit("update", newMove);
-			}
-		});
-	});
+  io.on("connection", (socket) => {
+    socket.on("message", async (...arg) => {
+      const data = arg[1];
+      if (typeof data[0] === "number") {
+        const newMove = await getLatestOppMove(data[0]);
+        if (data[1] === "game") {
+          newMove.winner = data[2];
+        }
+        if (data[1] === "round") {
+          newMove.roundWinner = data[2];
+        }
+        socket.broadcast.emit("update", newMove);
+      }
+    });
+  });
 
 	app.post("/api/login", async (req: Request, res: Response) => {
 		const { username, password } = req.body;
@@ -299,22 +306,20 @@ async function createServer() {
 		res.json({ success: true });
 	});
 
-	app.get("/api/players", async (req, res) => {
-		if (!req.session?.playerId) {
-			res.json({
-				success: false,
-				data: "Session Error - could not authenticate player",
-			});
-			return;
-		}
-		const playerId = req.session.playerId;
-		const response = await getLobbyData(playerId);
-		console.log("playerId: ", playerId);
-		console.log("response", response);
+  app.get("/api/players", async (req, res) => {
+    if (!req.session?.playerId) {
+      res.json({
+        success: false,
+        data: "Session Error - could not authenticate player",
+      });
+      return;
+    }
+    const playerId = req.session.playerId;
+    const response = await getLobbyData(playerId);
 
-		res.json(response);
-	});
-	app.use("*", express.static(path.join(__dirname, "../client/dist")));
+    res.json(response);
+  });
+  app.use("*", express.static(path.join(__dirname, "../client/dist")));
 
 	server.listen(port, "0.0.0.0", () => {
 		console.log(`server running on http://0.0.0.0:${port}`);
