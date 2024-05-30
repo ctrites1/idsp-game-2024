@@ -1,7 +1,8 @@
 import { createCard, dragstartHandler, moveCardToTrench } from "./cardArena";
 import { addCardToOppTrench } from "./trenchArena";
 import { updateRoundIndicator } from "./roundCounter";
-import { updateTurnCounter } from "./laneArena";
+import { showRoundChange } from "./roundChange";
+import { countCards } from "./laneArena";
 
 export async function startgame(playerId: number, oppId: number) {
   const game = await fetch("/api/startgame", {
@@ -39,8 +40,9 @@ export async function currentgame(playerId: number, oppId: number) {
 }
 
 async function setupGameState(gameState: any, playerId: number, oppId: number) {
+  showRoundChange(gameState.round)
   updateRoundIndicator(gameState.round);
-  updateTurnCounter();
+  countCards();
   let roundId = gameState.round_id;
   if (gameState.data) {
     roundId = gameState.data.round_id;

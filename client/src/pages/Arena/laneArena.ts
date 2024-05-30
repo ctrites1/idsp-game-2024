@@ -1,22 +1,9 @@
-interface turnState {
-  currentTurn: number;
-  maxTurns: number;
-}
 
-const turnState: turnState = {
-  currentTurn: 0,
-  maxTurns: 3,
-};
 
-export function updateTurnCounter(): void {
-  turnState.currentTurn += 1;
-  displayTurnCounter();
-}
-
-function displayTurnCounter(): void {
+function displayTurnCounter(turn: number): void {
   const turnDisplay = document.querySelector(".turn-indicator");
   if (turnDisplay) {
-    turnDisplay.textContent = `Turn ${turnState.currentTurn}/${turnState.maxTurns}`;
+    turnDisplay.textContent = `Turn ${turn}/3`;
   } else {
     console.error("element not found");
   }
@@ -31,5 +18,7 @@ export function countCards() {
   const playerCards = Array.from(playerTrench?.querySelectorAll(".cardHolder"));
   const oppCardsPlayed = oppCards.filter((card) => card.hasChildNodes());
   const playerCardsPlayed = playerCards.filter((card) => card.hasChildNodes());
+  displayTurnCounter(playerCardsPlayed.length);
+  console.log("pla", playerCardsPlayed.length);
   return oppCardsPlayed.length + playerCardsPlayed.length;
 }

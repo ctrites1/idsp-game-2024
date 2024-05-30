@@ -243,6 +243,7 @@ export async function checkForExistingGame(
         player_1_username: gameAlreadyExists[0].player_1_username,
         player_2_username: gameAlreadyExists[0].player_2_username,
         round: roundCount[0][0].round,
+        match_id: gameAlreadyExists[0].match_id,
       };
     }
     return { gameExists: false, round_id: null };
@@ -794,5 +795,18 @@ export async function getLeaderBoard() {
     console.log(error);
     console.log("ERROR getting leaderboard");
     return { success: false, leaderboard: null };
+  }
+}
+
+export async function getRoundsData(matchId: number) {
+  try {
+    const sql =
+      "select r.winner_id, count(round_id) as roundswon from round as r join `match` as m on r.match_id = m.match_id where r.match_id = :matchId group by winner_id;";
+
+    const rounds: any = await database.query(sql, { matchId: matchId });
+    return { sucess: true, data: rounds };
+  } catch (error) {
+    console.log(error);
+    return { success: false, data: null };
   }
 }
