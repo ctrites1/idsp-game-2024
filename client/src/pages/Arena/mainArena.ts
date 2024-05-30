@@ -139,53 +139,52 @@ export async function createArenaPage() {
       if (gameState.gameWinner === playerId) {
         opp?.setAttribute("win", "lose");
         showResult("win");
+        socket.send("hello", [playerId, "game", gameState.gameWinner]);
         setTimeout(async () => {
-          socket.send("hello", playerId);
           clearTrench();
           await showLobbyPage();
         }, 10000);
+        return;
       } else {
         opp?.setAttribute("win", "win");
         showResult("lose");
+        socket.send("hello", [playerId, "game", gameState.gameWinner]);
         setTimeout(async () => {
-          socket.send("hello", playerId);
           clearTrench();
           await showLobbyPage();
         }, 10000);
+        return;
       }
     }
     const totalMoves = countCards();
     if (totalMoves >= 6) {
-      console.log("ROUND OVER");
       const roundWinner = gameState.data.winner_id;
-      console.log(roundWinner);
       if (roundWinner === playerId) {
-        opp?.setAttribute("round", "lose");
         showResult("win");
+        socket.send("hello", [playerId, "round", roundWinner]);
         setTimeout(async () => {
           clearTrench();
           await startgame(playerId, oppId);
           showOpponentsTurn();
         }, 5000);
       } else {
-        opp?.setAttribute("round", "win");
         showResult("lose");
+        socket.send("hello", [playerId, "round", roundWinner]);
         setTimeout(async () => {
           clearTrench();
           await startgame(playerId, oppId);
           showOpponentsTurn();
         }, 5000);
       }
-      socket.send("hello", playerId);
-      endTurnButton.disabled = true;
+      return;
     } else {
-      socket.send("hello", playerId);
-      showOpponentsTurn();
+      socket.send("hello", [playerId, null]);
+      //   showOpponentsTurn();
       endTurnButton.disabled = true;
       return;
     }
-    socket.send("hello", playerId);
-    showOpponentsTurn();
+    socket.send("hello", [playerId, null]);
+    //showOpponentsTurn();
     endTurnButton.disabled = true;
   });
   setupDropZones();

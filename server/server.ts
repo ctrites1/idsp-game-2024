@@ -84,8 +84,15 @@ async function createServer() {
 
   io.on("connection", (socket) => {
     socket.on("message", async (...arg) => {
-      if (typeof arg[1] === "number") {
-        const newMove = await getLatestOppMove(arg[1]);
+      const data = arg[1];
+      if (typeof data[0] === "number") {
+        const newMove = await getLatestOppMove(data[0]);
+        if (data[1] === "game") {
+          newMove.winner = data[2];
+        }
+        if (data[1] === "round") {
+          newMove.roundWinner = data[2];
+        }
         socket.broadcast.emit("update", newMove);
       }
     });
@@ -284,7 +291,6 @@ async function createServer() {
       return;
     }
     const isRoundOver = await countTotalMoves(move.roundId, move.winnerId);
-    console.log(isRoundOver);
     if (isRoundOver?.gameOver) {
       res.json({
         success: true,

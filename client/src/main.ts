@@ -41,21 +41,34 @@ export async function update(...cardData: any) {
     modal?.remove();
     const totalMoves = countCards();
     if (totalMoves >= 6) {
-      const winner = player?.getAttribute("round") as "win" | "lose";
-      showResult(winner);
-      setTimeout(async () => {
-        clearTrench();
-        await startgame(playerId, oppId);
-      }, 5000);
-      clearTrench();
+      if (cardData[0].roundWinner === playerId) {
+        showResult("win");
+        setTimeout(async () => {
+          clearTrench();
+          await startgame(playerId, oppId);
+        }, 5000);
+      } else {
+        showResult("lose");
+        setTimeout(async () => {
+          clearTrench();
+          await startgame(playerId, oppId);
+        }, 5000);
+      }
     }
     if (totalMoves === 2 && round === 3) {
-      const winner = opp?.getAttribute("win") as "win" | "lose";
-      showResult(winner);
-      setTimeout(async () => {
-        clearTrench();
-        await showLobbyPage();
-      }, 10000);
+      if (cardData[0].winner === playerId) {
+        showResult("win");
+        setTimeout(async () => {
+          clearTrench();
+          await showLobbyPage();
+        }, 10000);
+      } else {
+        showResult("lose");
+        setTimeout(async () => {
+          clearTrench();
+          await showLobbyPage();
+        }, 10000);
+      }
     }
   }
 }
