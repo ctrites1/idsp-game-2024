@@ -10,6 +10,8 @@ import { startgame } from "./game";
 import { showResult } from "./showResult";
 import { markRoundWinner, updateRoundIndicator } from "./roundCounter";
 import { logout } from "../Homepage/choosePlayer";
+import { createHowToPlayPopup } from "./tutorial";
+import { addRouteToBtn } from "../routing";
 
 export async function createArenaPage() {
 	const body = document.querySelector("body") as HTMLBodyElement;
@@ -135,8 +137,13 @@ export async function createArenaPage() {
 	const homeButton = document.querySelector(
 		".home-button"
 	) as HTMLButtonElement;
-	homeButton?.addEventListener("click", async () => {
-		await showLobbyPage();
+	await addRouteToBtn(homeButton, "/lobby");
+
+	const howTobutton = document.querySelector(
+		".howTo-button"
+	) as HTMLButtonElement;
+	howTobutton.addEventListener("click", () => {
+		createHowToPlayPopup();
 	});
 
   const endTurnButton = document.querySelector(
