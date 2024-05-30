@@ -34,26 +34,26 @@ export async function update(...cardData: any) {
     addCardToOppTrench(cardPlayed);
     endTurnBtn?.removeAttribute("card-played");
     endTurnBtn.disabled = false;
-    const modal = document.querySelector("#modal");
+    const modal = Array.from(document.querySelectorAll("#modal"));
     const roundCounter = document.querySelector(".round-indicator")
       ?.innerHTML as string;
     const round = Number(roundCounter.substring(6, 7));
-    modal?.remove();
+    modal?.map((m) => m.remove());
     const totalMoves = countCards();
     if (totalMoves >= 6) {
       if (cardData[0].roundWinner === playerId) {
         showResult("win");
         setTimeout(async () => {
-          const modal = document.querySelector("#modal");
-          modal?.remove();
+          const modal = Array.from(document.querySelectorAll("#modal"));
+          modal?.map((m) => m.remove());
           clearTrench();
           await startgame(playerId, oppId);
         }, 5000);
       } else {
         showResult("lose");
         setTimeout(async () => {
-          const modal = document.querySelector("#modal");
-          modal?.remove();
+          const modal = Array.from(document.querySelectorAll("#modal"));
+          modal?.map((m) => m.remove());
           clearTrench();
           await startgame(playerId, oppId);
         }, 5000);
@@ -63,16 +63,16 @@ export async function update(...cardData: any) {
       if (cardData[0].winner === playerId) {
         showResult("win");
         setTimeout(async () => {
-          const modal = document.querySelector("#modal");
-          modal?.remove();
+          const modal = Array.from(document.querySelectorAll("#modal"));
+          modal?.map((m) => m.remove());
           clearTrench();
           await showLobbyPage();
         }, 10000);
       } else {
         showResult("lose");
         setTimeout(async () => {
-          const modal = document.querySelector("#modal");
-          modal?.remove();
+          const modal = Array.from(document.querySelectorAll("#modal"));
+          modal?.map((m) => m.remove());
           clearTrench();
           await showLobbyPage();
         }, 10000);

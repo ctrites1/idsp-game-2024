@@ -146,9 +146,8 @@ export async function createArenaPage() {
         showResult("win");
         socket.send("hello", [playerId, "game", gameState.gameWinner]);
         setTimeout(async () => {
-          const modal = document.querySelector("#modal");
-          console.log(modal);
-          modal?.remove();
+          const modal = Array.from(document.querySelectorAll("#modal"));
+          modal?.map((m) => m.remove());
           clearTrench();
           await showLobbyPage();
         }, 10000);
@@ -157,9 +156,8 @@ export async function createArenaPage() {
         showResult("lose");
         socket.send("hello", [playerId, "game", gameState.gameWinner]);
         setTimeout(async () => {
-          const modal = document.querySelector("#modal");
-          console.log(modal);
-          modal?.remove();
+          const modal = Array.from(document.querySelectorAll("#modal"));
+          modal?.map((m) => m.remove());
           clearTrench();
           await showLobbyPage();
         }, 10000);
