@@ -75,7 +75,12 @@ const generatePlayersTable = async (): Promise<HTMLDivElement> => {
 
 		playersTable.appendChild(newRow);
 	});
-	return playersTable;
+
+	const playerTableContainer = document.createElement("div") as HTMLDivElement;
+	playerTableContainer.classList.add("players-table-container");
+	playerTableContainer.appendChild(playersTable);
+
+	return playerTableContainer;
 };
 
 const createLobbyHeader = () => {
@@ -107,7 +112,7 @@ const getLeaderboardData = async () => {
 
 const createLeaderboard = async () => {
 	const leaderboardContainer = document.createElement("div");
-	leaderboardContainer.classList.add("leaderboard");
+	leaderboardContainer.classList.add("leaderboard-container");
 
 	const title = document.createElement("h1");
 	title.textContent = "Leaderboard";
@@ -121,7 +126,7 @@ const createLeaderboard = async () => {
 	thead.innerHTML = `
 	  <tr>
 		<th>Player</th>
-		<th>Total Matches Won</th>
+		<th>Games Won</th>
 	  </tr>
 	`;
 	leaderboardTable.appendChild(thead);
@@ -159,14 +164,23 @@ export const showLobbyPage = async () => {
 	if (body.querySelector("lobby-container")) {
 		return;
 	}
-	const lobbyDiv = document.createElement("div") as HTMLDivElement;
+	const lobbyContainer = document.createElement("div") as HTMLDivElement;
 	const playersTable = await generatePlayersTable();
 	const leaderboardContainer = await createLeaderboard();
 
-	lobbyDiv.classList.add("lobby-container");
-	lobbyDiv.appendChild(createLobbyHeader());
-	lobbyDiv.appendChild(playersTable);
-	lobbyDiv.appendChild(leaderboardContainer);
+	lobbyContainer.classList.add("lobby-container");
+	lobbyContainer.appendChild(createLobbyHeader());
 
-	body.appendChild(lobbyDiv);
+	const playerTableAndLeaderboardContainer = document.createElement(
+		"div"
+	) as HTMLDivElement;
+	playerTableAndLeaderboardContainer.classList.add(
+		"player-table-leaderboard-container"
+	);
+
+	playerTableAndLeaderboardContainer.appendChild(playersTable);
+	playerTableAndLeaderboardContainer.appendChild(leaderboardContainer);
+	lobbyContainer.appendChild(playerTableAndLeaderboardContainer);
+
+	body.appendChild(lobbyContainer);
 };
