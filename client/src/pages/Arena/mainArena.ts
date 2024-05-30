@@ -6,6 +6,7 @@ import { countCards } from "./laneArena";
 import { showLobbyPage } from "../Lobby/lobby";
 import { startgame } from "./game";
 import { logout } from "../Homepage/choosePlayer";
+import { createHowToPlayPopup } from "./tutorial";
 
 export async function createArenaPage() {
 	const body = document.querySelector("body") as HTMLBodyElement;
@@ -124,6 +125,11 @@ export async function createArenaPage() {
 	homeButton?.addEventListener("click", async () => {
 		await showLobbyPage();
 	});
+
+    const howTobutton = document.querySelector(".howTo-button") as HTMLButtonElement;
+    howTobutton.addEventListener("click", () => {
+        createHowToPlayPopup();
+    })
 
 	const endTurnButton = document.querySelector(
 		".endTurn-button"
