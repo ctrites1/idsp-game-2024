@@ -664,7 +664,7 @@ export async function countTotalRounds(matchId: number) {
   return totalRounds;
 }
 
-async function endGame(matchId: number) {
+export async function endGame(matchId: number) {
   try {
     const completeGame =
       "UPDATE `match` SET is_completed = 1 WHERE match_id = :match_id;";

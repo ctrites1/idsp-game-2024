@@ -20,6 +20,7 @@ import {
   getUsernameById,
   getLeaderBoard,
   getRoundsData,
+  endGame,
 } from "../server/databaseAccess";
 import bodyParser from "body-parser";
 import cookieSession from "cookie-session";
@@ -326,6 +327,17 @@ async function createServer() {
 
     res.json(response);
   });
+
+  app.post("/api/surrender", async (req, res) => {
+    const match_id = req.body.matchId;
+    const gameEnded = await endGame(match_id);
+    if (gameEnded) {
+      res.json({ success: true });
+    } else {
+      res.json({ success: false, message: "Error ending match" });
+    }
+  });
+
   app.use("*", express.static(path.join(__dirname, "../client/dist")));
 
   server.listen(port, "0.0.0.0", () => {
