@@ -257,7 +257,7 @@ async function createServer() {
         data: roundState.data,
         oppID: players.opponent,
         round: currentGame.round,
-        roundsWon: roundsWon.data,
+        round_winner: roundsWon.data,
       });
       return;
     }
@@ -266,6 +266,7 @@ async function createServer() {
       data: roundState.data,
       oppID: players.opponent,
       round: currentGame.round,
+      round_winner: roundsWon.data,
     });
   });
 

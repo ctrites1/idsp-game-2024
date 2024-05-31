@@ -1,6 +1,6 @@
 import { createCard, dragstartHandler, moveCardToTrench } from "./cardArena";
 import { addCardToOppTrench } from "./trenchArena";
-import { updateRoundIndicator } from "./roundCounter";
+import { markRoundWinner, updateRoundIndicator } from "./roundCounter";
 import { showRoundChange } from "./roundChange";
 import { countCards } from "./laneArena";
 
@@ -20,6 +20,7 @@ export async function startgame(playerId: number, oppId: number) {
   if (response) {
     const cg = await currentgame(playerId, oppId);
     await setupGameState(cg, playerId, oppId);
+    markRoundWinner(cg.round_winner);
     return cg;
   }
 }

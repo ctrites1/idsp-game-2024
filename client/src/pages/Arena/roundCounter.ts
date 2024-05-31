@@ -8,21 +8,35 @@ export function updateRoundIndicator(round: number) {
   }
 }
 
-export function markRoundWinner(round: number, winnerId: number) {
+export function markRoundWinner(data: any) {
   const playerRoundLog = document.querySelector(".player-round-log");
   const oppRoundLog = document.querySelector(".opp-round-log");
-  const playerId = Number(
-    document.querySelector("#playerHill")?.getAttribute("player-id")
-  );
+  const playerId1 = document.querySelector("#playerHill")?.getAttribute("player-id");
+  const playerId = Number(playerId1)
 
-  if (winnerId === playerId) {
-    // Update the player round log
-    const playerRound = playerRoundLog?.querySelector(`.player-round-${round}`);
-    console.log(`this is my round: ${round}`);
-    playerRound?.classList.add("win");
-  } else {
-    // Update the opponent round log
-    const oppRound = oppRoundLog?.querySelector(`.opp-round-${round}`);
-    oppRound?.classList.add("win");
+  if (data.length > 0) {
+    data.forEach((element: any) => {
+      const { winner_id, roundswon } = element;
+
+      if (winner_id !== null && roundswon > 0) {
+        for (let round = 1; round <= roundswon; round++) {
+          if (winner_id === playerId) {
+            const playerRound = playerRoundLog?.querySelector(`.player-round-${round}`) as HTMLElement;
+            if (playerRound) {
+              playerRound.style.backgroundColor = "white";
+              playerRound.classList.add("win");
+              console.log(`Player won round: ${round}`);
+            }
+          } else {
+            const oppRound = oppRoundLog?.querySelector(`.opp-round-${round}`) as HTMLElement;
+            if (oppRound) {
+              oppRound.style.backgroundColor = "white";
+              oppRound.classList.add("win");
+              console.log(`Opponent won round: ${round}`);
+            }
+          }
+        }
+      }
+    });
   }
 }

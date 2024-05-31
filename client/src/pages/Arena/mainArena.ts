@@ -26,8 +26,8 @@ export async function createArenaPage() {
           
           <div class="player-round-log">
           <div class="player-round-3"></div>
-          <div class="player-round-1"></div>
           <div class="player-round-2"></div>
+          <div class="player-round-1"></div>
           </div>
 
         <div class="round-indicator">
