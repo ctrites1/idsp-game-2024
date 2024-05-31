@@ -7,7 +7,7 @@ import { showLobbyPage } from "./pages/Lobby/lobby";
 import { startgame } from "./pages/Arena/game";
 import { showResult } from "./pages/Arena/showResult";
 
-export const socket = io("http://localhost:5173", {
+export const socket = io("https://idsp-game-2024.onrender.com", {
   reconnection: true,
   reconnectionAttempts: Infinity,
   reconnectionDelay: 1000,
