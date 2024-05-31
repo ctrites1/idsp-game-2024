@@ -15,6 +15,7 @@ export const socket = io("http://localhost:5173", {
   timeout: 20000,
 });
 
+socket.off("update", update);
 socket.on("update", update);
 
 export async function update(...cardData: any) {

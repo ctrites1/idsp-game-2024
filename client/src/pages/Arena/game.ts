@@ -40,7 +40,7 @@ export async function currentgame(playerId: number, oppId: number) {
 }
 
 async function setupGameState(gameState: any, playerId: number, oppId: number) {
-  showRoundChange(gameState.round)
+  //showRoundChange(gameState.round)
   updateRoundIndicator(gameState.round);
   countCards();
   let roundId = gameState.round_id;
