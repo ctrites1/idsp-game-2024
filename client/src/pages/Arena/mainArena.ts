@@ -99,41 +99,41 @@ export async function createArenaPage() {
                 <div class="playerDeck"></div>
                 <div class="action-buttons">
                     <button class="endTurn-button" type="button">End Turn</button>
+					<button class="surrender-button" type="button">Surrender</button>
+					<button class="log-button" type="button">Log</button>
                 </div>
         </footer>
     `;
 	body.innerHTML = content;
 
-	// const surrenderButton = document.querySelector(
-	// 	".surrender-button"
-	// ) as HTMLButtonElement;
+	const surrenderButton = document.querySelector(
+		".surrender-button"
+	) as HTMLButtonElement;
 
-	// <button class="surrender-button" type="button">Surrender</button>
-	// <button class="log-button" type="button">Log</button>
-	// surrenderButton.addEventListener("click", async () => {
-	// 	console.log("Surrender clicked");
-	// 	const playerHill = document.querySelector("#playerHill");
-	// 	const oppHill = document.querySelector("#oppHill");
-	// 	const playerId: number = Number(playerHill?.getAttribute("player-id"));
-	// 	const oppId: number = Number(oppHill?.getAttribute("opp-id"));
-	// 	// const matchId = await getCurrentMatchId(playerId, oppId);
-	// 	const response = await fetch("/api/surrender", {
-	// 		method: "POST",
-	// 		headers: {
-	// 			"Content-Type": "application/json",
-	// 		},
-	// 		body: JSON.stringify({ playerId, oppId }),
-	// 	});
-	// 	const result = await response.json();
-	// 	if (result.success) {
-	// 		console.log(`Player surrendered`);
-	// 		clearTrench();
-	// 		showResult("lose");
-	// 		await showLobbyPage();
-	// 	} else {
-	// 		console.error("Failed to surrender the game:", result.message);
-	// 	}
-	// });
+	surrenderButton.addEventListener("click", async () => {
+		console.log("Surrender clicked");
+		const playerHill = document.querySelector("#playerHill");
+		const oppHill = document.querySelector("#oppHill");
+		const playerId: number = Number(playerHill?.getAttribute("player-id"));
+		const oppId: number = Number(oppHill?.getAttribute("opp-id"));
+		// const matchId = await getCurrentMatchId(playerId, oppId);
+		const response = await fetch("/api/surrender", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ playerId, oppId }),
+		});
+		const result = await response.json();
+		if (result.success) {
+			console.log(`Player surrendered`);
+			clearTrench();
+			showResult("lose");
+			await showLobbyPage();
+		} else {
+			console.error("Failed to surrender the game:", result.message);
+		}
+	});
 
 	const logoutBtn = document.querySelector(
 		"logout-button"
