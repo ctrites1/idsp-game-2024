@@ -1,7 +1,11 @@
 import { clearHillScores, playersScore, updateHillScores } from "./hillArena";
 
 export function addCardToOppTrench(card: HTMLDivElement) {
-  const trench = document.querySelector("#oppTrench")!;
+  const trench = document.querySelector("#oppTrench") as HTMLDivElement;
+  const playedAlready = checkForDuplicates(card, trench);
+  if (playedAlready) {
+    return;
+  }
   const cardHolders = trench.querySelectorAll(".cardHolder");
   let counter = 0;
   const trenchPos = Array.from(cardHolders).map((h) => {
@@ -76,5 +80,18 @@ export async function logMove() {
     });
     const res: any = status.json();
     return res;
+  }
+}
+
+function checkForDuplicates(
+  card: HTMLDivElement,
+  oppTrench: HTMLDivElement
+): boolean {
+  const cardId = card.getAttribute("id");
+  const cardPlayed = oppTrench.querySelector(`#${cardId}`);
+  if (cardPlayed) {
+    return true;
+  } else {
+    return false;
   }
 }

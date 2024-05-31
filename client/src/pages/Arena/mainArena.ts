@@ -181,6 +181,8 @@ export async function createArenaPage() {
     if (totalMoves >= 6) {
       const roundWinner = gameState.data.winner_id;
       if (roundWinner === playerId) {
+        const modal = Array.from(document.querySelectorAll("#modal"));
+        modal?.map((m) => m.remove());
         showResult("win");
         socket.send("hello", [playerId, "round", roundWinner]);
         setTimeout(async () => {
@@ -189,6 +191,8 @@ export async function createArenaPage() {
           showOpponentsTurn();
         }, 5000);
       } else {
+        const modal = Array.from(document.querySelectorAll("#modal"));
+        modal?.map((m) => m.remove());
         showResult("lose");
         socket.send("hello", [playerId, "round", roundWinner]);
         setTimeout(async () => {
@@ -197,16 +201,12 @@ export async function createArenaPage() {
           showOpponentsTurn();
         }, 5000);
       }
-      return;
     } else {
       socket.send("hello", [playerId, null]);
-      //   showOpponentsTurn();
+      showOpponentsTurn();
       endTurnButton.disabled = true;
       return;
     }
-    socket.send("hello", [playerId, null]);
-    //showOpponentsTurn();
-    endTurnButton.disabled = true;
   });
   setupDropZones();
 }

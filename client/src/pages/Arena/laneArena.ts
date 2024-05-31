@@ -1,7 +1,11 @@
-
-
 function displayTurnCounter(turn: number): void {
   const turnDisplay = document.querySelector(".turn-indicator");
+  if (turn > 3) {
+    turn = 3;
+  }
+  if (turn < 1) {
+    turn = 1;
+  }
   if (turnDisplay) {
     turnDisplay.textContent = `Turn ${turn}/3`;
   } else {
@@ -18,7 +22,6 @@ export function countCards() {
   const playerCards = Array.from(playerTrench?.querySelectorAll(".cardHolder"));
   const oppCardsPlayed = oppCards.filter((card) => card.hasChildNodes());
   const playerCardsPlayed = playerCards.filter((card) => card.hasChildNodes());
-  displayTurnCounter(playerCardsPlayed.length);
-  console.log("pla", playerCardsPlayed.length);
+  displayTurnCounter(playerCardsPlayed.length + 1);
   return oppCardsPlayed.length + playerCardsPlayed.length;
 }

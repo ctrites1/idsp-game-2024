@@ -42,6 +42,7 @@ export async function update(...cardData: any) {
     modal?.map((m) => m.remove());
     const totalMoves = countCards();
     if (totalMoves >= 6) {
+      modal?.map((m) => m.remove());
       if (cardData[0].roundWinner === playerId) {
         showResult("win");
         setTimeout(async () => {
@@ -61,6 +62,7 @@ export async function update(...cardData: any) {
       }
     }
     if (totalMoves === 2 && round === 3) {
+      modal?.map((m) => m.remove());
       if (cardData[0].winner === playerId) {
         showResult("win");
         setTimeout(async () => {
