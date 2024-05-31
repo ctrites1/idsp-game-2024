@@ -136,7 +136,7 @@ export async function createArenaPage() {
 	});
 
 	const logoutBtn = document.querySelector(
-		"logout-button"
+		".logout-button"
 	) as HTMLButtonElement;
 	logoutBtn.addEventListener("click", async () => {
 		await logout();
