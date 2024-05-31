@@ -113,14 +113,16 @@ export async function createArenaPage() {
 	surrenderButton.addEventListener("click", async () => {
 		console.log("Surrender clicked");
 		const playerHill = document.querySelector("#playerHill");
+		const oppHill = document.querySelector("#oppHill");
 		const playerId: number = Number(playerHill?.getAttribute("player-id"));
-		const matchId = await getCurrentMatchId(playerId);
+		const oppId: number = Number(oppHill?.getAttribute("opp-id"));
+		// const matchId = await getCurrentMatchId(playerId, oppId);
 		const response = await fetch("/api/surrender", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({ matchId }),
+			body: JSON.stringify({ playerId, oppId }),
 		});
 		const result = await response.json();
 		if (result.success) {
@@ -219,14 +221,17 @@ export async function createArenaPage() {
 	setupDropZones();
 }
 
-async function getCurrentMatchId(playerId: number): Promise<number> {
-	const response = await fetch("/api/currentgame", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({ playerId }),
-	});
-	const result = await response.json();
-	return result.data.matchId;
-}
+// async function getCurrentMatchId(
+//   playerId: number,
+//   oppId: number
+// ): Promise<number> {
+//   const response = await fetch("/api/currentgame", {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify({ playerId, oppId }),
+//   });
+//   const result = await response.json();
+//   return result.data.matchId;
+// }

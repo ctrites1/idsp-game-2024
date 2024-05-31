@@ -330,10 +330,16 @@ async function createServer() {
   });
 
   app.post("/api/surrender", async (req, res) => {
-    const match_id = req.body.matchId;
-    const gameEnded = await endGame(match_id);
-    if (gameEnded) {
-      res.json({ success: true });
+    const playerId = req.body.playerId;
+    const oppId = req.body.oppId;
+    const game = await checkForExistingGame(playerId, oppId);
+    if (game.match_id) {
+      const gameEnded = await endGame(game.match_id);
+      if (gameEnded) {
+        res.json({ success: true });
+      } else {
+        res.json({ success: false, message: "Error ending match" });
+      }
     } else {
       res.json({ success: false, message: "Error ending match" });
     }
