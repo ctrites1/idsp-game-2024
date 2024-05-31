@@ -10,10 +10,11 @@ import { startgame } from "./game";
 import { createHowToPlayPopup } from "./tutorial";
 import { addRouteToBtn } from "../routing";
 import { showResult } from "./showResult";
+import { logout } from "../Homepage/choosePlayer";
 
 export async function createArenaPage() {
-  const body = document.querySelector("body") as HTMLBodyElement;
-  const content: string = `
+	const body = document.querySelector("body") as HTMLBodyElement;
+	const content: string = `
         <header>
           <div class="header-btns">
             <button type="button" class="logout-button">
@@ -103,122 +104,130 @@ export async function createArenaPage() {
                 </div>
         </footer>
     `;
-  body.innerHTML = content;
+	body.innerHTML = content;
 
-  const surrenderButton = document.querySelector(
-    ".surrender-button"
-  ) as HTMLButtonElement;
+	const surrenderButton = document.querySelector(
+		".surrender-button"
+	) as HTMLButtonElement;
 
-  surrenderButton.addEventListener("click", async () => {
-    console.log("Surrender clicked");
-    const playerHill = document.querySelector("#playerHill");
-    const playerId: number = Number(playerHill?.getAttribute("player-id"));
-    const matchId = await getCurrentMatchId(playerId);
-    const response = await fetch("/api/surrender", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ matchId }),
-    });
-    const result = await response.json();
-    if (result.success) {
-      console.log(`Player surrendered`);
-      clearTrench();
-      showResult("lose");
-      await showLobbyPage();
-    } else {
-      console.error("Failed to surrender the game:", result.message);
-    }
-  });
+	surrenderButton.addEventListener("click", async () => {
+		console.log("Surrender clicked");
+		const playerHill = document.querySelector("#playerHill");
+		const playerId: number = Number(playerHill?.getAttribute("player-id"));
+		const matchId = await getCurrentMatchId(playerId);
+		const response = await fetch("/api/surrender", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ matchId }),
+		});
+		const result = await response.json();
+		if (result.success) {
+			console.log(`Player surrendered`);
+			clearTrench();
+			showResult("lose");
+			await showLobbyPage();
+		} else {
+			console.error("Failed to surrender the game:", result.message);
+		}
+	});
 
-  const homeButton = document.querySelector(
-    ".home-button"
-  ) as HTMLButtonElement;
-  await addRouteToBtn(homeButton, "/lobby");
+	const logoutBtn = document.querySelector(
+		"logout-button"
+	) as HTMLButtonElement;
+	logoutBtn.classList.add("logout-button");
+	logoutBtn.addEventListener("click", async () => {
+		await logout();
+	});
 
-  const howTobutton = document.querySelector(
-    ".howTo-button"
-  ) as HTMLButtonElement;
-  howTobutton.addEventListener("click", () => {
-    createHowToPlayPopup();
-  });
+	const homeButton = document.querySelector(
+		".home-button"
+	) as HTMLButtonElement;
+	await addRouteToBtn(homeButton, "/lobby");
 
-  const endTurnButton = document.querySelector(
-    ".endTurn-button"
-  ) as HTMLButtonElement;
-  endTurnButton.disabled = false;
-  endTurnButton?.addEventListener("click", async () => {
-    const player = document.querySelector("#playerHill");
-    const playerId: number = Number(player?.getAttribute("player-id"));
-    const opp = document.querySelector("#oppHill");
-    const oppId: number = Number(opp?.getAttribute("player-id"));
-    const gameState = await logMove();
-    if (gameState.gameOver) {
-      if (gameState.gameWinner === playerId) {
-        showResult("win");
-        socket.send("hello", [playerId, "game", gameState.gameWinner]);
-        setTimeout(async () => {
-          const modal = Array.from(document.querySelectorAll("#modal"));
-          modal?.map((m) => m.remove());
-          clearTrench();
-          await showLobbyPage();
-        }, 10000);
-        return;
-      } else {
-        showResult("lose");
-        socket.send("hello", [playerId, "game", gameState.gameWinner]);
-        setTimeout(async () => {
-          const modal = Array.from(document.querySelectorAll("#modal"));
-          modal?.map((m) => m.remove());
-          clearTrench();
-          await showLobbyPage();
-        }, 10000);
-        return;
-      }
-    }
-    const totalMoves = countCards();
-    if (totalMoves >= 6) {
-      const roundWinner = gameState.data.winner_id;
-      if (roundWinner === playerId) {
-        const modal = Array.from(document.querySelectorAll("#modal"));
-        modal?.map((m) => m.remove());
-        showResult("win");
-        socket.send("hello", [playerId, "round", roundWinner]);
-        setTimeout(async () => {
-          clearTrench();
-          await startgame(playerId, oppId);
-          showOpponentsTurn();
-        }, 5000);
-      } else {
-        const modal = Array.from(document.querySelectorAll("#modal"));
-        modal?.map((m) => m.remove());
-        showResult("lose");
-        socket.send("hello", [playerId, "round", roundWinner]);
-        setTimeout(async () => {
-          clearTrench();
-          await startgame(playerId, oppId);
-          showOpponentsTurn();
-        }, 5000);
-      }
-    } else {
-      socket.send("hello", [playerId, null]);
-      showOpponentsTurn();
-      endTurnButton.disabled = true;
-      return;
-    }
-  });
-  setupDropZones();
+	const howTobutton = document.querySelector(
+		".howTo-button"
+	) as HTMLButtonElement;
+	howTobutton.addEventListener("click", () => {
+		createHowToPlayPopup();
+	});
+
+	const endTurnButton = document.querySelector(
+		".endTurn-button"
+	) as HTMLButtonElement;
+	endTurnButton.disabled = false;
+	endTurnButton?.addEventListener("click", async () => {
+		const player = document.querySelector("#playerHill");
+		const playerId: number = Number(player?.getAttribute("player-id"));
+		const opp = document.querySelector("#oppHill");
+		const oppId: number = Number(opp?.getAttribute("player-id"));
+		const gameState = await logMove();
+		if (gameState.gameOver) {
+			if (gameState.gameWinner === playerId) {
+				showResult("win");
+				socket.send("hello", [playerId, "game", gameState.gameWinner]);
+				setTimeout(async () => {
+					const modal = Array.from(document.querySelectorAll("#modal"));
+					modal?.map((m) => m.remove());
+					clearTrench();
+					await showLobbyPage();
+				}, 10000);
+				return;
+			} else {
+				showResult("lose");
+				socket.send("hello", [playerId, "game", gameState.gameWinner]);
+				setTimeout(async () => {
+					const modal = Array.from(document.querySelectorAll("#modal"));
+					modal?.map((m) => m.remove());
+					clearTrench();
+					await showLobbyPage();
+				}, 10000);
+				return;
+			}
+		}
+		const totalMoves = countCards();
+		if (totalMoves >= 6) {
+			const roundWinner = gameState.data.winner_id;
+			if (roundWinner === playerId) {
+				const modal = Array.from(document.querySelectorAll("#modal"));
+				modal?.map((m) => m.remove());
+				showResult("win");
+				socket.send("hello", [playerId, "round", roundWinner]);
+				setTimeout(async () => {
+					clearTrench();
+					await startgame(playerId, oppId);
+					showOpponentsTurn();
+				}, 5000);
+			} else {
+				const modal = Array.from(document.querySelectorAll("#modal"));
+				modal?.map((m) => m.remove());
+				showResult("lose");
+				socket.send("hello", [playerId, "round", roundWinner]);
+				setTimeout(async () => {
+					clearTrench();
+					await startgame(playerId, oppId);
+					showOpponentsTurn();
+				}, 5000);
+			}
+		} else {
+			socket.send("hello", [playerId, null]);
+			showOpponentsTurn();
+			endTurnButton.disabled = true;
+			return;
+		}
+	});
+	setupDropZones();
 }
 
 async function getCurrentMatchId(playerId: number): Promise<number> {
-  const response = await fetch("/api/currentgame", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ playerId }),
-  });
-  const result = await response.json();
-  return result.data.matchId;
+	const response = await fetch("/api/currentgame", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({ playerId }),
+	});
+	const result = await response.json();
+	return result.data.matchId;
 }
