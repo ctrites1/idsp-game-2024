@@ -10,6 +10,7 @@ import { startgame } from "./game";
 import { createHowToPlayPopup } from "./tutorial";
 import { addRouteToBtn } from "../routing";
 import { showResult } from "./showResult";
+import { logout } from "../Homepage/choosePlayer";
 
 export async function createArenaPage() {
   const body = document.querySelector("body") as HTMLBodyElement;
@@ -132,6 +133,14 @@ export async function createArenaPage() {
     } else {
       console.error("Failed to surrender the game:", result.message);
     }
+  });
+
+  const logoutBtn = document.querySelector(
+    "logout-button"
+  ) as HTMLButtonElement;
+  logoutBtn.classList.add("logout-button");
+  logoutBtn.addEventListener("click", async () => {
+    await logout();
   });
 
   const homeButton = document.querySelector(
