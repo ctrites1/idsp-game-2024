@@ -36,13 +36,6 @@ const generatePlayersTable = async (): Promise<HTMLDivElement> => {
 
 	const playersTable = document.createElement("table") as HTMLTableElement;
 	playersTable.classList.add("players-table");
-	const tableHeading = document.createElement("thead");
-	const headCell = document.createElement("th");
-	const headCellData = document.createElement("h1");
-	headCellData.innerText = "Players";
-	headCell.appendChild(headCellData);
-	tableHeading.appendChild(headCell);
-	playersTable.appendChild(tableHeading);
 
 	allPlayers.forEach(async (player: Player) => {
 		const playerButton = document.createElement("button");
@@ -75,6 +68,14 @@ const generatePlayersTable = async (): Promise<HTMLDivElement> => {
 
 	const playerTableContainer = document.createElement("div") as HTMLDivElement;
 	playerTableContainer.classList.add("players-table-container");
+
+	const head = document.createElement("h1");
+	head.innerText = "Players";
+	const subhead = document.createElement("h2");
+	subhead.innerText = "Select a player to start or join a game";
+
+	playerTableContainer.appendChild(head);
+	playerTableContainer.appendChild(subhead);
 	playerTableContainer.appendChild(playersTable);
 
 	return playerTableContainer;

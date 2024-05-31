@@ -804,7 +804,8 @@ export async function getRoundsData(matchId: number) {
       "select r.winner_id, count(round_id) as roundswon from round as r join `match` as m on r.match_id = m.match_id where r.match_id = :matchId group by winner_id;";
 
     const rounds: any = await database.query(sql, { matchId: matchId });
-    return { sucess: true, data: rounds };
+    console.log("se", rounds)
+    return { sucess: true, data: rounds[0] };
   } catch (error) {
     console.log(error);
     return { success: false, data: null };
